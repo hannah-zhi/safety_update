@@ -187,7 +187,7 @@
 
     .kpi-grid {
       display: grid;
-      grid-template-columns: 0.68fr 0.68fr 0.8fr 1.44fr;
+      grid-template-columns: repeat(3, minmax(0, 1fr)) 1.8fr;
       gap: 14px;
       margin-top: 22px;
     }
@@ -269,9 +269,9 @@
       white-space: nowrap;
     }
 
-    .status-donuts { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 18px; height: 100%; }
-    .donut-section { min-width: 0; padding: 2px 3px; }
-    .donut-section + .donut-section { padding-left: 18px; border-left: 1px solid var(--line); }
+    .status-donuts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; height: 100%; }
+    .donut-section { min-width: 0; padding: 2px 18px; }
+    .donut-section + .donut-section { border-left: 1px solid var(--line); }
     .donut-title { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
     .donut-title h2 { margin: 0; font-size: 17px; }
     .donut-content { display: grid; grid-template-columns: 138px minmax(0, 1fr); align-items: center; gap: 15px; }
@@ -478,7 +478,7 @@
     .warning-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 13px; }
     .warning-head h3 { margin: 0; color: #e6faff; font-size: 15px; }
     .warning-badge { padding: 6px 9px; border-radius: 999px; color: #aeefff; background: var(--cyan-soft); font-size: 12px; white-space: nowrap; }
-    .warning-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+    .warning-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px; }
     .warning-item {
       display: grid;
       grid-template-columns: 32px minmax(0, 1fr);
@@ -537,7 +537,6 @@
     .menu-action.primary { color: #00232c; border-color: transparent; background: var(--cyan); font-weight: 750; }
     @media (max-width: 1260px) {
       .dashboard { grid-template-columns: 1fr 1fr; }
-      .warning-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
 
     @media (max-width: 860px) {
@@ -547,7 +546,8 @@
       .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .dashboard { grid-template-columns: 1fr; }
       .status-donuts { grid-template-columns: 1fr; }
-      .donut-section + .donut-section { padding-top: 16px; padding-left: 3px; border-top: 1px solid var(--line); border-left: 0; }
+      .donut-section + .donut-section { padding-top: 16px; border-top: 1px solid var(--line); border-left: 0; }
+      .warning-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .warning-panel { padding-left: 18px; }
       .table-title-actions { flex-wrap: wrap; }
     }

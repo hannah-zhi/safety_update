@@ -707,13 +707,46 @@
 
     .agent-flow-head h2 { margin: 0; font-size: 18px; }
     .agent-flow-head span { color: var(--cyan); font-size: 12px; font-weight: 750; }
-    .agent-flow-frame {
-      display: block;
-      width: 100%;
-      height: 920px;
-      border: 0;
-      background: var(--bg);
+    .agent-flow-stage { padding: 16px 18px 12px; overflow: hidden; }
+    .agent-source-switch { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 6px; }
+    .agent-source-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px 7px 8px;
+      border: 1px solid rgba(122, 211, 255, 0.18);
+      border-radius: 999px;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.035);
+      cursor: pointer;
+      transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
     }
+    .agent-source-btn:hover, .agent-source-btn.active { transform: translateY(-1px); background: rgba(255, 255, 255, 0.055); }
+    .agent-source-btn.battery.active { border-color: rgba(66, 242, 161, 0.76); background: rgba(66, 242, 161, 0.09); box-shadow: 0 0 20px rgba(66, 242, 161, 0.12); }
+    .agent-source-btn.cbb.active { border-color: rgba(98, 184, 255, 0.76); background: rgba(98, 184, 255, 0.09); box-shadow: 0 0 20px rgba(98, 184, 255, 0.12); }
+    .agent-source-btn small { display: grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; color: #dff8ff; background: rgba(122, 211, 255, 0.12); font-size: 11px; font-weight: 850; }
+    .agent-source-btn strong { font-size: 13px; font-weight: 820; white-space: nowrap; }
+    .agent-flow-chart { display: block; width: 100%; height: auto; aspect-ratio: 1500 / 700; overflow: visible; }
+    .agent-flow-link { fill: none; stroke: rgba(122, 211, 255, 0.28); stroke-width: 2; marker-end: url(#agentArrow); }
+    .agent-flow-link.path-hot { stroke: var(--path-color); stroke-width: 2.6; filter: drop-shadow(0 0 8px var(--path-glow)); }
+    .agent-flow-link.muted { opacity: 0.24; }
+    .agent-edge-label-bg { fill: rgba(4, 13, 20, 0.9); stroke: rgba(122, 211, 255, 0.24); stroke-width: 1; }
+    .agent-edge-label-bg.muted { opacity: 0.36; stroke: rgba(142, 165, 178, 0.28); }
+    .agent-flow-label { fill: #d8edf8; font-size: 12px; font-weight: 800; paint-order: stroke; stroke: rgba(4, 13, 20, 0.9); stroke-width: 3px; stroke-linejoin: round; }
+    .agent-flow-label.muted { fill: rgba(164, 184, 196, 0.62); opacity: 0.58; }
+    .agent-svg-node.muted { opacity: 0.32; }
+    .agent-svg-node .shape { fill: rgba(4, 13, 20, 0.78); stroke: rgba(122, 211, 255, 0.24); stroke-width: 1.4; }
+    .agent-svg-node.role-agent .shape { stroke: #22d8ff; }
+    .agent-svg-node.role-human .shape { stroke: #ffbd59; }
+    .agent-svg-node.role-mixed .shape { stroke: url(#agentRoleGradient); }
+    .agent-svg-node.path-hot .shape { stroke-width: 2; filter: drop-shadow(0 0 14px var(--node-glow)); }
+    .agent-svg-node .title { fill: var(--text); font-size: 15px; font-weight: 850; }
+    .agent-svg-node .summary { fill: #9db3c1; font-size: 12px; }
+    .agent-svg-node .number { fill: #dff8ff; font-size: 12px; font-weight: 850; }
+    .agent-svg-node-tag-wrap { display: flex; justify-content: flex-end; gap: 6px; width: 100%; height: 24px; overflow: visible; font-family: "Inter", "Segoe UI", "Microsoft YaHei", sans-serif; }
+    .agent-svg-node-tag { display: inline-flex; align-items: center; height: 22px; padding: 0 9px; border-radius: 999px; font-size: 11px; font-weight: 850; white-space: nowrap; }
+    .agent-svg-node-tag.agent { border: 1px solid rgba(34, 216, 255, 0.44); background: #062332; color: #9ff2ff; }
+    .agent-svg-node-tag.human { border: 1px solid rgba(255, 189, 89, 0.5); background: #2b210f; color: #ffe0a8; }
 
     .skill-showcase-title {
       display: flex;
@@ -725,19 +758,14 @@
 
     .skill-showcase-title h2 { margin: 0; font-size: 20px; }
     .skill-showcase-title span { color: var(--muted); font-size: 13px; }
-    .skill-case-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .skill-case {
+    .conversation-list { display: grid; gap: 18px; }
+    .conversation-card {
       position: relative;
       overflow: hidden;
       padding: 22px;
     }
 
-    .skill-case::before {
+    .conversation-card::before {
       content: "";
       position: absolute;
       inset: 0 auto 0 0;
@@ -746,7 +774,7 @@
       box-shadow: 0 0 22px var(--case-color, var(--cyan));
     }
 
-    .skill-case-head {
+    .conversation-head {
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
@@ -754,8 +782,8 @@
       margin-bottom: 18px;
     }
 
-    .skill-case-head h3 { margin: 0 0 7px; font-size: 18px; }
-    .skill-case-head p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
+    .conversation-head h3 { margin: 0 0 7px; font-size: 18px; }
+    .conversation-head p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
     .skill-name {
       flex: 0 0 auto;
       max-width: 245px;
@@ -769,16 +797,15 @@
       overflow-wrap: anywhere;
     }
 
-    .chat-stack { display: grid; gap: 9px; }
-    .chat-message {
-      padding: 13px 14px;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.018);
-    }
-
-    .chat-message.user { margin-right: 34px; border-color: rgba(255, 189, 89, 0.2); background: rgba(255, 189, 89, 0.045); }
-    .chat-message.agent { margin-left: 34px; border-color: rgba(34, 216, 255, 0.2); background: rgba(34, 216, 255, 0.045); }
+    .chat-stack { display: grid; gap: 12px; }
+    .chat-row { display: flex; align-items: flex-end; gap: 10px; }
+    .chat-row.user { justify-content: flex-end; }
+    .chat-avatar { display: grid; place-items: center; flex: 0 0 32px; width: 32px; height: 32px; border-radius: 50%; font-size: 11px; font-weight: 850; }
+    .chat-row.agent .chat-avatar { color: #8fefff; border: 1px solid rgba(34,216,255,.28); background: rgba(34,216,255,.1); }
+    .chat-row.user .chat-avatar { order: 2; color: #ffe2b0; border: 1px solid rgba(255,189,89,.28); background: rgba(255,189,89,.1); }
+    .chat-message { max-width: min(78%, 930px); padding: 13px 15px; border: 1px solid var(--line); border-radius: 14px; background: rgba(255, 255, 255, 0.018); }
+    .chat-row.user .chat-message { border-color: rgba(255, 189, 89, 0.22); border-bottom-right-radius: 4px; background: rgba(255, 189, 89, 0.055); }
+    .chat-row.agent .chat-message { border-color: rgba(34, 216, 255, 0.22); border-bottom-left-radius: 4px; background: rgba(34, 216, 255, 0.05); }
     .chat-role {
       display: block;
       margin-bottom: 7px;
@@ -789,61 +816,38 @@
       text-transform: uppercase;
     }
 
-    .chat-message.user .chat-role { color: var(--amber); }
-    .chat-message.agent .chat-role { color: var(--cyan); }
-    .chat-message blockquote { margin: 0; color: #d5e7ef; font-size: 13px; line-height: 1.68; }
-    .skill-output {
-      margin-top: 14px;
+    .chat-row.user .chat-role { color: var(--amber); text-align: right; }
+    .chat-row.agent .chat-role { color: var(--cyan); }
+    .chat-message p { margin: 0; color: #d5e7ef; font-size: 13px; line-height: 1.7; white-space: pre-line; }
+    .chat-message p + p { margin-top: 9px; }
+    .chat-artifacts {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
       padding: 15px;
       border: 1px solid rgba(66, 242, 161, 0.2);
       border-radius: 12px;
       background: rgba(66, 242, 161, 0.045);
     }
-
-    .skill-output-title {
+    .chat-artifacts strong { color: var(--green); font-size: 13px; }
+    .artifact-link {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      margin-bottom: 11px;
-    }
-
-    .skill-output-title strong { color: var(--green); font-size: 13px; }
-    .skill-output-title span { color: var(--muted); font-size: 11px; }
-    .artifact-name {
-      display: flex;
-      align-items: center;
-      gap: 9px;
       padding: 10px 11px;
       border: 1px solid rgba(122, 211, 255, 0.12);
       border-radius: 9px;
       color: #e7f7ff;
       background: rgba(4, 13, 20, 0.52);
-      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
       font-size: 12px;
+      text-decoration: none;
       overflow-wrap: anywhere;
     }
-
-    .artifact-name::before { content: ""; width: 8px; height: 8px; flex: 0 0 auto; border-radius: 50%; background: var(--green); box-shadow: 0 0 12px rgba(66, 242, 161, 0.55); }
-    .output-facts {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 8px;
-      margin-top: 10px;
-    }
-
-    .output-fact {
-      min-height: 76px;
-      padding: 10px;
-      border: 1px solid rgba(122, 211, 255, 0.1);
-      border-radius: 9px;
-      background: rgba(255, 255, 255, 0.018);
-    }
-
-    .output-fact strong { display: block; margin-bottom: 5px; color: #f0fbff; font-size: 16px; }
-    .output-fact span { color: var(--muted); font-size: 11px; line-height: 1.45; }
-    .result-list { margin: 10px 0 0; padding-left: 18px; color: #c8dce6; font-size: 12px; line-height: 1.65; }
-    .result-list li + li { margin-top: 4px; }
+    .artifact-link:hover { border-color: rgba(66, 242, 161, .42); background: rgba(66, 242, 161, .08); }
+    .artifact-link span:first-child { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; }
+    .artifact-action { flex: 0 0 auto; color: var(--green); font-weight: 800; }
+    .conversation-source { color: var(--muted); font-size: 12px; }
     .evidence-a { color: var(--green); }
     .evidence-b { color: var(--blue); }
     .evidence-c { color: var(--amber); }
@@ -852,7 +856,6 @@
       .dashboard { grid-template-columns: 1fr 1fr; }
       .requirements-dashboard { grid-template-columns: 1fr 1fr; }
       .requirement-filters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .skill-case-grid { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 860px) {
@@ -872,7 +875,7 @@
       .requirement-detail { grid-template-columns: 1fr; }
       .detail-block.wide { grid-column: auto; }
       .requirement-table .warning-panel { padding-left: 18px; }
-      .agent-flow-frame { height: 760px; }
+      .agent-flow-stage { padding-inline: 10px; }
     }
 
     @media (max-width: 560px) {
@@ -885,11 +888,9 @@
       .donut-content { grid-template-columns: 1fr; }
       .legend { grid-template-columns: 1fr 1fr; }
       .requirements-kpi-grid, .requirement-filters { grid-template-columns: 1fr; }
-      .agent-flow-head, .skill-showcase-title, .skill-case-head { align-items: flex-start; flex-direction: column; }
-      .agent-flow-frame { height: 680px; }
-      .chat-message.user { margin-right: 0; }
-      .chat-message.agent { margin-left: 0; }
-      .output-facts { grid-template-columns: 1fr; }
+      .agent-flow-head, .skill-showcase-title, .conversation-head { align-items: flex-start; flex-direction: column; }
+      .agent-flow-stage { padding: 12px 4px 8px; }
+      .chat-message { max-width: calc(100% - 42px); }
     }
   </style>
 </head>
@@ -1103,19 +1104,25 @@
       <article class="glass agent-flow-card" aria-labelledby="agent-flow-heading">
         <div class="agent-flow-head">
           <h2 id="agent-flow-heading">Coding Agent 驱动的储能安全模型闭环流程</h2>
-          <span>原流程图 · 保留原交互</span>
+          <span>机制驱动 / 需求驱动</span>
         </div>
-        <iframe class="agent-flow-frame" src="coding-agent-flow.html#framework" title="Coding Agent 驱动的储能安全模型闭环流程图" loading="lazy" sandbox="allow-scripts allow-same-origin"></iframe>
+        <div class="agent-flow-stage">
+          <div class="agent-source-switch" aria-label="需求来源">
+            <button class="agent-source-btn battery active" type="button" data-agent-source="battery"><small>A</small><strong>机理驱动（主导）</strong></button>
+            <button class="agent-source-btn cbb" type="button" data-agent-source="cbb"><small>B</small><strong>需求驱动（补充）</strong></button>
+          </div>
+          <svg class="agent-flow-chart" id="agentFlowChart" viewBox="0 0 1500 700" role="img" aria-label="带分支和回环的算法开发流程图"></svg>
+        </div>
       </article>
 
       <div class="skill-showcase-title">
         <h2>两个 Skill 的真实使用实例</h2>
-        <span>摘自任务「构建CBB失效案例EDA脚本」</span>
+        <span>来自任务「构建CBB失效案例EDA脚本」的真实消息与交付物</span>
       </div>
 
-      <div class="skill-case-grid">
-        <article class="glass skill-case" style="--case-color:var(--cyan)">
-          <div class="skill-case-head">
+      <div class="conversation-list">
+        <article class="glass conversation-card" style="--case-color:var(--cyan)">
+          <div class="conversation-head">
             <div>
               <h3>从失效案例生成 EDA Notebook</h3>
               <p>把案例材料、字段表和云端约束转成可运行的 Glue/PySpark 分析脚本。</p>
@@ -1123,35 +1130,50 @@
             <span class="skill-name">build-cbb-eda-notebook</span>
           </div>
 
-          <div class="chat-stack" aria-label="build-cbb-eda-notebook 真实对话摘录">
-            <div class="chat-message user">
-              <span class="chat-role">用户 · 真实指令</span>
-              <blockquote>“现在调用 build-cbb-eda-notebook 这个 skill，来建立针对‘绝缘异常case’这个文档中失效 case 的 EDA notebook……附件的脚本，是针对漏液 case，我最后自己进行了部分修改，确定可以跑通、输出结果的版本，请参考。”</blockquote>
+          <div class="chat-stack" aria-label="build-cbb-eda-notebook 真实对话">
+            <div class="chat-row user">
+              <div class="chat-message"><span class="chat-role">用户</span><p>现在调用 build-cbb-eda-notebook 这个 skill，来建立针对“绝缘异常case”这个文档中失效case的eda notebook，我会基于输出的结果再给出意见，你再持续对skill和notebook脚本进行迭代（附件的脚本，是针对漏液case，我最后自己进行了部分修改，确定可以跑通、输出结果的版本，请参考）</p></div>
+              <span class="chat-avatar">你</span>
             </div>
-            <div class="chat-message agent">
-              <span class="chat-role">Coding Agent · Skill 执行</span>
-              <blockquote>“案例和字段映射已经收敛：柜式两例用 RBMS 的连续绝缘电阻、告警及电压字段；箱式 K0315 在子系统层用 BBMS + PCS 观察绝缘告警与正/负母线电压。Pack 编号只保留在案例说明中，不作为云端查询条件。”</blockquote>
-            </div>
-          </div>
+            <div class="chat-row agent"><span class="chat-avatar">AI</span><div class="chat-message"><span class="chat-role">Coding Agent</span><p>我会按顺序使用三个能力：先用 build-cbb-eda-notebook 约束 notebook 的云端格式和简洁度，再用文档能力提取“绝缘异常case”的案例与时间线，最后读取字段表和场站配置确定可查询字段、表名及真实 site_code。附件中的可运行漏液 notebook 会作为代码风格和 Glue/S3 写法的最高优先级参考。</p></div></div>
+            <div class="chat-row agent"><span class="chat-avatar">AI</span><div class="chat-message"><span class="chat-role">Coding Agent</span><p>案例文档初步识别出 5 条项目案例、2 条工厂案例。工厂案例会按 skill 规则排除；项目案例中 K0315、K0056 的子系统/rack 清晰，K0043 的“22-2-4 Rack”和 K0259 的“401簇”需要结合场站架构判断能否可靠转换为云端资产键，不能直接猜。</p></div></div>
+            <div class="chat-row user"><div class="chat-message"><span class="chat-role">用户</span><p>“22-2-4 Rack”应该指的是22号子系统，204Rack</p></div><span class="chat-avatar">你</span></div>
+            <div class="chat-row agent"><span class="chat-avatar">AI</span><div class="chat-message"><span class="chat-role">Coding Agent</span><p>明白，K0043 将按 WCCN.ESS22 / RBMS204 纳入，不再视为歧义案例。它是 cabinet 架构，可直接与同一子系统其他 RBMS 做绝缘电阻和告警的 peer 对比。</p></div></div>
+            <div class="chat-row user"><div class="chat-message"><span class="chat-role">用户</span><p>401簇这个，确实不知道是哪个子系统，先忽略</p></div><span class="chat-avatar">你</span></div>
+            <div class="chat-row agent"><span class="chat-avatar">AI</span><div class="chat-message"><span class="chat-role">Coding Agent</span><p>明白，K0259 的“401簇”缺少子系统信息，先从 notebook 查询案例中排除，并在案例覆盖说明中标记为“无法映射到云端 asset_storage_key”。当前纳入 K0315、K0056、K0043 三例。</p></div></div>
+            <div class="chat-row agent"><span class="chat-avatar">AI</span><div class="chat-message"><span class="chat-role">Coding Agent</span><p>案例和字段映射已经收敛：柜式两例用 RBMS 的连续绝缘电阻、告警及电压字段；箱式 K0315 在子系统层用 BBMS + PCS 观察绝缘告警与正/负母线电压。Pack 编号只保留在案例说明中，不作为云端查询条件。接下来我生成 notebook，并检查代码语法、S3 路径和绘图 cell 尾行。</p></div></div>
+            <div class="chat-row agent"><span class="chat-avatar">AI</span><div class="chat-message"><span class="chat-role">Coding Agent</span><p>这次调用暴露出 skill 中一处需要同步优化的地方：它把“box → TMS”写成了固定规则，这只适合漏液，不适合绝缘异常。我会按 skill-creator 的规范把设备类型与数据表选择解耦，让字段和表由失效机理决定；本次 notebook 则采用 RBMS、BBMS、PCS。</p></div></div>
+            <div class="chat-row agent">
+              <span class="chat-avatar">AI</span>
+              <div class="chat-message">
+                <span class="chat-role">Coding Agent · 最终交付</span>
+                <p>已生成绝缘异常 EDA notebook。
 
-          <div class="skill-output">
-            <div class="skill-output-title"><strong>真实产出</strong><span>Notebook 已通过结构、语法与绘图规范检查</span></div>
-            <div class="artifact-name">pack_insulation_abnormal_eda.ipynb</div>
-            <div class="output-facts">
-              <div class="output-fact"><strong>3 个</strong><span>首版纳入并完成云端资产映射的项目案例</span></div>
-              <div class="output-fact"><strong>RBMS / BBMS / PCS</strong><span>依据失效机理选择数据路径</span></div>
-              <div class="output-fact"><strong>S3</strong><span>图片、日汇总、事件与 peer 表统一输出</span></div>
+案例处理如下：
+K0315：子系统43、Rack406；使用 BBMS + PCS 分析，Pack2仅作现场备注。
+K0056：ZHCN.ESS22 / RBMS204。
+K0043：将“22-2-4 Rack”解析为子系统22、Rack204，即 WCCN.ESS22 / RBMS204。
+K0259：因“401簇”无法确定子系统，暂不纳入。
+工厂案例不纳入。
+
+notebook 会输出：
+绝缘电阻、绝缘/接地告警、母线电压及运行状态趋势图；
+日汇总、告警事件、低绝缘候选点；
+同子系统/同场站 peer 对比表；
+结果统一上传至 .../pack_cbb/eda/insulation_abnormal。
+
+同时已更新 build skill。notebook 已通过 JSON、Python 语法和绘图规范检查。</p>
+                <div class="chat-artifacts">
+                  <strong>交付物</strong>
+                  <a class="artifact-link" href="artifacts/pack_insulation_abnormal_eda.ipynb" target="_blank" rel="noopener"><span>pack_insulation_abnormal_eda.ipynb</span><span class="artifact-action">打开文件</span></a>
+                </div>
+              </div>
             </div>
-            <ul class="result-list">
-              <li>输出绝缘电阻、告警、母线电压和运行状态趋势图。</li>
-              <li>输出日汇总、告警事件、低绝缘候选点及同系统 peer 对比。</li>
-              <li>K0259 因无法映射到云端子系统，被明确排除而非强行猜测。</li>
-            </ul>
           </div>
         </article>
 
-        <article class="glass skill-case" style="--case-color:var(--violet)">
-          <div class="skill-case-head">
+        <article class="glass conversation-card" style="--case-color:var(--violet)">
+          <div class="conversation-head">
             <div>
               <h3>从云端输出形成证据结论</h3>
               <p>读取 Notebook 运行后的图片、Parquet 与案例材料，完成证据分级和下一步决策。</p>
@@ -1159,31 +1181,47 @@
             <span class="skill-name">analyze-cbb-eda-outputs</span>
           </div>
 
-          <div class="chat-stack" aria-label="analyze-cbb-eda-outputs 真实对话摘录">
-            <div class="chat-message user">
-              <span class="chat-role">用户 · 真实指令</span>
-              <blockquote>“notebook 运行之后的结果都存在以下路径了（包括图片和表格），请进行分析：……\online_outputs\2026-09-02。”</blockquote>
-            </div>
-            <div class="chat-message agent">
-              <span class="chat-role">Coding Agent · Skill 执行</span>
-              <blockquote>“文件清单显示共有 522 个文件、约 41 MB：14 个案例都有表目录，但只有 10 个案例生成了图片，说明至少 4 个案例可能是空数据或不足以绘图。Parquet 是主要证据来源。”</blockquote>
-            </div>
-          </div>
+          <div class="chat-stack" aria-label="analyze-cbb-eda-outputs 真实对话">
+            <div class="chat-row user"><div class="chat-message"><span class="chat-role">用户 · analyze-cbb-eda-outputs</span><p>notebook运行之后的结果都存在以下路径了（包括图片和表格），请进行分析：C:\Users\hannah.zhi\Desktop\vibe_coding\cbb_models\pack_cbb\insulation\online_outputs\2026-09-02</p></div><span class="chat-avatar">你</span></div>
+            <div class="chat-row agent"><span class="chat-avatar">AI</span><div class="chat-message"><span class="chat-role">Coding Agent</span><p>我会按你指定的 analyze-cbb-eda-outputs skill 执行：先盘点所有案例的图片、表格和数据完整性，再对齐案例时间、目标 Rack/动力单元与同子系统 peer，最后给出逐案例证据等级、可建模性判断和下一步计划，并生成结构化 Markdown 总结。</p></div></div>
+            <div class="chat-row agent"><span class="chat-avatar">AI</span><div class="chat-message"><span class="chat-role">Coding Agent</span><p>Skill 要求把负结果和缺失输出也保留下来，并按 A/B/C/D/X 分级。我现在开始做全量文件清单与格式路由；如果部分案例只有空目录或缺少关键表，也会作为明确的数据状态写入总结，不会静默忽略。</p></div></div>
+            <div class="chat-row agent"><span class="chat-avatar">AI</span><div class="chat-message"><span class="chat-role">Coding Agent</span><p>文件清单显示共有 522 个文件、约 41 MB：14 个案例都有表目录，但只有 10 个案例生成了图片，说明至少 4 个案例可能是空数据或不足以绘图。Parquet 是主要证据来源；当前本地分析运行时缺少 Parquet 读取库，我将补充本地只用于分析的依赖，然后统计每张表的实际行数、时间范围和关键值。</p></div></div>
+            <div class="chat-row agent"><span class="chat-avatar">AI</span><div class="chat-message"><span class="chat-role">Coding Agent</span><p>第一轮统计已经得到清晰分层：4 个案例完全无数据；K0357 有持续且显著的目标 Rack 分离；K0240 有一次持续约 15 秒的 RBMS/BBMS 同步绝缘故障；其余多数案例的 rb_isoris 处于量程上限常数或目标测点为空。下一步我会逐图核对这些结论，尤其检查 K0075、K0079 是否存在表格汇总掩盖的短时变化。</p></div></div>
+            <div class="chat-row agent"><span class="chat-avatar">AI</span><div class="chat-message"><span class="chat-role">Coding Agent</span><p>核心结论已经比较清晰：K0357 是持续退化型强阳性，K0240 是秒级瞬态且由 Rack/动力单元两层同步告警支撑；其余案例多数属于无数据、测点缺失、无目标差异，或根因在电缆/变压器/PCS 功率套件而非 Rack 本体。我会按这些机制分开给出证据等级，避免把“停机后的电压变化”误当成绝缘先兆。</p></div></div>
+            <div class="chat-row agent">
+              <span class="chat-avatar">AI</span>
+              <div class="chat-message">
+                <span class="chat-role">Coding Agent · 最终交付</span>
+                <p>分析已完成，并按 analyze-cbb-eda-outputs skill 生成了独立 Markdown 报告。
 
-          <div class="skill-output">
-            <div class="skill-output-title"><strong>真实产出</strong><span>逐案例保留正证据、负结果与数据缺口</span></div>
-            <div class="artifact-name">pack_insulation_abnormal_eda_summary.md</div>
-            <div class="output-facts">
-              <div class="output-fact"><strong>522</strong><span>图片、表格与 Parquet 文件完成盘点</span></div>
-              <div class="output-fact"><strong>18 例</strong><span>14 个 Notebook 案例 + 4 个源案例</span></div>
-              <div class="output-fact"><strong>A–X</strong><span>按证据强度与可观测边界分级</span></div>
+核心结论：
+K0357：A 级强证据
+Rack401 的 rb_isoris 最低 0.228 MΩ，peer 最低仍为 13.11 MΩ。
+2026-03-06 已开始持续下降，比现场确认提前约 5 个月。
+适合开发持续退化检测原型。
+
+K0240：B 级有效证据
+2026-08-08 出现 15 秒绝缘突降，最低 0.361 MΩ。
+Rack 和动力单元绝缘故障同步置位。
+但云端事件时间与现场记录日期不一致，需要先校准标签。
+
+K0075：C 级弱证据
+故障后第 4 天出现一次 8.795 MΩ 的孤立低值。
+同期设备接近停机，暂时无法排除运行状态影响。
+
+其他有数据案例没有形成有效的目标/peer 区分，或关键测点为空；变压器、交流滤波板、动力电缆及 PCS 功率套件故障不应混入 Rack 本体绝缘模型。
+
+目前不建议直接进入全场站模型开发。下一阶段应分别验证：
+1. K0357 类型的持续退化规则；
+2. K0240 类型的秒级跨层告警融合规则。
+
+报告覆盖了 14 个 Notebook 案例，以及旧 Word 中未查询的 3 个工厂案例和 1 个无法确定子系统的案例，共 18 例。</p>
+                <div class="chat-artifacts">
+                  <strong>交付物</strong>
+                  <a class="artifact-link" href="artifacts/pack_insulation_abnormal_eda_summary.md" target="_blank" rel="noopener"><span>pack_insulation_abnormal_eda_summary.md</span><span class="artifact-action">打开报告</span></a>
+                </div>
+              </div>
             </div>
-            <ul class="result-list">
-              <li><strong class="evidence-a">K0357 · A级：</strong>持续下降并与同系统 peer 明显分离。</li>
-              <li><strong class="evidence-b">K0240 · B级：</strong>出现 15 秒绝缘突降，Rack 与动力单元告警同步。</li>
-              <li><strong class="evidence-c">K0075 · C级：</strong>只有孤立低值，仍受停机状态影响。</li>
-              <li>最终建议先验证持续退化与秒级跨层告警融合规则，不直接进入全场站部署。</li>
-            </ul>
           </div>
         </article>
       </div>
@@ -1192,6 +1230,7 @@
 
   <div class="column-menu" id="columnMenu" hidden></div>
 
+  <script src="agent-flow.js"></script>
   <script>
     const requirements = [{"date":"2026-11-10","model":"Rack内电压一致性异常监测模型","owner":"胡志硕","type":"功能新增","status":"待评审","description":"中间数据曾中断，随后自行恢复；初步判断为通信中断。","expected":"中间数据曾中断，随后自行恢复；初步判断为通信中断。","progress":"","modelEnglish":"Safety_Rack_CellVoltageConsistencyAnomaly","requester":"丁奇","contactOwner":"胡志硕"},{"date":"2026-11-10","model":"舱内簇间一致性模型","owner":"黄胜旭","type":"功能新增","status":"待评审","description":"脱簇告警新增最低电芯电压的额外判定","expected":"脱簇告警新增最低电芯电压的额外判定","progress":"","modelEnglish":"Safety_Bank_RackConsistencyAnomaly","requester":"丁奇","contactOwner":"黄胜旭"},{"date":"2026-11-10","model":"舱内簇间一致性模型","owner":"黄胜旭","type":"降低误报","status":"待评审","description":"ZHCN；ZHCN.ESS16；RBMS209\nZHCN；ZHCN.ESS17；RBMS209\nZHCN；ZHCN.ESS18；RBMS209\nZHCN；ZHCN.ESS21；RBMS209\nZHCN；ZHCN.ESS22；RBMS209\nZHCN；ZHCN.ESS23；RBMS209\nZHCN；ZHCN.ESS24；RBMS209\nZHCN；ZHCN.ESS25；RBMS209\nZHCN；ZHCN.ESS26；RBMS209\nZHCN；ZHCN.ESS27；RBMS209\nZHCN；ZHCN.ESS28；RBMS209；\n以上核实中核郯城项目以上子系统为9+8配置，需要分析告警原因","expected":"以上核实中核郯城项目以上子系统为9+8配置，需要分析告警原因；减少误报警","progress":"","modelEnglish":"Safety_Bank_RackConsistencyAnomaly","requester":"丁奇","contactOwner":"黄胜旭"},{"date":"2026-11-03","model":"Pack内电芯采样温度异常监测模型","owner":"黄胜旭","type":"降低误报","status":"待评审","description":"K0237.ESS02.RBMS101.Pack6.Cell17,21在2026/10/26的预警出现心跳信号异常，需要修复此缺陷","expected":"此异常是数据重复堆叠导致，非真实电芯故障，需要过滤掉","progress":"","modelEnglish":"Safety_Pack_CellTemperatureAnomaly","requester":"梁佳琳","contactOwner":"黄胜旭"},{"date":"2026-11-03","model":"主控配电柜空调运行异常监测模型","owner":"陈敏辉","type":"功能新增","status":"分析中","description":"此前出现现场空调结冰但未触发告警的情况，新增多条件识别逻辑，覆盖该类异常场景。","expected":"此前出现现场空调结冰但未触发告警的情况，新增多条件识别逻辑，覆盖该类异常场景。","progress":"目前K0062 因为温感数值异常 导致制冷/制热状态卡死，已经制作筛查，疑似是由于hvac控制板控制异常导致","modelEnglish":"Safety_DCPowerDistribution_CabinetACAnomaly","requester":"苏腾飞","contactOwner":"陈敏辉"},{"date":"2026-11-04","model":"主控配电柜UPS异常监测模型","owner":"陈敏辉","type":"功能新增","status":"待评审","description":"当前依靠电池欠压测点对电池性能预警不够完善，仅能作为电池浮充寿命到期的参考依据，无法知晓电池的实际续航表现。特提出新需求：\n1.自动抽样数据获取：结合场站的机会性维护，识别单次UPS市电断开情况下（Cx.upssupply=1），到UPS电池欠压（Cx.upsbattery=1）间隔的时间，作为判断UPS电池续航能力的依据。\n2.铅酸电池寿命曲线拟合，代入UPS铅酸电池衰减公式，通过前期的自动抽样数据，针对项目场站的并网时间，区域的环境温度表现，项目存储时间差异，绘制不同的寿命曲线","expected":"完成差异化UPS电池寿命曲线绘制，为电池寿命评估提供依据","progress":"","modelEnglish":"Safety_DCPowerDistribution_UPSAnomaly","requester":"苏腾飞","contactOwner":"陈敏辉"},{"date":"2026-11-04","model":"主控配电柜空调运行异常监测模型","owner":"陈敏辉","type":"功能新增","status":"待评审","description":"当前空调自身温度采样异常导致空调进行异常的制冷或加热，对设备稳定运行产生不利影响，且当前local逻辑仅针对阈值范围进行判断，在实测采样在阈值范围内出现不刷新的情况，无法识别。\nAC.temvalue为空调实测温度值，\n空调制冷逻辑：AC.temvalue＞AC.CoolTemp（37℃），\n停止制冷逻辑：AC.temvalue＜（AC.CoolTemp-AC.CoolSen）32℃\n空调加热逻辑：AC.temvalue＜AC.HeatTem\n停止加热逻辑：AC.temvalue＞（AC.HeatTem+AC.HeatSens）\n风险：\n1.AC.temvalue在达到制冷或加热温度或处于运行区间后，值保持不变，可能持续制冷或加热","expected":"通过模型预警，能够识别场站空调处于异常加热或异常制冷的情况，前置问题处理，防止产品持续异常运行出现不可逆的失效","progress":"","modelEnglish":"Safety_DCPowerDistribution_CabinetACAnomaly","requester":"苏腾飞","contactOwner":"陈敏辉"},{"date":"2026-11-03","model":"舱内簇间一致性模型","owner":"黄胜旭","type":"降低误报","status":"待验证","description":"脱簇误报问题优化：误报由单帧异常SOC数据触发","expected":"在模型中增加持续时长判定逻辑，要求异常状态需要持续才触发告警，过滤单帧异常。","progress":"2026/6/2报出电压偏低，在2026/6/5左右脱簇，此时最低电压3V，SOC在1%左右不变，随后低压电芯电压一直逐渐降低，6/19换包，电压最低3.25V，但是一直未连接进行充放电，SOC一直未矫正","modelEnglish":"Safety_Bank_RackConsistencyAnomaly","requester":"丁奇","contactOwner":"黄胜旭"},{"date":"2026-10-20","model":"Rack内电压一致性异常监测模型","owner":"胡志硕","type":"其他优化","status":"已上线","description":"K0248；K0248.ESS04；RBMS104；河北省；2026/10/12；电芯仅电压偏高\nK0315；K0315.ESS39；RBMS206；内蒙古自治区；2026/10/12；电芯SOC偏低\nK0339；K0339.ESS08；RBMS404；内蒙古自治区；2026/10/12；电芯仅电压偏高","expected":"同一rack内会有多种预警内容，部分告警图片和告警内容不匹配，需要告警融合","progress":"已为告警监测添加互斥逻辑，只有电芯电压处于0.1<=x<=5间的电芯才会进入一致性异常判定，超出该区间直接判定为传感器异常。同时以后对于一个电池簇，如果同时出现一致性异常和传感器异常告警项，代表簇内同时出现两种异常的电芯，是真实地。此外，对于极差类异常判定，如果电池簇内任意电芯<0.1或\n>5，则不会进入极差异常判定模块。","modelEnglish":"Safety_Rack_CellVoltageConsistencyAnomaly","requester":"丁奇","contactOwner":"胡志硕"},{"date":"2026-10-20","model":"Pack内电芯采样温度异常监测模型","owner":"黄胜旭","type":"降低误报","status":"待评审","description":"整簇数据跳变到持续-40，疑似通讯问题","expected":"短期可通过阈值单独筛选出来，便于分类排查；长期这类由于通讯问题导致的整簇数据异常需过滤","progress":"","modelEnglish":"Safety_Pack_CellTemperatureAnomaly","requester":"梁佳琳","contactOwner":"黄胜旭"},{"date":"2026-10-20","model":"Rack内电压一致性异常监测模型","owner":"胡志硕","type":"降低误报","status":"已上线","description":"K0336；K0336.ESS03；RBMS207\nK0336；K0336.ESS03；RBMS211\nK0336；K0336.ESS03；RBMS209\n以上3EA在W42告警（推送时间2026/10/12）报出静置亏电告警，目前核实告警图片发现最低电芯电压有3.25v，rack_soc_min有25%，目前看下来未到静置亏电需要处理的步骤，需模型负责人核实是否为误报警。","expected":"目前看下来未到静置亏电需要处理的步骤，需模型负责人核实是否为误报警。","progress":"已添加限制条件，某天低电压或低SOC状态至少存在>=300s才能够被判定为静置亏电","modelEnglish":"Safety_Rack_CellVoltageConsistencyAnomaly","requester":"丁奇","contactOwner":"胡志硕"},{"date":"2026-09-22","model":"Rack内电压一致性异常监测模型","owner":"胡志硕","type":"其他优化","status":"待评审","description":"背景: K0258-ESS05-RBMS104存在异常，但未触发电压模型告警；\n问题: 数据回溯后发现K0258自2026-08-25后的SOX中间表数据出现缺失，该场站于2026-09-11回传了09-09前的数据，且存在正常充放电，电压中间表和充放电中间表正常更新。","expected":"SOX中间表数据缺失导致，已转交特征工程owner刘玥进一步分析排查。","progress":"","modelEnglish":"Safety_Rack_CellVoltageConsistencyAnomaly","requester":"丁奇","contactOwner":"胡志硕、刘玥"},{"date":"2026-09-15","model":"直流环控高温风险监测模型","owner":"杨威","type":"其他优化","status":"已上线","description":"K-0357巴彦淖尔河套项目及K-0320锡林郭勒蒙新项目，9月8日推送告警“制冷效率不佳,出水口温度长时间超过45度”\n实际排查发现是LocalAPP死机","expected":"在 Local 侧添加对应质检预警机制","progress":"原因：fums内存泄漏导致调度程序和lems的app运行异常，甚至设备死机\n措施：关闭fums，重启local，将内存泄漏加入到Lems软件测试必备环节；\n更新人：刘周峰","modelEnglish":"Safety_DCEnvironmental_HighTempAnomaly","requester":"郝勇","contactOwner":"刘同峰、xiaoxiang.xu"},{"date":"2026-09-15","model":"直流环控高温风险监测模型","owner":"杨威","type":"降低误报","status":"待评审","description":"K-0080鄂尔多斯零碳产业园新型电力系统改造项目9月8日推送告警“待机时段出现异常,疑似PTC粘连”\n实际35KV下电，设备未投入，非真实数据","expected":"过滤掉此类误报警","progress":"","modelEnglish":"Safety_DCEnvironmental_HighTempAnomaly","requester":"郝勇","contactOwner":"杨威"},{"date":"2026-09-15","model":"直流环控高温风险监测模型","owner":"杨威","type":"缺陷修复","status":"待评审","description":"K-0056中核山东100MW/200MWh储能系统项目，9月8日推送告警“其他长时间原因过温, 出水口温度长时间超过45度”\n实际在待机状态下，出水温度测点受环温影响，实际未高温，需优化模型","expected":"优化模型，减少误报警","progress":"","modelEnglish":"Safety_DCEnvironmental_HighTempAnomaly","requester":"郝勇","contactOwner":"杨威、郝勇"},{"date":"2026-09-17","model":"Rack内电压一致性异常监测模型","owner":"胡志硕","type":"降低误报","status":"已上线","description":"W38周预警，K0249；K0249.ESS07；RBMS112；新疆维吾尔自治区；2026/9/14；电芯内阻偏大；1；['79']；2026-08-25 00:59:56；2026-09-09 15:43:10；0；-1；0.073；-0.055 ，\n告警等级为1，但是推送的字段显示：soc偏差＜5，ΔV＜200mv，图片也未见异常","expected":"因为目前根据数据和图看应该推送等级3，但是实际报出等级1，需要判断问题原因","progress":"内阻偏大异常对电芯的应该应该表现为放电末端电压偏低，其放电末端静态SOC偏高并非由内阻偏大引起，因此不应作为内阻异常等级的判定依据，已更新算法，此类异常后续将推送warning_level=3，将于本周告警推送中立即生效。","modelEnglish":"Safety_Rack_CellVoltageConsistencyAnomaly","requester":"丁奇","contactOwner":"胡志硕"},{"date":"2026-09-17","model":"Rack内电压一致性异常监测模型","owner":"胡志硕","type":"降低误报","status":"已上线","description":"SBCN；SBCN.ESS03；RBMS209；甘肃省；2026/9/14；静置亏电；1;\n中节能马鬃山是1套9+9，2套9+8配置，ESS03是9+8配置","expected":"中节能马鬃山是1套9+9，2套9+8配置，ESS03是9+8配置，应该不能判断为静置亏电","progress":"2026-09-20，已在静置亏电中排查此类虚假电池簇","modelEnglish":"Safety_Rack_CellVoltageConsistencyAnomaly","requester":"丁奇","contactOwner":"胡志硕"},{"date":"2026-09-17","model":"Pack内电芯采样温度异常监测模型","owner":"黄胜旭","type":"功能新增","status":"待评审","description":"K-0081直流环控高温风险监测模型推送出08.01某一时刻（＜60s）电芯最高温达90℃，杨博回溯数据发现08.01当天后续有持续接近1h的电芯最高温达90℃；拉通胜旭后确认28号-201簇有接近1h的电芯最高温达90℃（热力图中的0℃和90℃非真实温度，但过滤难度较大），但电芯温度采样异常监测模型及超感知未推送相应告警，确认还是中间表的问题：这个是8/1出现的异常，8/18数据回传落到中间表，然后温度模型的计算周期是每周一，然后17号计算的时候数据没回来，24号计算的时候算前21天只算到8/3，就没算到8/1号的异常。","expected":"想开发中间表遗漏问题检测功能，避免漏报警","progress":"","modelEnglish":"Safety_Pack_CellTemperatureAnomaly","requester":"秦豆豆","contactOwner":"黄胜旭、支菡倩、刘玥"},{"date":"2026-09-17","model":"Pack内电芯采样温度异常监测模型","owner":"黄胜旭","type":"降低误报","status":"待验证","description":"W38告警数据监测异常的有23条，主要是K0357的88号以及K0419的6号，麻烦优化过滤掉","expected":"优化过滤，提高准确率","progress":"数据情况超过算法边界，已完成修正","modelEnglish":"Safety_Pack_CellTemperatureAnomaly","requester":"梁佳琳","contactOwner":"黄胜旭"},{"date":"2026-09-17","model":"Pack内电芯采样温度异常监测模型","owner":"黄胜旭","type":"降低误报","status":"待评审","description":"W38告警出现2条低温告警，显示同簇内2个测点均有异常，但是28号这个标黄色测点，看起来趋势是正常，该问题历史上也报出来几次，需要分析原因，如确认无异常需要过滤到28号点位告警","expected":"减少误报警，仅告警异常点位","progress":"","modelEnglish":"Safety_Pack_CellTemperatureAnomaly","requester":"梁佳琳","contactOwner":"黄胜旭"},{"date":"2026-09-15","model":"Pack内电芯采样温度异常监测模型","owner":"黄胜旭","type":"功能新增","status":"待验证","description":"增加新的告警类型：簇内单个电池包整体温度偏高\n异常现象：簇内单个电池包整体温度偏高异常，簇内其它电池包温度正常，且环控系统运行正常（该电池包的温度随充放电变化滞后于簇内其它电池包）\n该类故障疑似水冷液堵塞导致单个电池包温度降不下来，影响范围仅限于簇内单个电池包","expected":"单独分类告警推送且非环控问题，属pack/电芯 CBB","progress":"功能初步开发完成，使用pack平均温度与rack中位数温度差进行筛选，待上线验证","modelEnglish":"Safety_Pack_CellTemperatureAnomaly","requester":"梁佳琳","contactOwner":"黄胜旭"},{"date":"2026-09-15","model":"Rack内电压一致性异常监测模型","owner":"胡志硕","type":"降低误报","status":"已上线","description":"K0212；K0212.ESS19；Pack；RBMS101；2026/9/7；过充过放\nK0212；K0212.ESS25；Pack；RBMS101；2026/9/7；过充过放\nK0212；K0212.ESS28；Pack；RBMS101；2026/9/7；过充过放\nK0212；K0212.ESS30；Pack；RBMS101；2026/9/7；过充过放\nK0315；K0315.ESS39；Pack；RBMS206；2026/9/7；过充过放；\nSGCN；SGCN.ESS28；Pack；RBMS204；2026/9/7；过充过放 （此告警看数据图应为相邻电芯402、403跳变）\n根据图片应该判断为电芯采样异常/电芯跳变，详情见图片和风险运营管理在线文档","expected":"推A告B，请志硕排查是否误报警和后续优化","progress":"采样跳变逻辑已置于更高优先级","modelEnglish":"Safety_Rack_CellVoltageConsistencyAnomaly","requester":"丁奇","contactOwner":"胡志硕"},{"date":"2026-09-08","model":"直流环控高温风险监测模型","owner":"杨威","type":"其他优化","status":"待评审","description":"K-0056中核山东100MW/200MWh储能系统项目出现未匹配现有失效模式的高温风险，现象疑似 PTC 粘连但与历史案例特征不符，需进一步对接现场核查具体根因。","expected":"核查具体根因,完善现有失效模式","progress":"","modelEnglish":"Safety_DCEnvironmental_HighTempAnomaly","requester":"郝勇","contactOwner":"杨威、郝勇"},{"date":"2026-09-08","model":"Pack内电芯采样温度异常监测模型","owner":"黄胜旭","type":"其他优化","status":"待验证","description":"K-0079通威唐山项目，直流环控高温预警推送异常：分析判断出于08.18，8号-106簇-单个测点稳定高温，但电芯温度采样异常模型未推送异常，需跟踪未推送原因","expected":"及时推送风险，避免漏报","progress":"伽利略从ETL中取消息进行中间表的更新，但更新K0079时消息中断导致中间表数据未更新，温度模型从中间表中未取到数据从而计算失败。","modelEnglish":"Safety_Pack_CellTemperatureAnomaly","requester":"秦豆豆","contactOwner":"黄胜旭"},{"date":"2026-09-08","model":"Rack内电压一致性异常监测模型","owner":"胡志硕","type":"阈值优化","status":"已上线","description":"SBCN-中节能马鬃山项目-过充过放阈值调整：\n背景-因电量考核、且和BMS-LMT-小祥通过参数巡检功能核实后确认充电截止电压参数放开到3.7v","expected":"针对SBCN：3.65＜x＜3.7---告警等级为3；3.7＜x--告警等级为1","progress":"2026-09-14已更新算法，将在下周告警推送时生效","modelEnglish":"Safety_Rack_CellVoltageConsistencyAnomaly","requester":"丁奇","contactOwner":"胡志硕"},{"date":"2026-09-08","model":"Rack内电压一致性异常监测模型","owner":"胡志硕","type":"阈值优化","status":"已上线","description":"K0315和K0404都为阿拉善项目，都为北方项目，目前根据W37周预计0908：发现K0315的电压偏低是300mv的阈值，但是K0404是200mv阈值，","expected":"需要修改K0404的阈值配置为北方项目参数。","progress":"2026-09-14已将\"K404\"添加至北方大储名单。将于下周推送生效","modelEnglish":"Safety_Rack_CellVoltageConsistencyAnomaly","requester":"丁奇","contactOwner":"胡志硕"},{"date":"2026-09-03","model":"直流环控高温风险监测模型","owner":"杨威","type":"降低误报","status":"待验证","description":"K0357.ESS19 Bank03 电芯最低温瞬时变化为200℃，需优化预警逻辑","expected":"过滤掉误报警","progress":"箱式产品电芯超过110度暂认为是非法数据, 将会先进行过滤剔除在诊断逻辑之外, 本周验证已剔除K0315,K0281的两个案例,但 对于K0081存在持续1小时的90度异常温度场景暂时无法过滤","modelEnglish":"Safety_DCEnvironmental_HighTempAnomaly","requester":"秦豆豆","contactOwner":"杨威"},{"date":"2026-09-02","model":"Rack内电压一致性异常监测模型","owner":"胡志硕","type":"其他优化","status":"持续跟进","description":"K0240；K0240.ESS69；RBMS208；['410']\nK0281；K0281.ESS11；RBMS104；['325']\nK0281；K0281.ESS12；RBMS108；['145']\nK0281；K0281.ESS37；RBMS206；['152'] ，4EA告警报出告警内容为过充过放，需要排查为什么告警不是静置亏电？","expected":"看图片都是静置片段，是否优先判断为静置亏电？","progress":"2026-09-03，场景特殊，继续观察，暂不处理","modelEnglish":"Safety_Rack_CellVoltageConsistencyAnomaly","requester":"丁奇","contactOwner":"胡志硕"},{"date":"2026-09-01","model":"Rack内电压一致性异常监测模型","owner":"胡志硕","type":"降低误报","status":"已上线","description":"K0240.ESS17.RBMS105：电芯电压跳变65535和0，17-105-1#pack的J4和J5电压跳变，核实动力人员8.14确实在补电；需要看下这条为什么检测为静置显著自放电而非传感器-0异常或65535异常，详情见附件图片","expected":"预警内容目前是静置显著自放电，需要改成传感器异常等告警内容","progress":"K0240；K0240.ESS17；RBMS105；江苏省；2026-08-24；电芯电压传感器65535异常；1\nK0240；K0240.ESS17；RBMS105；江苏省；2026-08-24；静置显著自放电；1\n2026-08-25该电池簇推出了两条相关告警：静置显著自放电和65535异常。已进一步收紧静置显著自放电的判定逻辑，以排除传感器异常导致的压差显著增大，将于下周推送生效。","modelEnglish":"Safety_Rack_CellVoltageConsistencyAnomaly","requester":"丁奇","contactOwner":"胡志硕"},{"date":"2026-08-21","model":"Rack内电压一致性异常监测模型","owner":"胡志硕","type":"降低误报","status":"已上线","description":"由Local重启通讯中断导致的电芯电压传感器跳变为0，该类异常直接诊断为\"Local重启-电芯电压传感器0异常\"，流转给BMS LMT进行处理","expected":"新增异常类\"Local重启-电芯电压传感器0异常\"","progress":"2026-09-01已开发完成并在部分数据上完成测试，于下周推送告警生效","modelEnglish":"Safety_Rack_CellVoltageConsistencyAnomaly","requester":"丁奇","contactOwner":"胡志硕"},{"date":"2026-08-28","model":"舱内簇间一致性模型","owner":"黄胜旭","type":"降低误报","status":"已上线","description":"部分通讯中断类问题会被告警为环控异常","expected":"将这类问题排除在环控外","progress":"","modelEnglish":"Safety_Bank_RackConsistencyAnomaly","requester":"郝勇、胡志硕","contactOwner":"胡志硕"},{"date":"2026-08-18","model":"Rack内电压一致性异常监测模型","owner":"胡志硕","type":"降低误报","status":"已上线","description":"预警失效模式为电芯过充过放，需要新增告警失效模式为：电芯传感器异常-相邻电芯电压跳变。","expected":"","progress":"2026-09-01 已开发完成并在部分数据上测试完成，于下周推送告警中生效，测试结果已上传附件","modelEnglish":"Safety_Rack_CellVoltageConsistencyAnomaly","requester":"丁奇","contactOwner":"胡志硕"},{"date":"2026-08-18","model":"Rack内电压一致性异常监测模型","owner":"胡志硕","type":"其他优化","status":"已上线","description":"海外场站K0280和K0305数据没有及时回传；\n海外场站SGCN由于ETL问题，导致云端数据出了问题，自2026.08.04后数据不可用","expected":"数据及时回传且可以使用","progress":"因LCRS及数据子系统编号格式由ESSXX改为ESSXXX，外蒙古项目上云程序未同步更新相关信息导致数据抓取失败，目前已重新修改上云程序数据抓取文件路径K0280上云程序已于8月恢复；机端FT39版本中不再计算id_digest导致数据上云后无法清洗影响消费，已于09-11完成全场FT40版本更新以灭火该问题，09-11至今K0280数据状态已恢复健康","modelEnglish":"Safety_Rack_CellVoltageConsistencyAnomaly","requester":"胡志硕","contactOwner":"李俊杰、吴树军"},{"date":"2026-08-18","model":"Rack内电压一致性异常监测模型","owner":"胡志硕","type":"降低误报","status":"开发中","description":"08.11，K0280场站有一条\"SOC偏低\"类告警被推送为\"仅电压偏低告警”","expected":"告警类型推送准确","progress":"已提交SOX中间表更新需求，待执行","modelEnglish":"Safety_Rack_CellVoltageConsistencyAnomaly","requester":"丁奇","contactOwner":"胡志硕"},{"date":"2026-08-18","model":"主控配电柜UPS异常监测模型","owner":"陈敏辉","type":"降低误报","status":"已拒绝","description":"现场检修断电阶段触发“直流主控配电柜内空调长时间高低电压告警”告警，需新增过滤逻辑","expected":"剔除现场检修断电阶段的误告警","progress":"需求驳回，都是真实告警，经过数据探索，讨论下来保留并持续告警","modelEnglish":"Safety_DCPowerDistribution_UPSAnomaly","requester":"苏腾飞","contactOwner":"陈敏辉"},{"date":"2026-08-11","model":"直流环控高温风险监测模型","owner":"杨威","type":"降低误报","status":"已上线","description":"W32“K-0056中核山东项目”直流环控高温风险监测模型推送的数据总计40条为6月数据，经确认为现场未及时回传。需与现场宣贯及时回传数据。","expected":"","progress":"原因：\n1、该项目磁盘空间受限，导致现场笔记本执行数据回传速度缓慢\n2、该项目已出保，现场人员无法填写数据回传工时，后续该场站无现场人员常驻现场，难以推动现场人员进行数据回传工作\n措施：\n1、2台回传笔记本已升级剪切程序，数据拷贝回传速率已明显提升\n2、已拉通现场沟通客户协助执行数据拷贝回传动作，避免数据回传断连","modelEnglish":"Safety_DCEnvironmental_HighTempAnomaly","requester":"郝勇","contactOwner":"吴树军、李俊杰"},{"date":"2026-08-11","model":"主控配电柜UPS异常监测模型","owner":"陈敏辉","type":"降低误报","status":"已上线","description":"W32主控配电柜UPS异常监测模型涉及K-0363谷山梁项目的预警回传的是6月数据，需优化","expected":"","progress":"","modelEnglish":"Safety_DCPowerDistribution_UPSAnomaly","requester":"苏腾飞","contactOwner":"陈敏辉"},{"date":"2026-08-13","model":"Rack内电压一致性异常监测模型","owner":"胡志硕","type":"其他优化","status":"已上线","description":"极差类异常的异常电芯编号判定优化，聚焦电压/soc最高和最低异常电芯","expected":"极差类异常的异常电芯编号判定优化，聚焦电压/soc最高和最低异常电芯","progress":"已完成算法探索和初版开发，计划本周上线；\n关键变更：，在探索过程中发现无法聚焦电压/soc最高和最低异常电芯，改为了在告警图中维护表格来展示具体的电芯编号","modelEnglish":"Safety_Rack_CellVoltageConsistencyAnomaly","requester":"丁奇","contactOwner":"胡志硕"},{"date":"2026-08-07","model":"Pack内电芯采样温度异常监测模型","owner":"黄胜旭","type":"降低误报","status":"待验证","description":"NTC稳定高温异常的偶见出现在其它类型告警中，需优化","expected":"","progress":"原先方案使用rb_hb和process_id的方式进行数据不刷新排查，发现还是存在异常场景不能完全覆盖；目前最新方案删除数据恢复更新后前10分钟异常波动数据，经验证可以覆盖目前所有场景，功能已完成","modelEnglish":"Safety_Pack_CellTemperatureAnomaly","requester":"梁佳琳","contactOwner":"黄胜旭、支菡倩"},{"date":"2026-08-07","model":"Pack内电芯采样温度异常监测模型","owner":"黄胜旭","type":"降低误报","status":"待验证","description":"部分主正测点随电流升高告警也被划到了其它类型温度偏高里面","expected":"","progress":"使用考虑电流对温度影响的滞后性，使用新的特征作为特征划分依据，功能已完成待上线验证","modelEnglish":"Safety_Pack_CellTemperatureAnomaly","requester":"梁佳琳","contactOwner":"黄胜旭、支菡倩"},{"date":"2026-08-07","model":"Pack内电芯采样温度异常监测模型","owner":"黄胜旭","type":"降低误报","status":"待验证","description":"V3.0版的告警出现未见异常K0331，疑似数据刷新时间不统一导致，这类告警需消除","expected":"此类刷新时间不一致导致的误报过滤掉","progress":"误报警原因为温度点位配置错误，256温度测点配置成224温度点位，导致异常的温度测点位置分布错误，从256温度测点的热力图看，属于常规的主正主负温度异常问题","modelEnglish":"Safety_Pack_CellTemperatureAnomaly","requester":"梁佳琳","contactOwner":"黄胜旭、支菡倩"},{"date":"2026-08-07","model":"Pack内电芯采样温度异常监测模型","owner":"黄胜旭","type":"降低误报","status":"待验证","description":"主负主正测点随电流升高告警，需要细化阈值，用于区分电缆导致的异常（温差通常在6°C-7°C之间）和螺栓松动的区分（温差≥9°C）","expected":"L05：主负主正测点随电流升高告警\n1、温差：6°C-9°C：电缆导致的异常\n2、温差≥9°C，其它异常如疑似螺栓松动\nL08：主负主正测点随电流升高告警\n1、温差：6°C-9°C：电缆导致的异常（待数据回溯查看告警数量后，确认阈值）\n2、温差≥9°C，其它异常如疑似螺栓松动\nW35-20260828——L08 0.5C 315的电芯调整阈值为7°C\n结合这两周的L08 32号温升异常的告警结果，当前筛选出了温差较大的位置联系现场排查，跟胜旭讨论之后，L08 0.5C 315的温度告警阈值调整为7°C，优化告警量的同时，我们继续观察，看排查后的位置是否再次出现告警","progress":"根据不同的机型（L05、L08 0.5C），区分电缆导致的异常（温差通常在6°C-7°C之间）和螺栓松动的异常（温差≥9°C），目前功能已经开发完成，预计下周上线。","modelEnglish":"Safety_Pack_CellTemperatureAnomaly","requester":"梁佳琳","contactOwner":"黄胜旭、支菡倩"},{"date":"2026-07-14","model":"Rack内电压一致性异常监测模型","owner":"胡志硕","type":"降低漏报","status":"优化中","description":"K0271天祝武威项目近期现场反馈15#子系统-408簇-164#点位低温跳变，在做330升压站测试过程中故障停机，现场临时屏蔽，同步已检查线束外观无异常，测量相应的ntc阻值无异常；主从站配置 twinskid C、D舱无数据","expected":"协能一拖四场站云端可回传数据","progress":"","modelEnglish":"Safety_Rack_CellVoltageConsistencyAnomaly","requester":"丁奇、梁佳琳","contactOwner":"李俊杰、吴树军"},{"date":"2026-06-29","model":"主控配电柜UPS异常监测模型","owner":"陈敏辉","type":"降低误报","status":"待验证","description":"1.历史吊装时间数据记录（计算首次投运至今总天数t）\n2.等效环境温度Temp：取Cx.tempaverage，日均值\n3.欠压信号标记：Cx.UPSbattery\n4.市电条件过滤：Cx.upssupply，在市电模式下UPS电池欠压的持续10min\n4.上下电误报警过滤：在市电激活后，延时30min，记录电池欠压信号","expected":"1.UPS电池备件可预测，在提升问题响应效率的同时，降低备件库存呆滞成本和电池存放难得问题\n2.提前预知UPS电池寿命，对黑启动项目的风险评估\n3.沉淀数据，在样本数据收集后，构建UPS电池寿命模型，适配储能的智能化运维需求","progress":"验证发现 目前逻辑会造成漏报，需要讨论，探索数据，尝试修复","modelEnglish":"Safety_DCPowerDistribution_UPSAnomaly","requester":"苏腾飞","contactOwner":"陈敏辉"},{"date":"2026-07-07","model":"直流环控高温风险监测模型","owner":"杨威","type":"功能新增","status":"待验证","description":"针对直流水机出水温度高温的模型，耦合水机故障（码）、水机运行状态判断水机异常状况","expected":"水机故障检修Agent\n1.快速筛查定位水机出水高温原因\n2.锁定故障部件根因\n3.针对性检修","progress":"已根据CBB提供逻辑与故障码映射信息输出一版结果, 排查结果如下\n1.新故障逻辑准确度未达预期, 还需要进一步迭代更新,\n2.故障码存在不同供应商的信息差异, 目前只针对英维克的结果给出相应故障, 还需 LMT 提供其他供应商的故障码,以及设备的供应商映射关系才能开展下一步","modelEnglish":"Safety_DCEnvironmental_HighTempAnomaly","requester":"郝勇","contactOwner":"杨威"}];
 

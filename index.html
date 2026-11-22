@@ -714,6 +714,7 @@
     .agent-source-btn.cbb.active { border-color: rgba(98, 184, 255, 0.76); background: rgba(98, 184, 255, 0.09); box-shadow: 0 0 20px rgba(98, 184, 255, 0.12); }
     .agent-source-btn small { display: grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; color: #dff8ff; background: rgba(122, 211, 255, 0.12); font-size: 11px; font-weight: 850; }
     .agent-source-btn strong { font-size: 13px; font-weight: 820; white-space: nowrap; }
+    .agent-flow-chart-wrap { position: relative; }
     .agent-flow-chart { display: block; width: 100%; height: auto; aspect-ratio: 1500 / 700; overflow: visible; }
     .agent-flow-link { fill: none; stroke: rgba(122, 211, 255, 0.28); stroke-width: 2; marker-end: url(#agentArrow); }
     .agent-flow-link.path-hot { stroke: var(--path-color); stroke-width: 2.6; filter: drop-shadow(0 0 8px var(--path-glow)); }
@@ -722,7 +723,8 @@
     .agent-edge-label-bg.muted { opacity: 0.36; stroke: rgba(142, 165, 178, 0.28); }
     .agent-flow-label { fill: #d8edf8; font-size: 12px; font-weight: 800; paint-order: stroke; stroke: rgba(4, 13, 20, 0.9); stroke-width: 3px; stroke-linejoin: round; }
     .agent-flow-label.muted { fill: rgba(164, 184, 196, 0.62); opacity: 0.58; }
-    .agent-svg-node.muted { opacity: 0.32; }
+    .agent-svg-node { cursor: pointer; }
+    .agent-svg-node.muted { opacity: 0.32; cursor: default; }
     .agent-svg-node .shape { fill: rgba(4, 13, 20, 0.78); stroke: rgba(122, 211, 255, 0.24); stroke-width: 1.4; }
     .agent-svg-node.role-agent .shape { stroke: #22d8ff; }
     .agent-svg-node.role-human .shape { stroke: #ffbd59; }
@@ -735,6 +737,29 @@
     .agent-svg-node-tag { display: inline-flex; align-items: center; height: 22px; padding: 0 9px; border-radius: 999px; font-size: 11px; font-weight: 850; white-space: nowrap; }
     .agent-svg-node-tag.agent { border: 1px solid rgba(34, 216, 255, 0.44); background: #062332; color: #9ff2ff; }
     .agent-svg-node-tag.human { border: 1px solid rgba(255, 189, 89, 0.5); background: #2b210f; color: #ffe0a8; }
+    .agent-popover-layer { position: absolute; inset: 0; z-index: 20; pointer-events: none; }
+    .agent-popover {
+      position: absolute;
+      width: min(420px, calc(100% - 24px));
+      padding: 14px;
+      border: 1px solid rgba(122, 211, 255, 0.25);
+      border-radius: 15px;
+      color: #d1e5ef;
+      background: rgba(7, 18, 28, 0.96);
+      box-shadow: 0 22px 52px rgba(0, 0, 0, 0.42);
+      pointer-events: auto;
+    }
+    .agent-popover-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+    .agent-popover-header h4 { margin: 0; color: #e7f9ff; font-size: 15px; }
+    .agent-popover-roles { display: inline-flex; gap: 6px; flex: 0 0 auto; }
+    .agent-popover-section + .agent-popover-section { margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(122, 211, 255, 0.12); }
+    .agent-popover-section small { display: block; margin-bottom: 8px; padding-left: 10px; border-left: 3px solid rgba(122, 211, 255, 0.52); color: #b9d9e8; font-size: 12px; font-weight: 850; }
+    .agent-popover-section ul { margin: 0; padding-left: 18px; color: #d1e5ef; font-size: 13px; line-height: 1.62; }
+    .agent-popover-section li + li { margin-top: 4px; }
+    .agent-detail-keyword { padding: 0 1px; border-radius: 3px; color: #ffd88a; font-weight: 850; background: linear-gradient(180deg, transparent 58%, rgba(255, 189, 89, 0.24) 58%); }
+    .agent-skill-cards { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .agent-skill-card { display: inline-flex; align-items: center; gap: 7px; padding: 6px 10px 6px 8px; border: 1px dashed rgba(98, 184, 255, 0.55); border-radius: 999px; color: #baf4ff; background: rgba(34, 216, 255, 0.09); font-size: 12px; font-weight: 850; line-height: 1; }
+    .agent-skill-card::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #42f2a1; box-shadow: 0 0 10px rgba(66, 242, 161, 0.55); }
 
     .skill-showcase-title {
       display: flex;
@@ -1095,7 +1120,10 @@
             <button class="agent-source-btn battery active" type="button" data-agent-source="battery"><small>A</small><strong>机理驱动（主导）</strong></button>
             <button class="agent-source-btn cbb" type="button" data-agent-source="cbb"><small>B</small><strong>需求驱动（补充）</strong></button>
           </div>
-          <svg class="agent-flow-chart" id="agentFlowChart" viewBox="0 0 1500 700" role="img" aria-label="带分支和回环的算法开发流程图"></svg>
+          <div class="agent-flow-chart-wrap">
+            <svg class="agent-flow-chart" id="agentFlowChart" viewBox="0 0 1500 700" role="img" aria-label="带分支和回环的算法开发流程图"></svg>
+            <div class="agent-popover-layer" id="agentPopoverLayer" aria-live="polite"></div>
+          </div>
         </div>
       </article>
 
@@ -1117,15 +1145,13 @@
           <div class="chat-stack" aria-label="build-cbb-eda-notebook 真实对话">
             <div class="chat-row user">
               <div class="chat-message"><span class="chat-role">用户</span><p>/build-cbb-eda-notebook
-建立针对“绝缘异常case”这个文档中失效case的eda notebook，我会基于输出的结果再给出意见，你再持续对skill和notebook脚本进行迭代（附件的脚本，是针对漏液case，我最后自己进行了部分修改，确定可以跑通、输出结果的版本，请参考）</p></div>
+建立针对“绝缘异常case”这个文档中失效case的eda notebook，我会基于输出的结果再给出意见</p></div>
               <span class="chat-avatar">你</span>
             </div>
             <div class="chat-row agent"><span class="chat-avatar">AI</span><div class="chat-message"><span class="chat-role">Coding Agent</span><p>我会按顺序使用三个能力：先用 build-cbb-eda-notebook 约束 notebook 的云端格式和简洁度，再用文档能力提取“绝缘异常case”的案例与时间线，最后读取字段表和场站配置确定可查询字段、表名及真实 site_code。附件中的可运行漏液 notebook 会作为代码风格和 Glue/S3 写法的最高优先级参考。</p></div></div>
             <div class="chat-row agent"><span class="chat-avatar">AI</span><div class="chat-message"><span class="chat-role">Coding Agent</span><p>案例文档初步识别出 5 条项目案例、2 条工厂案例。工厂案例会按 skill 规则排除；项目案例中 K0315、K0056 的子系统/rack 清晰，K0043 的“22-2-4 Rack”和 K0259 的“401簇”需要结合场站架构判断能否可靠转换为云端资产键，不能直接猜。</p></div></div>
-            <div class="chat-row user"><div class="chat-message"><span class="chat-role">用户</span><p>“22-2-4 Rack”应该指的是22号子系统，204Rack</p></div><span class="chat-avatar">你</span></div>
-            <div class="chat-row agent"><span class="chat-avatar">AI</span><div class="chat-message"><span class="chat-role">Coding Agent</span><p>明白，K0043 将按 WCCN.ESS22 / RBMS204 纳入，不再视为歧义案例。它是 cabinet 架构，可直接与同一子系统其他 RBMS 做绝缘电阻和告警的 peer 对比。</p></div></div>
-            <div class="chat-row user"><div class="chat-message"><span class="chat-role">用户</span><p>401簇这个，确实不知道是哪个子系统，先忽略</p></div><span class="chat-avatar">你</span></div>
-            <div class="chat-row agent"><span class="chat-avatar">AI</span><div class="chat-message"><span class="chat-role">Coding Agent</span><p>明白，K0259 的“401簇”缺少子系统信息，先从 notebook 查询案例中排除，并在案例覆盖说明中标记为“无法映射到云端 asset_storage_key”。当前纳入 K0315、K0056、K0043 三例。</p></div></div>
+            <div class="chat-row user"><div class="chat-message"><span class="chat-role">用户</span><p>“22-2-4 Rack”应该指的是22号子系统，204Rack；401簇这个，确实不知道是哪个子系统，先忽略</p></div><span class="chat-avatar">你</span></div>
+            <div class="chat-row agent"><span class="chat-avatar">AI</span><div class="chat-message"><span class="chat-role">Coding Agent</span><p>明白，K0043 将按 WCCN.ESS22 / RBMS204 纳入，不再视为歧义案例，可直接与同一子系统其他 RBMS 做绝缘电阻和告警的 peer 对比。K0259 的“401簇”缺少子系统信息，先从 notebook 查询案例中排除，并在案例覆盖说明中标记为“无法映射到云端 asset_storage_key”。当前纳入 K0315、K0056、K0043 三例。</p></div></div>
             <div class="chat-row agent"><span class="chat-avatar">AI</span><div class="chat-message"><span class="chat-role">Coding Agent</span><p>案例和字段映射已经收敛：柜式两例用 RBMS 的连续绝缘电阻、告警及电压字段；箱式 K0315 在子系统层用 BBMS + PCS 观察绝缘告警与正/负母线电压。Pack 编号只保留在案例说明中，不作为云端查询条件。接下来我生成 notebook，并检查代码语法、S3 路径和绘图 cell 尾行。</p></div></div>
             <div class="chat-row agent"><span class="chat-avatar">AI</span><div class="chat-message"><span class="chat-role">Coding Agent</span><p>这次调用暴露出 skill 中一处需要同步优化的地方：它把“box → TMS”写成了固定规则，这只适合漏液，不适合绝缘异常。我会按 skill-creator 的规范把设备类型与数据表选择解耦，让字段和表由失效机理决定；本次 notebook 则采用 RBMS、BBMS、PCS。</p></div></div>
             <div class="chat-row agent">
@@ -1150,8 +1176,7 @@ notebook 会输出：
 同时已更新 build skill。notebook 已通过 JSON、Python 语法和绘图规范检查。</p>
                 <div class="chat-artifacts">
                   <strong>交付物</strong>
-                  <a class="artifact-link" href="artifacts/pack_insulation_abnormal_eda_notebook.html" target="_blank" rel="noopener"><span>pack_insulation_abnormal_eda.ipynb</span><span class="artifact-action">美观预览</span></a>
-                  <a class="artifact-link" href="artifacts/pack_insulation_abnormal_eda.ipynb" download><span>Notebook 源文件</span><span class="artifact-action">下载 .ipynb</span></a>
+                  <a class="artifact-link" href="artifacts/pack_insulation_abnormal_eda_notebook.html" target="_blank" rel="noopener"><span>pack_insulation_abnormal_eda.ipynb</span><span class="artifact-action">预览</span></a>
                 </div>
               </div>
             </div>
@@ -1169,7 +1194,7 @@ notebook 会输出：
 
           <div class="chat-stack" aria-label="analyze-cbb-eda-outputs 真实对话">
             <div class="chat-row user"><div class="chat-message"><span class="chat-role">用户</span><p>/analyze-cbb-eda-outputs
-notebook运行之后的结果都存在以下路径了（包括图片和表格），请进行分析：C:\Users\hannah.zhi\Desktop\vibe_coding\cbb_models\pack_cbb\insulation\online_outputs\2026-09-02</p></div><span class="chat-avatar">你</span></div>
+notebook运行之后的结果都存在以下路径了（包括图片和表格），请进行分析：.../pack_cbb\insulation\online_outputs\2026-09-02</p></div><span class="chat-avatar">你</span></div>
             <div class="chat-row agent"><span class="chat-avatar">AI</span><div class="chat-message"><span class="chat-role">Coding Agent</span><p>我会按你指定的 analyze-cbb-eda-outputs skill 执行：先盘点所有案例的图片、表格和数据完整性，再对齐案例时间、目标 Rack/动力单元与同子系统 peer，最后给出逐案例证据等级、可建模性判断和下一步计划，并生成结构化 Markdown 总结。</p></div></div>
             <div class="chat-row agent"><span class="chat-avatar">AI</span><div class="chat-message"><span class="chat-role">Coding Agent</span><p>Skill 要求把负结果和缺失输出也保留下来，并按 A/B/C/D/X 分级。我现在开始做全量文件清单与格式路由；如果部分案例只有空目录或缺少关键表，也会作为明确的数据状态写入总结，不会静默忽略。</p></div></div>
             <div class="chat-row agent"><span class="chat-avatar">AI</span><div class="chat-message"><span class="chat-role">Coding Agent</span><p>文件清单显示共有 522 个文件、约 41 MB：14 个案例都有表目录，但只有 10 个案例生成了图片，说明至少 4 个案例可能是空数据或不足以绘图。Parquet 是主要证据来源；当前本地分析运行时缺少 Parquet 读取库，我将补充本地只用于分析的依赖，然后统计每张表的实际行数、时间范围和关键值。</p></div></div>
@@ -1205,8 +1230,7 @@ K0075：C 级弱证据
 报告覆盖了 14 个 Notebook 案例，以及旧 Word 中未查询的 3 个工厂案例和 1 个无法确定子系统的案例，共 18 例。</p>
                 <div class="chat-artifacts">
                   <strong>交付物</strong>
-                  <a class="artifact-link" href="artifacts/pack_insulation_abnormal_eda_summary.html" target="_blank" rel="noopener"><span>pack_insulation_abnormal_eda_summary.md</span><span class="artifact-action">美观预览</span></a>
-                  <a class="artifact-link" href="artifacts/pack_insulation_abnormal_eda_summary.md" download><span>分析总结源文件</span><span class="artifact-action">下载 .md</span></a>
+                  <a class="artifact-link" href="artifacts/pack_insulation_abnormal_eda_summary.html" target="_blank" rel="noopener"><span>pack_insulation_abnormal_eda_summary.md</span><span class="artifact-action">预览</span></a>
                   <a class="artifact-link" href="artifacts/pack_insulation_abnormal_eda_report_2026-09-20.html" target="_blank" rel="noopener"><span>pack_insulation_abnormal_eda_report_2026-09-20.html</span><span class="artifact-action">打开完整报告</span></a>
                 </div>
               </div>

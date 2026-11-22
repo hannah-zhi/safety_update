@@ -1,24 +1,17 @@
-<!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pack CBB 绝缘异常 EDA Notebook</title><style>
-:root{--bg:#06121a;--panel:#0b1d28;--panel2:#102632;--line:#1b4050;--text:#e8f7ff;--muted:#91aebb;--cyan:#24d8ff;--green:#45e6a5;--amber:#ffbf59;--violet:#a98dff}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 18% 0,rgba(36,216,255,.09),transparent 30%),linear-gradient(180deg,#07151e,#051018);color:var(--text);font:16px/1.72 "Inter","Segoe UI","Microsoft YaHei",sans-serif}
-a{color:var(--cyan)}.top{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px clamp(18px,4vw,58px);border-bottom:1px solid var(--line);background:rgba(6,18,26,.9);backdrop-filter:blur(16px)}
-.brand{color:var(--text);font-weight:850;text-decoration:none}.actions{display:flex;gap:10px;flex-wrap:wrap}.btn{display:inline-flex;align-items:center;min-height:38px;padding:7px 13px;border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.03);color:#cbe4ee;text-decoration:none;font-size:14px;font-weight:750}.btn.primary{border-color:rgba(69,230,165,.45);background:rgba(69,230,165,.09);color:#bfffe2}
-.hero{padding:60px clamp(20px,6vw,90px) 42px;border-bottom:1px solid var(--line)}.hero-inner,.content{width:min(1180px,100%);margin:auto}.eyebrow{margin:0 0 10px;color:var(--cyan);font-size:13px;font-weight:850;letter-spacing:.08em;text-transform:uppercase}.hero h1{margin:0;font-size:clamp(30px,4.4vw,54px);line-height:1.15}.hero p{max-width:820px;margin:16px 0 0;color:var(--muted)}.meta{display:flex;gap:9px;flex-wrap:wrap;margin-top:22px}.meta span{padding:5px 10px;border:1px solid var(--line);border-radius:999px;color:#bad0db;background:rgba(255,255,255,.025);font-size:13px}
-.content{padding:34px 18px 80px}.cell{margin:0 0 18px;border:1px solid var(--line);border-radius:14px;background:rgba(11,29,40,.86);box-shadow:0 18px 42px rgba(0,0,0,.16);overflow:hidden}.cell-head{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid var(--line);color:var(--muted);background:rgba(255,255,255,.025);font-size:12px}.cell-head b{color:var(--cyan);letter-spacing:.05em}.cell-body{padding:19px 22px}.markdown-cell{border-color:rgba(36,216,255,.18)}.code-cell{border-color:rgba(169,141,255,.22)}pre{margin:0;overflow:auto;color:#d9eaf2;font:13px/1.65 "SFMono-Regular",Consolas,monospace;tab-size:2}code{padding:.12em .34em;border:1px solid rgba(122,211,255,.12);border-radius:5px;color:#b7edff;background:rgba(36,216,255,.07);font:0.9em "SFMono-Regular",Consolas,monospace}pre code{padding:0;border:0;background:none;color:inherit}
-.markdown-body{padding:32px clamp(20px,4vw,48px);border:1px solid var(--line);border-radius:16px;background:rgba(11,29,40,.9);box-shadow:0 22px 52px rgba(0,0,0,.18)}h1,h2,h3,h4{color:#f1fbff;line-height:1.28}h1{font-size:32px}h2{margin-top:44px;padding-bottom:10px;border-bottom:1px solid var(--line);font-size:24px}h3{margin-top:32px;font-size:19px}p{color:#c8dce6}strong{color:#f4fbff}blockquote{margin:18px 0;padding:13px 16px;border-left:4px solid var(--cyan);border-radius:0 10px 10px 0;color:#b9d4df;background:rgba(36,216,255,.06)}li{margin:6px 0;color:#c8dce6}.table-wrap{width:100%;overflow:auto;margin:18px 0;border:1px solid var(--line);border-radius:12px}table{width:100%;min-width:760px;border-collapse:collapse;font-size:13px}th,td{padding:11px 12px;border-right:1px solid rgba(27,64,80,.7);border-bottom:1px solid rgba(27,64,80,.7);text-align:left;vertical-align:top}th{position:sticky;top:0;color:#baf3ff;background:#102b38}tr:nth-child(even) td{background:rgba(255,255,255,.018)}.code-block{margin:18px 0;border:1px solid var(--line);border-radius:10px;overflow:hidden}.code-block>span{display:block;padding:6px 11px;color:var(--muted);background:rgba(255,255,255,.035);font-size:12px}.code-block pre{padding:15px}
-@media(max-width:640px){.top{align-items:flex-start;flex-direction:column}.hero{padding-top:40px}.cell-body,.markdown-body{padding:17px}.actions{width:100%}.btn{flex:1;justify-content:center}}
-</style></head>
-<body><nav class="top"><a class="brand" href="../index.html#agent-development">安全预警模块进展</a><div class="actions"><a class="btn" href="../index.html#agent-development">返回第三部分</a><a class="btn primary" href="pack_insulation_abnormal_eda.ipynb" download>下载源文件</a></div></nav>
-<header class="hero"><div class="hero-inner"><p class="eyebrow">Notebook Preview</p><h1>Pack CBB 绝缘异常 EDA Notebook</h1><p>基于真实交付 Notebook 生成的只读预览；代码单元、案例说明与云端分析步骤按原顺序保留。</p><div class="meta"><span>17 个单元格</span><span>12 个代码单元</span><span>5 个说明单元</span><span>AWS Glue / PySpark</span></div></div></header>
-<main class="content"><section class="cell code-cell"><div class="cell-head"><b>Python / Glue</b><span>Cell 01</span></div><div class="cell-body"><pre><code>%number_of_workers 80
-</code></pre></div></section><section class="cell code-cell"><div class="cell-head"><b>Python / Glue</b><span>Cell 02</span></div><div class="cell-body"><pre><code>%stop_session
-</code></pre></div></section><section class="cell markdown-cell"><div class="cell-head"><b>Markdown</b><span>Cell 03</span></div><div class="cell-body"><h1>Pack 绝缘异常案例 EDA</h1>
-<p>目标：检查已知绝缘异常案例在云端是否存在可复现的绝缘电阻下降、 绝缘告警、正负母线不平衡或同场站 peer 差异，为后续模型逻辑提供证据。</p>
-<p>本 notebook 只查询到云端可定位的子系统/Rack，不把现场 Pack 编号当成云端定位条件。 阈值和候选点均为 EDA 规则，不是正式告警逻辑。</p></div></section><section class="cell markdown-cell"><div class="cell-head"><b>Markdown</b><span>Cell 04</span></div><div class="cell-body"><h2>案例覆盖与假设</h2>
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>
+*{box-sizing:border-box}html{background:#fff;color:#24292f}body{margin:0;background:#fff;color:#24292f;font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",Arial,sans-serif}
+main{width:min(1180px,calc(100% - 40px));margin:32px auto 72px}.markdown-body{min-width:0}h1,h2,h3,h4{line-height:1.28;color:#1f2328}h1{margin:.67em 0 1em;padding-bottom:.3em;border-bottom:1px solid #d8dee4;font-size:2em}h2{margin:1.7em 0 .75em;padding-bottom:.3em;border-bottom:1px solid #d8dee4;font-size:1.5em}h3{margin:1.45em 0 .6em;font-size:1.25em}h4{font-size:1em}p{margin:0 0 16px}a{color:#0969da}strong{font-weight:650}code{padding:.2em .4em;border-radius:6px;background:#eff1f3;color:#1f2328;font:85% ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace}pre{margin:0;overflow:auto;white-space:pre;tab-size:2;font:13px/1.5 ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace}pre code{padding:0;background:transparent;font:inherit}
+blockquote{margin:0 0 16px;padding:0 1em;border-left:.25em solid #d0d7de;color:#57606a}ul,ol{margin:0 0 16px;padding-left:2em}li+li{margin-top:.25em}.table-wrap{max-width:100%;margin:0 0 20px;overflow:auto}table{width:max-content;min-width:100%;border-collapse:collapse;font-size:13px}th,td{padding:7px 11px;border:1px solid #d0d7de;text-align:left;vertical-align:top}th{background:#f6f8fa;font-weight:650}tr:nth-child(even) td{background:#fbfcfd}
+.nb-cell{display:grid;grid-template-columns:76px minmax(0,1fr);margin:0 0 14px}.nb-prompt{padding:8px 10px 0 0;color:#2962a3;text-align:right;font:13px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;user-select:none}.nb-input{min-width:0;padding:8px 10px;border:1px solid #d8dee4;border-radius:3px;background:#f7f7f7}.nb-markdown{min-width:0;padding:4px 10px 4px 0}.nb-markdown h1:first-child,.nb-markdown h2:first-child,.nb-markdown h3:first-child{margin-top:.2em}.nb-output{grid-column:2;margin-top:7px;padding:8px 10px;border-left:3px solid #d8dee4;background:#fff}.nb-output img{max-width:100%;height:auto}
+@media(max-width:720px){main{width:min(100% - 24px,1180px);margin-top:18px}.nb-cell{grid-template-columns:1fr}.nb-prompt{padding:0 0 4px;text-align:left}.nb-output{grid-column:1}table{font-size:12px}}
+</style></head><body><main class=""><section class="nb-cell"><div class="nb-prompt">In [ ]:</div><div class="nb-input"><pre><code>%number_of_workers 80
+</code></pre></div></section><section class="nb-cell"><div class="nb-prompt">In [ ]:</div><div class="nb-input"><pre><code>%stop_session
+</code></pre></div></section><section class="nb-cell"><div class="nb-prompt"></div><div class="nb-markdown markdown-body"><h1>Pack 绝缘异常案例 EDA</h1>
+<p>目标：检查已知绝缘异常案例在云端是否存在可复现的绝缘电阻下降、<br>绝缘告警、正负母线不平衡或同场站 peer 差异，为后续模型逻辑提供证据。</p>
+<p>本 notebook 只查询到云端可定位的子系统/Rack，不把现场 Pack 编号当成云端定位条件。<br>阈值和候选点均为 EDA 规则，不是正式告警逻辑。</p></div></section><section class="nb-cell"><div class="nb-prompt"></div><div class="nb-markdown markdown-body"><h2>案例覆盖与假设</h2>
 <div class="table-wrap"><table><thead><tr><th>case_id</th><th>云端目标</th><th>时间窗口</th><th>说明</th></tr></thead><tbody><tr><td>K0315_PACK_INSULATION_ABNORMAL</td><td>K0315.ESS43 / RBMS406</td><td>2026-04-01 ~ 2026-05-12</td><td>Box 架构；RBMS为主，BBMS + PCS为辅助；Pack2只作现场信息</td></tr><tr><td>K0056_PACK_INSULATION_ABNORMAL</td><td>ZHCN.ESS22 / RBMS204</td><td>2022-12-01 ~ 2023-04-18</td><td>故障日期不明确，扩大回看；返厂 NTF</td></tr><tr><td>K0043_PACK_INSULATION_ABNORMAL</td><td>WCCN.ESS22 / RBMS204</td><td>2023-01-01 ~ 2023-05-31</td><td>“22-2-4 Rack”按子系统22、Rack204解析</td></tr><tr><td>K0357_PACK_INSULATION_ABNORMAL</td><td>K0357.ESS16 / RBMS401</td><td>2026-07-15 ~ 2026-08-15</td><td>Box 架构；RBMS为主，BBMS + PCS为辅助；Pack2只作现场信息</td></tr></tbody></table></div>
-<p>统一策略：所有纳入案例均使用目标Rack的RBMS作为主分析；Box案例统一增加BBMS和PCS辅助分析； 同子系统其他Rack作为RBMS peer，Pack编号只作现场备注，不进入云端查询条件。</p>
-<p>暂不纳入：两条工厂案例；K0259“401簇”缺少子系统，无法可靠映射 <code>asset_storage_key</code>；其余信息不全的工厂/半成品案例。</p></div></section><section class="cell code-cell"><div class="cell-head"><b>Python / Glue</b><span>Cell 05</span></div><div class="cell-body"><pre><code>from pyspark.sql import functions as F
+<p>统一策略：所有纳入案例均使用目标Rack的RBMS作为主分析；Box案例统一增加BBMS和PCS辅助分析；<br>同子系统其他Rack作为RBMS peer，Pack编号只作现场备注，不进入云端查询条件。</p>
+<p>暂不纳入：两条工厂案例；K0259“401簇”缺少子系统，无法可靠映射<br><code>asset_storage_key</code>；其余信息不全的工厂/半成品案例。</p></div></section><section class="nb-cell"><div class="nb-prompt">In [ ]:</div><div class="nb-input"><pre><code>from pyspark.sql import functions as F
 
 import boto3
 import json
@@ -29,7 +22,7 @@ import matplotlib.pyplot as plt
 plt.rcParams[&quot;figure.figsize&quot;] = (15, 8)
 plt.rcParams[&quot;axes.grid&quot;] = True
 plt.rcParams[&quot;grid.alpha&quot;] = 0.25
-</code></pre></div></section><section class="cell code-cell"><div class="cell-head"><b>Python / Glue</b><span>Cell 06</span></div><div class="cell-body"><pre><code># site_code 和 device_type 已根据 site_configuration_modified.csv 解析。
+</code></pre></div></section><section class="nb-cell"><div class="nb-prompt">In [ ]:</div><div class="nb-input"><pre><code># site_code 和 device_type 已根据 site_configuration_modified.csv 解析。
 CONFIG = json.loads(r&#x27;&#x27;&#x27;{
   &quot;s3_output_uri&quot;: &quot;s3://engineeringbigdata/PILOT/EnergyStorageOperationData/EnergyStorageAnalysisResult/hannah.zhi/cbb_models/pack_cbb/eda/insulation_abnormal&quot;,
   &quot;s3_bucket&quot;: &quot;engineeringbigdata&quot;,
@@ -113,8 +106,8 @@ print(&quot;all cases:&quot;, len(CASES))
 print(&quot;RBMS cases:&quot;, len(RBMS_CASES))
 print(&quot;box cases:&quot;, len(BOX_CASES))
 print(&quot;S3 output:&quot;, S3_OUTPUT)
-</code></pre></div></section><section class="cell markdown-cell"><div class="cell-head"><b>Markdown</b><span>Cell 07</span></div><div class="cell-body"><h2>1. Rack级案例：RBMS 绝缘电阻、告警和运行状态</h2>
-<p>所有已纳入案例都具备子系统和Rack信息，因此统一使用RBMS作为主分析路径。 <code>rb_isoris</code> 是连续绝缘电阻（MΩ）；告警/故障字段用于确认云端是否记录到 现场现象；电流、SOC 和 Bat/PCS 电压用于判断异常是否依赖运行状态。</p></div></section><section class="cell code-cell"><div class="cell-head"><b>Python / Glue</b><span>Cell 08</span></div><div class="cell-body"><pre><code>rbms_table = f&quot;{DATABASE}.{TABLE_PREFIX}_rbms_1s&quot;
+</code></pre></div></section><section class="nb-cell"><div class="nb-prompt"></div><div class="nb-markdown markdown-body"><h2>1. Rack级案例：RBMS 绝缘电阻、告警和运行状态</h2>
+<p>所有已纳入案例都具备子系统和Rack信息，因此统一使用RBMS作为主分析路径。<br><code>rb_isoris</code> 是连续绝缘电阻（MΩ）；告警/故障字段用于确认云端是否记录到<br>现场现象；电流、SOC 和 Bat/PCS 电压用于判断异常是否依赖运行状态。</p></div></section><section class="nb-cell"><div class="nb-prompt">In [ ]:</div><div class="nb-input"><pre><code>rbms_table = f&quot;{DATABASE}.{TABLE_PREFIX}_rbms_1s&quot;
 
 
 def load_rbms_case(case):
@@ -152,7 +145,7 @@ for case in RBMS_CASES:
     print(&quot;loading:&quot;, case_id)
     rbms_data[case_id] = load_rbms_case(case)
     print(&quot;row count:&quot;, rbms_data[case_id].count())
-</code></pre></div></section><section class="cell code-cell"><div class="cell-head"><b>Python / Glue</b><span>Cell 09</span></div><div class="cell-body"><pre><code># 基础统计、日汇总和直接告警点。
+</code></pre></div></section><section class="nb-cell"><div class="nb-prompt">In [ ]:</div><div class="nb-input"><pre><code># 基础统计、日汇总和直接告警点。
 for case in RBMS_CASES:
     case_id = case[&quot;case_id&quot;]
     df = rbms_data[case_id]
@@ -201,7 +194,7 @@ for case in RBMS_CASES:
     alarm_events.write.mode(&quot;append&quot;).parquet(
         f&quot;{S3_OUTPUT}/tables/{case_id}/alarm_events&quot;
     )
-</code></pre></div></section><section class="cell code-cell"><div class="cell-head"><b>Python / Glue</b><span>Cell 10</span></div><div class="cell-body"><pre><code># 每个RBMS案例输出一张2x2图；1秒数据先聚合到分钟。
+</code></pre></div></section><section class="nb-cell"><div class="nb-prompt">In [ ]:</div><div class="nb-input"><pre><code># 每个RBMS案例输出一张2x2图；1秒数据先聚合到分钟。
 for case in RBMS_CASES:
     case_id = case[&quot;case_id&quot;]
     plot_df = (
@@ -279,7 +272,7 @@ for case in RBMS_CASES:
         print(&quot;文件上传失败：{}&quot;.format(exc))
 
 %matplot plt
-</code></pre></div></section><section class="cell code-cell"><div class="cell-head"><b>Python / Glue</b><span>Cell 11</span></div><div class="cell-body"><pre><code># 同子系统其他 Rack 做 peer 对比；p01仅作为低值候选点。
+</code></pre></div></section><section class="nb-cell"><div class="nb-prompt">In [ ]:</div><div class="nb-input"><pre><code># 同子系统其他 Rack 做 peer 对比；p01仅作为低值候选点。
 for case in RBMS_CASES:
     case_id = case[&quot;case_id&quot;]
     peer_sql = f&#x27;&#x27;&#x27;
@@ -343,8 +336,8 @@ for case in RBMS_CASES:
     candidates.write.mode(&quot;append&quot;).parquet(
         f&quot;{S3_OUTPUT}/tables/{case_id}/candidate_points&quot;
     )
-</code></pre></div></section><section class="cell markdown-cell"><div class="cell-head"><b>Markdown</b><span>Cell 12</span></div><div class="cell-body"><h2>2. Box 案例：BBMS + PCS</h2>
-<p>K0315和K0357均为Box场站：RBMS负责Rack级主分析，BBMS用于观察子系统绝缘/接地标志， PCS用于观察绝缘故障和正负直流母线电压。BBMS/PCS只作辅助，不能替代RBMS的Rack级定位。</p></div></section><section class="cell code-cell"><div class="cell-head"><b>Python / Glue</b><span>Cell 13</span></div><div class="cell-body"><pre><code>bbms_table = f&quot;{DATABASE}.{TABLE_PREFIX}_bbms_1s&quot;
+</code></pre></div></section><section class="nb-cell"><div class="nb-prompt"></div><div class="nb-markdown markdown-body"><h2>2. Box 案例：BBMS + PCS</h2>
+<p>K0315和K0357均为Box场站：RBMS负责Rack级主分析，BBMS用于观察子系统绝缘/接地标志，<br>PCS用于观察绝缘故障和正负直流母线电压。BBMS/PCS只作辅助，不能替代RBMS的Rack级定位。</p></div></section><section class="nb-cell"><div class="nb-prompt">In [ ]:</div><div class="nb-input"><pre><code>bbms_table = f&quot;{DATABASE}.{TABLE_PREFIX}_bbms_1s&quot;
 pcs_table = f&quot;{DATABASE}.{TABLE_PREFIX}_pcs_1s&quot;
 
 
@@ -406,7 +399,7 @@ for case in BOX_CASES:
     )
     print(case_id, &quot;BBMS rows:&quot;, box_bbms_data[case_id].count())
     print(case_id, &quot;PCS rows:&quot;, box_pcs_data[case_id].count())
-</code></pre></div></section><section class="cell code-cell"><div class="cell-head"><b>Python / Glue</b><span>Cell 14</span></div><div class="cell-body"><pre><code># 保存日汇总和直接告警点。
+</code></pre></div></section><section class="nb-cell"><div class="nb-prompt">In [ ]:</div><div class="nb-input"><pre><code># 保存日汇总和直接告警点。
 for case in BOX_CASES:
     case_id = case[&quot;case_id&quot;]
     bbms_df = box_bbms_data[case_id]
@@ -486,7 +479,7 @@ for case in BOX_CASES:
     pcs_alarm_events.write.mode(&quot;append&quot;).parquet(
         f&quot;{S3_OUTPUT}/tables/{case_id}/pcs_alarm_events&quot;
     )
-</code></pre></div></section><section class="cell code-cell"><div class="cell-head"><b>Python / Glue</b><span>Cell 15</span></div><div class="cell-body"><pre><code># 每个Box案例输出一张BBMS + PCS综合图；1秒数据先聚合到分钟。
+</code></pre></div></section><section class="nb-cell"><div class="nb-prompt">In [ ]:</div><div class="nb-input"><pre><code># 每个Box案例输出一张BBMS + PCS综合图；1秒数据先聚合到分钟。
 for case in BOX_CASES:
     case_id = case[&quot;case_id&quot;]
 
@@ -591,7 +584,7 @@ for case in BOX_CASES:
         print(&quot;文件上传失败：{}&quot;.format(exc))
 
 %matplot plt
-</code></pre></div></section><section class="cell code-cell"><div class="cell-head"><b>Python / Glue</b><span>Cell 16</span></div><div class="cell-body"><pre><code># 每个Box案例与同场站其他子系统做BBMS、PCS peer对比。
+</code></pre></div></section><section class="nb-cell"><div class="nb-prompt">In [ ]:</div><div class="nb-input"><pre><code># 每个Box案例与同场站其他子系统做BBMS、PCS peer对比。
 for case in BOX_CASES:
     case_id = case[&quot;case_id&quot;]
 
@@ -665,7 +658,7 @@ for case in BOX_CASES:
     pcs_peer_summary.coalesce(1).write.mode(&quot;append&quot;).option(
         &quot;header&quot;, True
     ).csv(f&quot;{S3_OUTPUT}/tables/{case_id}/pcs_peer_summary&quot;)
-</code></pre></div></section><section class="cell markdown-cell"><div class="cell-head"><b>Markdown</b><span>Cell 17</span></div><div class="cell-body"><h2>3. 首轮结果判读重点</h2>
+</code></pre></div></section><section class="nb-cell"><div class="nb-prompt"></div><div class="nb-markdown markdown-body"><h2>3. 首轮结果判读重点</h2>
 <ul>
 <li>先确认案例时间窗内是否有数据，以及告警时间是否覆盖现场失效时间。</li>
 <li>K0056：若 RBMS 未出现低绝缘或 peer 差异，应如实保留负结论，与返厂 NTF 对照。</li>

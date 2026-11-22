@@ -562,10 +562,11 @@
     .column-menu {
       position: fixed;
       z-index: 50;
-      width: 250px;
+      width: 310px;
       padding: 10px;
       border: 1px solid rgba(122, 211, 255, 0.24);
       border-radius: 13px;
+      color: var(--text);
       background: #0b202d;
       box-shadow: 0 18px 55px rgba(0, 0, 0, 0.46);
     }
@@ -579,12 +580,19 @@
       cursor: pointer;
     }
     .menu-btn:hover, .menu-btn.active { color: #ebfbff; border-color: rgba(34,216,255,.4); background: var(--cyan-soft); }
-    .menu-search { width: 100%; height: 36px; margin: 9px 0 7px; padding: 0 10px; border: 1px solid var(--line); border-radius: 8px; color: var(--text); background: rgba(3,13,20,.7); }
-    .menu-options { max-height: 230px; overflow: auto; display: grid; gap: 2px; padding-right: 3px; }
-    .menu-option { display: grid; grid-template-columns: 18px 1fr; align-items: center; gap: 8px; min-height: 32px; padding: 5px 4px; color: #c9dbe5; font-size: 13px; }
-    .menu-option input { accent-color: var(--cyan); }
-    .menu-actions { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 7px; margin-top: 9px; padding-top: 9px; border-top: 1px solid var(--line); }
+    .menu-search { width: 100%; height: 36px; margin: 9px 0 7px; padding: 0 10px; border: 1px solid var(--line); border-radius: 8px; color: var(--text); background: rgba(3,13,20,.7); outline: none; }
+    .menu-search:focus { border-color: rgba(34,216,255,.4); box-shadow: 0 0 0 1px rgba(34,216,255,.18); }
+    .menu-select-all { display: grid; grid-template-columns: 20px 1fr; align-items: center; gap: 7px; min-height: 34px; padding: 3px 6px 6px; border-bottom: 1px solid var(--line); color: #d8eaf3; font-size: 14px; font-weight: 700; }
+    .menu-options { max-height: 230px; overflow: auto; display: grid; gap: 1px; margin-left: 15px; padding: 5px 3px 5px 10px; border-left: 1px dotted rgba(122, 211, 255, 0.28); }
+    .menu-option { display: grid; grid-template-columns: 18px 1fr; align-items: center; gap: 7px; min-height: 29px; padding: 3px 2px; color: #c9dbe5; font-size: 14px; line-height: 1.35; }
+    .menu-option input, .menu-select-all input { width: 16px; height: 16px; margin: 0; accent-color: var(--cyan); }
+    .menu-actions { display: flex; align-items: center; justify-content: flex-end; gap: 8px; margin-top: 9px; padding-top: 9px; border-top: 1px solid var(--line); }
+    .menu-action { padding: 0 13px; }
+    .menu-action.clear { margin-right: auto; padding: 0 5px; border-color: transparent; color: #bcd2dd; background: transparent; font-size: 16px; }
+    .menu-action.clear:hover { color: #ebfbff; background: var(--cyan-soft); }
     .menu-action.primary { color: #00232c; border-color: transparent; background: var(--cyan); font-weight: 750; }
+    .menu-action:hover { border-color: rgba(34,216,255,.4); background: var(--cyan-soft); }
+    .menu-action.primary:hover { color: #00232c; border-color: transparent; background: var(--cyan); filter: brightness(1.08); }
 
     .plan-empty {
       min-height: 72px;
@@ -1231,20 +1239,31 @@
       const options = columnOptions(key);
       const current = state.filters[key];
       let draft = current.has("__NONE__") ? new Set() : current.size ? new Set(current) : new Set(options);
+      const renderMaster = () => {
+        const master = els.menu.querySelector("[data-master]");
+        if (!master) return;
+        master.checked = options.length > 0 && draft.size === options.length;
+        master.indeterminate = draft.size > 0 && draft.size < options.length;
+      };
       const renderOptions = (query = "") => {
         const visible = options.filter((value) => value.toLowerCase().includes(query.trim().toLowerCase()));
         const list = els.menu.querySelector(".menu-options");
-        list.innerHTML = visible.map((value) => `<label class="menu-option"><input type="checkbox" value="${value.replaceAll('"', '&quot;')}" ${draft.has(value) ? "checked" : ""}><span>${value}</span></label>`).join("") || `<div class="menu-option">无匹配项</div>`;
-        list.querySelectorAll("input").forEach((input) => input.addEventListener("change", () => input.checked ? draft.add(input.value) : draft.delete(input.value)));
+        list.innerHTML = visible.map((value) => `<label class="menu-option"><input type="checkbox" value="${escapeHtml(value)}" ${draft.has(value) ? "checked" : ""}><span>${escapeHtml(value)}</span></label>`).join("") || `<div class="menu-option">无匹配项</div>`;
+        list.querySelectorAll("input").forEach((input) => input.addEventListener("change", () => {
+          input.checked ? draft.add(input.value) : draft.delete(input.value);
+          renderMaster();
+        }));
+        renderMaster();
       };
       els.menu.innerHTML = `
         <div class="menu-sort">
-          <button class="menu-btn ${state.sortKey === key && state.sortDir === 1 ? "active" : ""}" data-direction="1">↑ 升序</button>
-          <button class="menu-btn ${state.sortKey === key && state.sortDir === -1 ? "active" : ""}" data-direction="-1">↓ 降序</button>
+          <button class="menu-btn ${state.sortKey === key && state.sortDir === 1 ? "active" : ""}" data-direction="1">升序</button>
+          <button class="menu-btn ${state.sortKey === key && state.sortDir === -1 ? "active" : ""}" data-direction="-1">降序</button>
         </div>
         <input class="menu-search" type="search" placeholder="搜索${columns[key].label}" aria-label="搜索${columns[key].label}">
+        <label class="menu-select-all"><input type="checkbox" data-master><span>(全选)</span></label>
         <div class="menu-options"></div>
-        <div class="menu-actions"><button class="menu-action" data-select-all>全选</button><button class="menu-action" data-select-none>全不选</button><button class="menu-action primary" data-apply>确定</button></div>`;
+        <div class="menu-actions"><button class="menu-action clear" data-clear>清除</button><button class="menu-action primary" data-apply>确定</button><button class="menu-action" data-cancel>取消</button></div>`;
       renderOptions();
       els.menu.querySelectorAll("[data-direction]").forEach((button) => button.addEventListener("click", () => {
         state.sortKey = key;
@@ -1253,8 +1272,16 @@
         renderAll();
       }));
       els.menu.querySelector(".menu-search").addEventListener("input", (event) => renderOptions(event.target.value));
-      els.menu.querySelector("[data-select-all]").addEventListener("click", () => { draft = new Set(options); renderOptions(els.menu.querySelector(".menu-search").value); });
-      els.menu.querySelector("[data-select-none]").addEventListener("click", () => { draft = new Set(); renderOptions(els.menu.querySelector(".menu-search").value); });
+      els.menu.querySelector("[data-master]").addEventListener("change", (event) => {
+        draft = event.target.checked ? new Set(options) : new Set();
+        renderOptions(els.menu.querySelector(".menu-search").value);
+      });
+      els.menu.querySelector("[data-clear]").addEventListener("click", () => {
+        state.filters[key] = new Set();
+        closeColumnMenu();
+        renderAll();
+      });
+      els.menu.querySelector("[data-cancel]").addEventListener("click", closeColumnMenu);
       els.menu.querySelector("[data-apply]").addEventListener("click", () => {
         state.filters[key] = draft.size === options.length ? new Set() : draft.size === 0 ? new Set(["__NONE__"]) : draft;
         closeColumnMenu();
@@ -1262,8 +1289,8 @@
       });
       els.menu.hidden = false;
       const rect = anchor.getBoundingClientRect();
-      const left = Math.min(rect.left, window.innerWidth - 266);
-      const top = Math.min(rect.bottom + 7, window.innerHeight - Math.min(420, els.menu.offsetHeight) - 8);
+      const left = Math.min(rect.left, window.innerWidth - 326);
+      const top = Math.min(rect.bottom + 7, window.innerHeight - Math.min(460, els.menu.offsetHeight) - 8);
       els.menu.style.left = `${Math.max(8, left)}px`;
       els.menu.style.top = `${Math.max(8, top)}px`;
     }
@@ -1357,8 +1384,15 @@
     }
 
     function renderRequirementBars(rows, key, targetId, totalId, unitLabel) {
+      const statusOrder = ["已上线", "待评审", "待验证", "持续跟进", "分析中", "开发中", "优化中", "已拒绝"];
+      const statusRank = (label) => {
+        const index = statusOrder.indexOf(label);
+        return index < 0 ? statusOrder.length : index;
+      };
       const counts = Object.entries(rows.reduce((acc, item) => ((acc[item[key]] = (acc[item[key]] || 0) + 1), acc), {}))
-        .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "zh-CN", { numeric: true }));
+        .sort((a, b) => key === "status"
+          ? statusRank(a[0]) - statusRank(b[0]) || a[0].localeCompare(b[0], "zh-CN", { numeric: true })
+          : b[1] - a[1] || a[0].localeCompare(b[0], "zh-CN", { numeric: true }));
       const max = Math.max(1, ...counts.map(([, value]) => value));
       const activeFilter = requirementState.filters[key];
       const active = activeFilter.size === 1 ? [...activeFilter][0] : "";
@@ -1383,10 +1417,10 @@
         const open = requirementState.expanded.has(item.key);
         const detail = open ? `
           <tr class="detail-row"><td colspan="7"><div class="warning-panel"><div class="requirement-detail">
-            <div class="detail-block wide"><label>预期效果</label><div>${requirementValue(item.expected)}</div></div>
             <div class="detail-block"><label>提出人</label><div>${requirementValue(item.requester)}</div></div>
             <div class="detail-block"><label>对接 Owner</label><div>${requirementValue(item.contactOwner)}</div></div>
-            <div class="detail-block wide"><label>当前进展</label><div>${requirementValue(item.progress)}</div></div>
+            <div class="detail-block"><label>预期效果</label><div>${requirementValue(item.expected)}</div></div>
+            <div class="detail-block"><label>当前进展</label><div>${requirementValue(item.progress)}</div></div>
           </div></div></td></tr>` : "";
         return `<tr class="model-row ${open ? "open" : ""}">
           <td class="expand-cell"><button class="expand-btn" type="button" data-requirement-expand="${item.key}" aria-expanded="${open}" aria-label="${open ? "收起" : "展开"}${escapeHtml(item.model)}需求详情"><svg viewBox="0 0 24 24" fill="none"><path d="m9 6 6 6-6 6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></button></td>
@@ -1431,20 +1465,31 @@
       const options = requirementColumnOptions(key);
       const current = requirementState.filters[key];
       let draft = current.has("__NONE__") ? new Set() : current.size ? new Set(current) : new Set(options);
+      const renderMaster = () => {
+        const master = els.menu.querySelector("[data-master]");
+        if (!master) return;
+        master.checked = options.length > 0 && draft.size === options.length;
+        master.indeterminate = draft.size > 0 && draft.size < options.length;
+      };
       const renderOptions = (query = "") => {
         const visible = options.filter((value) => value.toLowerCase().includes(query.trim().toLowerCase()));
         const list = els.menu.querySelector(".menu-options");
         list.innerHTML = visible.map((value) => `<label class="menu-option"><input type="checkbox" value="${escapeHtml(value)}" ${draft.has(value) ? "checked" : ""}><span>${escapeHtml(value)}</span></label>`).join("") || `<div class="menu-option">无匹配项</div>`;
-        list.querySelectorAll("input").forEach((input) => input.addEventListener("change", () => input.checked ? draft.add(input.value) : draft.delete(input.value)));
+        list.querySelectorAll("input").forEach((input) => input.addEventListener("change", () => {
+          input.checked ? draft.add(input.value) : draft.delete(input.value);
+          renderMaster();
+        }));
+        renderMaster();
       };
       els.menu.innerHTML = `
         <div class="menu-sort">
-          <button class="menu-btn ${requirementState.sortKey === key && requirementState.sortDir === 1 ? "active" : ""}" data-direction="1">↑ 升序</button>
-          <button class="menu-btn ${requirementState.sortKey === key && requirementState.sortDir === -1 ? "active" : ""}" data-direction="-1">↓ 降序</button>
+          <button class="menu-btn ${requirementState.sortKey === key && requirementState.sortDir === 1 ? "active" : ""}" data-direction="1">升序</button>
+          <button class="menu-btn ${requirementState.sortKey === key && requirementState.sortDir === -1 ? "active" : ""}" data-direction="-1">降序</button>
         </div>
         <input class="menu-search" type="search" placeholder="搜索${requirementColumns[key].label}" aria-label="搜索${requirementColumns[key].label}">
+        <label class="menu-select-all"><input type="checkbox" data-master><span>(全选)</span></label>
         <div class="menu-options"></div>
-        <div class="menu-actions"><button class="menu-action" data-select-all>全选</button><button class="menu-action" data-select-none>全不选</button><button class="menu-action primary" data-apply>确定</button></div>`;
+        <div class="menu-actions"><button class="menu-action clear" data-clear>清除</button><button class="menu-action primary" data-apply>确定</button><button class="menu-action" data-cancel>取消</button></div>`;
       renderOptions();
       els.menu.querySelectorAll("[data-direction]").forEach((button) => button.addEventListener("click", () => {
         requirementState.sortKey = key;
@@ -1453,8 +1498,16 @@
         renderRequirements();
       }));
       els.menu.querySelector(".menu-search").addEventListener("input", (event) => renderOptions(event.target.value));
-      els.menu.querySelector("[data-select-all]").addEventListener("click", () => { draft = new Set(options); renderOptions(els.menu.querySelector(".menu-search").value); });
-      els.menu.querySelector("[data-select-none]").addEventListener("click", () => { draft = new Set(); renderOptions(els.menu.querySelector(".menu-search").value); });
+      els.menu.querySelector("[data-master]").addEventListener("change", (event) => {
+        draft = event.target.checked ? new Set(options) : new Set();
+        renderOptions(els.menu.querySelector(".menu-search").value);
+      });
+      els.menu.querySelector("[data-clear]").addEventListener("click", () => {
+        requirementState.filters[key] = new Set();
+        closeColumnMenu();
+        renderRequirements();
+      });
+      els.menu.querySelector("[data-cancel]").addEventListener("click", closeColumnMenu);
       els.menu.querySelector("[data-apply]").addEventListener("click", () => {
         requirementState.filters[key] = draft.size === options.length ? new Set() : draft.size === 0 ? new Set(["__NONE__"]) : draft;
         closeColumnMenu();
@@ -1462,8 +1515,8 @@
       });
       els.menu.hidden = false;
       const rect = anchor.getBoundingClientRect();
-      const left = Math.min(rect.left, window.innerWidth - 266);
-      const top = Math.min(rect.bottom + 7, window.innerHeight - Math.min(420, els.menu.offsetHeight) - 8);
+      const left = Math.min(rect.left, window.innerWidth - 326);
+      const top = Math.min(rect.bottom + 7, window.innerHeight - Math.min(460, els.menu.offsetHeight) - 8);
       els.menu.style.left = `${Math.max(8, left)}px`;
       els.menu.style.top = `${Math.max(8, top)}px`;
     }

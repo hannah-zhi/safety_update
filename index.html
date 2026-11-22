@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="安全预警模块进展：模型状态、预警类型与模型迭代需求看板。">
+  <meta name="description" content="安全预警模块进展：模型状态、迭代需求与 Coding Agent 辅助模型开发实践。">
   <title>安全预警模块进展</title>
   <style>
     :root {
@@ -689,10 +689,170 @@
     .requirement-table .expand-cell { vertical-align: middle; }
     .requirement-table .detail-row td { padding: 0; }
     .requirement-table .warning-panel { padding-left: 62px; }
+
+    .agent-flow-card {
+      margin-top: 22px;
+      overflow: hidden;
+    }
+
+    .agent-flow-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(110deg, rgba(34, 216, 255, 0.065), rgba(255, 255, 255, 0.015));
+    }
+
+    .agent-flow-head h2 { margin: 0; font-size: 18px; }
+    .agent-flow-head span { color: var(--cyan); font-size: 12px; font-weight: 750; }
+    .agent-flow-frame {
+      display: block;
+      width: 100%;
+      height: 920px;
+      border: 0;
+      background: var(--bg);
+    }
+
+    .skill-showcase-title {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 18px;
+      margin: 28px 0 14px;
+    }
+
+    .skill-showcase-title h2 { margin: 0; font-size: 20px; }
+    .skill-showcase-title span { color: var(--muted); font-size: 13px; }
+    .skill-case-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .skill-case {
+      position: relative;
+      overflow: hidden;
+      padding: 22px;
+    }
+
+    .skill-case::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 3px;
+      background: var(--case-color, var(--cyan));
+      box-shadow: 0 0 22px var(--case-color, var(--cyan));
+    }
+
+    .skill-case-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .skill-case-head h3 { margin: 0 0 7px; font-size: 18px; }
+    .skill-case-head p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
+    .skill-name {
+      flex: 0 0 auto;
+      max-width: 245px;
+      padding: 6px 9px;
+      border: 1px solid color-mix(in srgb, var(--case-color, var(--cyan)) 42%, transparent);
+      border-radius: 8px;
+      color: var(--case-color, var(--cyan));
+      background: color-mix(in srgb, var(--case-color, var(--cyan)) 10%, transparent);
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 11px;
+      overflow-wrap: anywhere;
+    }
+
+    .chat-stack { display: grid; gap: 9px; }
+    .chat-message {
+      padding: 13px 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.018);
+    }
+
+    .chat-message.user { margin-right: 34px; border-color: rgba(255, 189, 89, 0.2); background: rgba(255, 189, 89, 0.045); }
+    .chat-message.agent { margin-left: 34px; border-color: rgba(34, 216, 255, 0.2); background: rgba(34, 216, 255, 0.045); }
+    .chat-role {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .chat-message.user .chat-role { color: var(--amber); }
+    .chat-message.agent .chat-role { color: var(--cyan); }
+    .chat-message blockquote { margin: 0; color: #d5e7ef; font-size: 13px; line-height: 1.68; }
+    .skill-output {
+      margin-top: 14px;
+      padding: 15px;
+      border: 1px solid rgba(66, 242, 161, 0.2);
+      border-radius: 12px;
+      background: rgba(66, 242, 161, 0.045);
+    }
+
+    .skill-output-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 11px;
+    }
+
+    .skill-output-title strong { color: var(--green); font-size: 13px; }
+    .skill-output-title span { color: var(--muted); font-size: 11px; }
+    .artifact-name {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 10px 11px;
+      border: 1px solid rgba(122, 211, 255, 0.12);
+      border-radius: 9px;
+      color: #e7f7ff;
+      background: rgba(4, 13, 20, 0.52);
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    .artifact-name::before { content: ""; width: 8px; height: 8px; flex: 0 0 auto; border-radius: 50%; background: var(--green); box-shadow: 0 0 12px rgba(66, 242, 161, 0.55); }
+    .output-facts {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .output-fact {
+      min-height: 76px;
+      padding: 10px;
+      border: 1px solid rgba(122, 211, 255, 0.1);
+      border-radius: 9px;
+      background: rgba(255, 255, 255, 0.018);
+    }
+
+    .output-fact strong { display: block; margin-bottom: 5px; color: #f0fbff; font-size: 16px; }
+    .output-fact span { color: var(--muted); font-size: 11px; line-height: 1.45; }
+    .result-list { margin: 10px 0 0; padding-left: 18px; color: #c8dce6; font-size: 12px; line-height: 1.65; }
+    .result-list li + li { margin-top: 4px; }
+    .evidence-a { color: var(--green); }
+    .evidence-b { color: var(--blue); }
+    .evidence-c { color: var(--amber); }
+
     @media (max-width: 1260px) {
       .dashboard { grid-template-columns: 1fr 1fr; }
       .requirements-dashboard { grid-template-columns: 1fr 1fr; }
       .requirement-filters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .skill-case-grid { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 860px) {
@@ -712,6 +872,7 @@
       .requirement-detail { grid-template-columns: 1fr; }
       .detail-block.wide { grid-column: auto; }
       .requirement-table .warning-panel { padding-left: 18px; }
+      .agent-flow-frame { height: 760px; }
     }
 
     @media (max-width: 560px) {
@@ -724,6 +885,11 @@
       .donut-content { grid-template-columns: 1fr; }
       .legend { grid-template-columns: 1fr 1fr; }
       .requirements-kpi-grid, .requirement-filters { grid-template-columns: 1fr; }
+      .agent-flow-head, .skill-showcase-title, .skill-case-head { align-items: flex-start; flex-direction: column; }
+      .agent-flow-frame { height: 680px; }
+      .chat-message.user { margin-right: 0; }
+      .chat-message.agent { margin-left: 0; }
+      .output-facts { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -749,6 +915,7 @@
     <nav class="section-nav" aria-label="页面章节导航">
       <a href="#model-overview" data-section-link="model-overview" class="active">第一部分 · 模型状态</a>
       <a href="#requirements-overview" data-section-link="requirements-overview">第二部分 · 迭代需求</a>
+      <a href="#agent-development" data-section-link="agent-development">第三部分 · Agent 开发流程</a>
     </nav>
 
     <section class="content-section" id="model-overview" aria-labelledby="page-title">
@@ -924,6 +1091,102 @@
           <div class="empty-state" id="requirementEmpty" hidden><strong>没有匹配的迭代需求</strong><span>请调整筛选条件。</span></div>
         </div>
       </article>
+    </section>
+
+    <section class="content-section" id="agent-development" aria-labelledby="agent-development-title">
+      <div class="section-head">
+        <div class="section-title-wrap">
+          <h1 id="agent-development-title">Coding Agent 辅助预警模型开发</h1>
+        </div>
+      </div>
+
+      <article class="glass agent-flow-card" aria-labelledby="agent-flow-heading">
+        <div class="agent-flow-head">
+          <h2 id="agent-flow-heading">Coding Agent 驱动的储能安全模型闭环流程</h2>
+          <span>原流程图 · 保留原交互</span>
+        </div>
+        <iframe class="agent-flow-frame" src="coding-agent-flow.html#framework" title="Coding Agent 驱动的储能安全模型闭环流程图" loading="lazy" sandbox="allow-scripts allow-same-origin"></iframe>
+      </article>
+
+      <div class="skill-showcase-title">
+        <h2>两个 Skill 的真实使用实例</h2>
+        <span>摘自任务「构建CBB失效案例EDA脚本」</span>
+      </div>
+
+      <div class="skill-case-grid">
+        <article class="glass skill-case" style="--case-color:var(--cyan)">
+          <div class="skill-case-head">
+            <div>
+              <h3>从失效案例生成 EDA Notebook</h3>
+              <p>把案例材料、字段表和云端约束转成可运行的 Glue/PySpark 分析脚本。</p>
+            </div>
+            <span class="skill-name">build-cbb-eda-notebook</span>
+          </div>
+
+          <div class="chat-stack" aria-label="build-cbb-eda-notebook 真实对话摘录">
+            <div class="chat-message user">
+              <span class="chat-role">用户 · 真实指令</span>
+              <blockquote>“现在调用 build-cbb-eda-notebook 这个 skill，来建立针对‘绝缘异常case’这个文档中失效 case 的 EDA notebook……附件的脚本，是针对漏液 case，我最后自己进行了部分修改，确定可以跑通、输出结果的版本，请参考。”</blockquote>
+            </div>
+            <div class="chat-message agent">
+              <span class="chat-role">Coding Agent · Skill 执行</span>
+              <blockquote>“案例和字段映射已经收敛：柜式两例用 RBMS 的连续绝缘电阻、告警及电压字段；箱式 K0315 在子系统层用 BBMS + PCS 观察绝缘告警与正/负母线电压。Pack 编号只保留在案例说明中，不作为云端查询条件。”</blockquote>
+            </div>
+          </div>
+
+          <div class="skill-output">
+            <div class="skill-output-title"><strong>真实产出</strong><span>Notebook 已通过结构、语法与绘图规范检查</span></div>
+            <div class="artifact-name">pack_insulation_abnormal_eda.ipynb</div>
+            <div class="output-facts">
+              <div class="output-fact"><strong>3 个</strong><span>首版纳入并完成云端资产映射的项目案例</span></div>
+              <div class="output-fact"><strong>RBMS / BBMS / PCS</strong><span>依据失效机理选择数据路径</span></div>
+              <div class="output-fact"><strong>S3</strong><span>图片、日汇总、事件与 peer 表统一输出</span></div>
+            </div>
+            <ul class="result-list">
+              <li>输出绝缘电阻、告警、母线电压和运行状态趋势图。</li>
+              <li>输出日汇总、告警事件、低绝缘候选点及同系统 peer 对比。</li>
+              <li>K0259 因无法映射到云端子系统，被明确排除而非强行猜测。</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="glass skill-case" style="--case-color:var(--violet)">
+          <div class="skill-case-head">
+            <div>
+              <h3>从云端输出形成证据结论</h3>
+              <p>读取 Notebook 运行后的图片、Parquet 与案例材料，完成证据分级和下一步决策。</p>
+            </div>
+            <span class="skill-name">analyze-cbb-eda-outputs</span>
+          </div>
+
+          <div class="chat-stack" aria-label="analyze-cbb-eda-outputs 真实对话摘录">
+            <div class="chat-message user">
+              <span class="chat-role">用户 · 真实指令</span>
+              <blockquote>“notebook 运行之后的结果都存在以下路径了（包括图片和表格），请进行分析：……\online_outputs\2026-09-02。”</blockquote>
+            </div>
+            <div class="chat-message agent">
+              <span class="chat-role">Coding Agent · Skill 执行</span>
+              <blockquote>“文件清单显示共有 522 个文件、约 41 MB：14 个案例都有表目录，但只有 10 个案例生成了图片，说明至少 4 个案例可能是空数据或不足以绘图。Parquet 是主要证据来源。”</blockquote>
+            </div>
+          </div>
+
+          <div class="skill-output">
+            <div class="skill-output-title"><strong>真实产出</strong><span>逐案例保留正证据、负结果与数据缺口</span></div>
+            <div class="artifact-name">pack_insulation_abnormal_eda_summary.md</div>
+            <div class="output-facts">
+              <div class="output-fact"><strong>522</strong><span>图片、表格与 Parquet 文件完成盘点</span></div>
+              <div class="output-fact"><strong>18 例</strong><span>14 个 Notebook 案例 + 4 个源案例</span></div>
+              <div class="output-fact"><strong>A–X</strong><span>按证据强度与可观测边界分级</span></div>
+            </div>
+            <ul class="result-list">
+              <li><strong class="evidence-a">K0357 · A级：</strong>持续下降并与同系统 peer 明显分离。</li>
+              <li><strong class="evidence-b">K0240 · B级：</strong>出现 15 秒绝缘突降，Rack 与动力单元告警同步。</li>
+              <li><strong class="evidence-c">K0075 · C级：</strong>只有孤立低值，仍受停机状态影响。</li>
+              <li>最终建议先验证持续退化与秒级跨层告警融合规则，不直接进入全场站部署。</li>
+            </ul>
+          </div>
+        </article>
+      </div>
     </section>
   </main>
 

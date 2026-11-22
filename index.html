@@ -695,18 +695,6 @@
       overflow: hidden;
     }
 
-    .agent-flow-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 18px;
-      padding: 18px 22px;
-      border-bottom: 1px solid var(--line);
-      background: linear-gradient(110deg, rgba(34, 216, 255, 0.065), rgba(255, 255, 255, 0.015));
-    }
-
-    .agent-flow-head h2 { margin: 0; font-size: 18px; }
-    .agent-flow-head span { color: var(--cyan); font-size: 12px; font-weight: 750; }
     .agent-flow-stage { padding: 16px 18px 12px; overflow: hidden; }
     .agent-source-switch { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 6px; }
     .agent-source-btn {
@@ -888,7 +876,7 @@
       .donut-content { grid-template-columns: 1fr; }
       .legend { grid-template-columns: 1fr 1fr; }
       .requirements-kpi-grid, .requirement-filters { grid-template-columns: 1fr; }
-      .agent-flow-head, .skill-showcase-title, .conversation-head { align-items: flex-start; flex-direction: column; }
+      .skill-showcase-title, .conversation-head { align-items: flex-start; flex-direction: column; }
       .agent-flow-stage { padding: 12px 4px 8px; }
       .chat-message { max-width: calc(100% - 42px); }
     }
@@ -1101,11 +1089,7 @@
         </div>
       </div>
 
-      <article class="glass agent-flow-card" aria-labelledby="agent-flow-heading">
-        <div class="agent-flow-head">
-          <h2 id="agent-flow-heading">Coding Agent 驱动的储能安全模型闭环流程</h2>
-          <span>机制驱动 / 需求驱动</span>
-        </div>
+      <article class="glass agent-flow-card" aria-label="Coding Agent 驱动的储能安全模型闭环流程">
         <div class="agent-flow-stage">
           <div class="agent-source-switch" aria-label="需求来源">
             <button class="agent-source-btn battery active" type="button" data-agent-source="battery"><small>A</small><strong>机理驱动（主导）</strong></button>
@@ -1132,7 +1116,8 @@
 
           <div class="chat-stack" aria-label="build-cbb-eda-notebook 真实对话">
             <div class="chat-row user">
-              <div class="chat-message"><span class="chat-role">用户</span><p>现在调用 build-cbb-eda-notebook 这个 skill，来建立针对“绝缘异常case”这个文档中失效case的eda notebook，我会基于输出的结果再给出意见，你再持续对skill和notebook脚本进行迭代（附件的脚本，是针对漏液case，我最后自己进行了部分修改，确定可以跑通、输出结果的版本，请参考）</p></div>
+              <div class="chat-message"><span class="chat-role">用户</span><p>/build-cbb-eda-notebook
+建立针对“绝缘异常case”这个文档中失效case的eda notebook，我会基于输出的结果再给出意见，你再持续对skill和notebook脚本进行迭代（附件的脚本，是针对漏液case，我最后自己进行了部分修改，确定可以跑通、输出结果的版本，请参考）</p></div>
               <span class="chat-avatar">你</span>
             </div>
             <div class="chat-row agent"><span class="chat-avatar">AI</span><div class="chat-message"><span class="chat-role">Coding Agent</span><p>我会按顺序使用三个能力：先用 build-cbb-eda-notebook 约束 notebook 的云端格式和简洁度，再用文档能力提取“绝缘异常case”的案例与时间线，最后读取字段表和场站配置确定可查询字段、表名及真实 site_code。附件中的可运行漏液 notebook 会作为代码风格和 Glue/S3 写法的最高优先级参考。</p></div></div>
@@ -1165,7 +1150,8 @@ notebook 会输出：
 同时已更新 build skill。notebook 已通过 JSON、Python 语法和绘图规范检查。</p>
                 <div class="chat-artifacts">
                   <strong>交付物</strong>
-                  <a class="artifact-link" href="artifacts/pack_insulation_abnormal_eda.ipynb" target="_blank" rel="noopener"><span>pack_insulation_abnormal_eda.ipynb</span><span class="artifact-action">打开文件</span></a>
+                  <a class="artifact-link" href="artifacts/pack_insulation_abnormal_eda_notebook.html" target="_blank" rel="noopener"><span>pack_insulation_abnormal_eda.ipynb</span><span class="artifact-action">美观预览</span></a>
+                  <a class="artifact-link" href="artifacts/pack_insulation_abnormal_eda.ipynb" download><span>Notebook 源文件</span><span class="artifact-action">下载 .ipynb</span></a>
                 </div>
               </div>
             </div>
@@ -1182,7 +1168,8 @@ notebook 会输出：
           </div>
 
           <div class="chat-stack" aria-label="analyze-cbb-eda-outputs 真实对话">
-            <div class="chat-row user"><div class="chat-message"><span class="chat-role">用户 · analyze-cbb-eda-outputs</span><p>notebook运行之后的结果都存在以下路径了（包括图片和表格），请进行分析：C:\Users\hannah.zhi\Desktop\vibe_coding\cbb_models\pack_cbb\insulation\online_outputs\2026-09-02</p></div><span class="chat-avatar">你</span></div>
+            <div class="chat-row user"><div class="chat-message"><span class="chat-role">用户</span><p>/analyze-cbb-eda-outputs
+notebook运行之后的结果都存在以下路径了（包括图片和表格），请进行分析：C:\Users\hannah.zhi\Desktop\vibe_coding\cbb_models\pack_cbb\insulation\online_outputs\2026-09-02</p></div><span class="chat-avatar">你</span></div>
             <div class="chat-row agent"><span class="chat-avatar">AI</span><div class="chat-message"><span class="chat-role">Coding Agent</span><p>我会按你指定的 analyze-cbb-eda-outputs skill 执行：先盘点所有案例的图片、表格和数据完整性，再对齐案例时间、目标 Rack/动力单元与同子系统 peer，最后给出逐案例证据等级、可建模性判断和下一步计划，并生成结构化 Markdown 总结。</p></div></div>
             <div class="chat-row agent"><span class="chat-avatar">AI</span><div class="chat-message"><span class="chat-role">Coding Agent</span><p>Skill 要求把负结果和缺失输出也保留下来，并按 A/B/C/D/X 分级。我现在开始做全量文件清单与格式路由；如果部分案例只有空目录或缺少关键表，也会作为明确的数据状态写入总结，不会静默忽略。</p></div></div>
             <div class="chat-row agent"><span class="chat-avatar">AI</span><div class="chat-message"><span class="chat-role">Coding Agent</span><p>文件清单显示共有 522 个文件、约 41 MB：14 个案例都有表目录，但只有 10 个案例生成了图片，说明至少 4 个案例可能是空数据或不足以绘图。Parquet 是主要证据来源；当前本地分析运行时缺少 Parquet 读取库，我将补充本地只用于分析的依赖，然后统计每张表的实际行数、时间范围和关键值。</p></div></div>
@@ -1218,7 +1205,9 @@ K0075：C 级弱证据
 报告覆盖了 14 个 Notebook 案例，以及旧 Word 中未查询的 3 个工厂案例和 1 个无法确定子系统的案例，共 18 例。</p>
                 <div class="chat-artifacts">
                   <strong>交付物</strong>
-                  <a class="artifact-link" href="artifacts/pack_insulation_abnormal_eda_summary.md" target="_blank" rel="noopener"><span>pack_insulation_abnormal_eda_summary.md</span><span class="artifact-action">打开报告</span></a>
+                  <a class="artifact-link" href="artifacts/pack_insulation_abnormal_eda_summary.html" target="_blank" rel="noopener"><span>pack_insulation_abnormal_eda_summary.md</span><span class="artifact-action">美观预览</span></a>
+                  <a class="artifact-link" href="artifacts/pack_insulation_abnormal_eda_summary.md" download><span>分析总结源文件</span><span class="artifact-action">下载 .md</span></a>
+                  <a class="artifact-link" href="artifacts/pack_insulation_abnormal_eda_report_2026-09-20.html" target="_blank" rel="noopener"><span>pack_insulation_abnormal_eda_report_2026-09-20.html</span><span class="artifact-action">打开完整报告</span></a>
                 </div>
               </div>
             </div>

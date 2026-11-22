@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pack CBB 绝缘异常 EDA 分析总结</title><style>
+:root{--bg:#06121a;--panel:#0b1d28;--panel2:#102632;--line:#1b4050;--text:#e8f7ff;--muted:#91aebb;--cyan:#24d8ff;--green:#45e6a5;--amber:#ffbf59;--violet:#a98dff}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 18% 0,rgba(36,216,255,.09),transparent 30%),linear-gradient(180deg,#07151e,#051018);color:var(--text);font:16px/1.72 "Inter","Segoe UI","Microsoft YaHei",sans-serif}
+a{color:var(--cyan)}.top{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px clamp(18px,4vw,58px);border-bottom:1px solid var(--line);background:rgba(6,18,26,.9);backdrop-filter:blur(16px)}
+.brand{color:var(--text);font-weight:850;text-decoration:none}.actions{display:flex;gap:10px;flex-wrap:wrap}.btn{display:inline-flex;align-items:center;min-height:38px;padding:7px 13px;border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.03);color:#cbe4ee;text-decoration:none;font-size:14px;font-weight:750}.btn.primary{border-color:rgba(69,230,165,.45);background:rgba(69,230,165,.09);color:#bfffe2}
+.hero{padding:60px clamp(20px,6vw,90px) 42px;border-bottom:1px solid var(--line)}.hero-inner,.content{width:min(1180px,100%);margin:auto}.eyebrow{margin:0 0 10px;color:var(--cyan);font-size:13px;font-weight:850;letter-spacing:.08em;text-transform:uppercase}.hero h1{margin:0;font-size:clamp(30px,4.4vw,54px);line-height:1.15}.hero p{max-width:820px;margin:16px 0 0;color:var(--muted)}.meta{display:flex;gap:9px;flex-wrap:wrap;margin-top:22px}.meta span{padding:5px 10px;border:1px solid var(--line);border-radius:999px;color:#bad0db;background:rgba(255,255,255,.025);font-size:13px}
+.content{padding:34px 18px 80px}.cell{margin:0 0 18px;border:1px solid var(--line);border-radius:14px;background:rgba(11,29,40,.86);box-shadow:0 18px 42px rgba(0,0,0,.16);overflow:hidden}.cell-head{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid var(--line);color:var(--muted);background:rgba(255,255,255,.025);font-size:12px}.cell-head b{color:var(--cyan);letter-spacing:.05em}.cell-body{padding:19px 22px}.markdown-cell{border-color:rgba(36,216,255,.18)}.code-cell{border-color:rgba(169,141,255,.22)}pre{margin:0;overflow:auto;color:#d9eaf2;font:13px/1.65 "SFMono-Regular",Consolas,monospace;tab-size:2}code{padding:.12em .34em;border:1px solid rgba(122,211,255,.12);border-radius:5px;color:#b7edff;background:rgba(36,216,255,.07);font:0.9em "SFMono-Regular",Consolas,monospace}pre code{padding:0;border:0;background:none;color:inherit}
+.markdown-body{padding:32px clamp(20px,4vw,48px);border:1px solid var(--line);border-radius:16px;background:rgba(11,29,40,.9);box-shadow:0 22px 52px rgba(0,0,0,.18)}h1,h2,h3,h4{color:#f1fbff;line-height:1.28}h1{font-size:32px}h2{margin-top:44px;padding-bottom:10px;border-bottom:1px solid var(--line);font-size:24px}h3{margin-top:32px;font-size:19px}p{color:#c8dce6}strong{color:#f4fbff}blockquote{margin:18px 0;padding:13px 16px;border-left:4px solid var(--cyan);border-radius:0 10px 10px 0;color:#b9d4df;background:rgba(36,216,255,.06)}li{margin:6px 0;color:#c8dce6}.table-wrap{width:100%;overflow:auto;margin:18px 0;border:1px solid var(--line);border-radius:12px}table{width:100%;min-width:760px;border-collapse:collapse;font-size:13px}th,td{padding:11px 12px;border-right:1px solid rgba(27,64,80,.7);border-bottom:1px solid rgba(27,64,80,.7);text-align:left;vertical-align:top}th{position:sticky;top:0;color:#baf3ff;background:#102b38}tr:nth-child(even) td{background:rgba(255,255,255,.018)}.code-block{margin:18px 0;border:1px solid var(--line);border-radius:10px;overflow:hidden}.code-block>span{display:block;padding:6px 11px;color:var(--muted);background:rgba(255,255,255,.035);font-size:12px}.code-block pre{padding:15px}
+@media(max-width:640px){.top{align-items:flex-start;flex-direction:column}.hero{padding-top:40px}.cell-body,.markdown-body{padding:17px}.actions{width:100%}.btn{flex:1;justify-content:center}}
+</style></head>
+<body><nav class="top"><a class="brand" href="../index.html#agent-development">安全预警模块进展</a><div class="actions"><a class="btn" href="../index.html#agent-development">返回第三部分</a><a class="btn primary" href="pack_insulation_abnormal_eda_summary.md" download>下载源文件</a></div></nav>
+<header class="hero"><div class="hero-inner"><p class="eyebrow">Markdown Report Preview</p><h1>Pack CBB 绝缘异常 EDA 分析总结</h1><p>对云端 EDA 输出、关键案例、证据等级、数据边界与下一步计划的结构化总结。</p><div class="meta"><span>522 个源文件</span><span>18 个案例</span><span>A–X 证据分级</span><span>2026-09-02</span></div></div></header>
+<main class="content"><article class="markdown-body"><h1>Pack CBB 绝缘异常 EDA 分析总结（2026-09-02）</h1>
+<h2>1. 执行结论</h2>
+<ul>
+<li>本批输出共 <strong>522 个文件、30 张图</strong>。Notebook 配置了 14 个案例，其中 <strong>10 个有数据、4 个完全无数据</strong>。</li>
+<li>当前证据只支持两类后续原型：</li>
+<li><strong>持续退化型</strong>：K0357 的 <code>rb_isoris</code> 从 2026-03-06 开始显著下降，早于 2026-08-15 现场确认约 5 个月，并与同子系统其他 Rack 明显分离。</li>
+<li><strong>瞬态告警型</strong>：K0240 在 2026-08-08 11:07 出现 15 秒 Rack 绝缘故障，动力单元绝缘故障同步持续 14 秒。</li>
+<li>暂不适合直接开发全场站统一模型。其余案例主要受以下问题限制：无云端数据、目标测点为空、<code>rb_isoris</code> 长期卡在量程上限、故障位置不明确，或 RCA 属于电缆、变压器、交流滤波板、PCS 功率套件等非 Rack 本体机制。</li>
+<li>推荐证据等级：<strong>A 级 1 例、B 级 1 例、C 级 1 例、D 级 4 例、X 级 11 例</strong>。X 级包含未进入云端查询的工厂案例和无法定位案例。</li>
+</ul>
+<h2>2. 证据等级</h2>
+<div class="table-wrap"><table><thead><tr><th>等级</th><th>含义</th></tr></thead><tbody><tr><td>A</td><td>目标信号、时间关系、同场站 peer 对比均支持失效，具备原型价值</td></tr><tr><td>B</td><td>有明确异常且有跨层信号印证，但标签时间或持续性仍需核对</td></tr><tr><td>C</td><td>有弱关联或事件后变化，但特异性不足、易受运行状态影响</td></tr><tr><td>D</td><td>数据可用，但未观察到目标与 peer 的有效差异</td></tr><tr><td>X</td><td>无数据、关键测点不可观测、无法定位，或 RCA 不属于目标失效机制</td></tr></tbody></table></div>
+<h2>3. 案例汇总</h2>
+<blockquote>表中 Rack 统一指电池簇；<code>实际数据</code>为本次输出中可读取到的日期范围。工厂案例和旧 Word 中无法确定子系统的案例保留为 X，不纳入云端查询结果统计。</blockquote>
+<div class="table-wrap"><table><thead><tr><th>case_id</th><th>来源/故障时间</th><th>场站/类型</th><th>故障范围</th><th>分析窗口；实际数据</th><th>失效模式</th><th>RCA</th><th>EDA 特征表现</th><th>结论</th><th>等级</th></tr></thead><tbody><tr><td>K0315_ESS43_RACK406_INSULATION_ABNORMAL</td><td>旧 Word；2026-05-12</td><td>K0315；箱式</td><td>ESS43 / Rack406</td><td>2026-04-01~05-12；无数据</td><td>冷却液泄漏导致绝缘异常</td><td>水冷密封失效</td><td>Rack、动力单元、PCS 均无数据</td><td>无法验证</td><td>X</td></tr><tr><td>K0056_ESS22_RACK204_INSULATION_ABNORMAL</td><td>旧 Word；2023-04-18</td><td>ZHCN；柜式</td><td>ESS22 / Rack204</td><td>2022-12-01~2023-04-18；无数据</td><td>对地绝缘异常</td><td>NTF</td><td>Rack、动力单元、PCS 均无数据</td><td>无法验证</td><td>X</td></tr><tr><td>K0043_ESS22_RACK204_INSULATION_ABNORMAL</td><td>旧 Word；并网调试阶段</td><td>WCCN；柜式</td><td>ESS22 / Rack204</td><td>2023-01-01~05-31；无数据</td><td>对地绝缘异常</td><td>PC 片背胶吸附酒精后对箱体导通</td><td>Rack、动力单元、PCS 均无数据</td><td>无法验证</td><td>X</td></tr><tr><td>K0357_ESS16_RACK401_INSULATION_ABNORMAL</td><td>旧 Word；2026-08-15</td><td>K0357；箱式</td><td>ESS16 / Rack401</td><td>2026-03-01~08-17；完整</td><td>对地绝缘异常</td><td>待确认</td><td><code>rb_isoris</code> 最低 0.228 MΩ；peer 最低 13.11 MΩ；故障位持续置位</td><td>明显、提前且持续的目标异常</td><td>A</td></tr><tr><td>K0240_ESS08_RACK205_INSULATION_ABNORMAL</td><td>旧 Word；2026-07-07、07-16、08-12</td><td>K0240；柜式</td><td>ESS08 / Rack205</td><td>2026-06-15~08-20；完整</td><td>间歇性对地绝缘异常</td><td>疑似水汽，待确认</td><td>08-08 <code>rb_isoris</code> 瞬降至 0.361 MΩ；Rack/动力单元故障同步置位</td><td>有效瞬态证据，但与现场日期不一致</td><td>B</td></tr><tr><td>K0259_ESS05_SUBSYSTEM_INSULATION_ABNORMAL</td><td>新 Excel；2025-06-03</td><td>K0259；箱式</td><td>ESS05，未定位 Rack</td><td>2025-05-01~06-15；05-29~06-15</td><td>母线对地绝缘低</td><td>变压器 C 相母排 CT 采样线脱落接地</td><td>故障日 Rack 绝缘约 17.42~20 MΩ；无绝缘告警；半数 Rack 关键字段为空</td><td>根因在变压器侧，不适合作为 Rack 样本</td><td>X</td></tr><tr><td>K0075_ESS03_RACK104_INSULATION_ABNORMAL</td><td>新 Excel；2025-06-20</td><td>K0075；柜式</td><td>ESS03 / Rack104</td><td>2025-05-20~06-30；完整</td><td>负母线对地绝缘低</td><td>待确认；现场有凝露</td><td>故障日 20 MΩ；06-24 单次最低 8.795 MΩ；无故障置位</td><td>有目标瞬降，但晚于故障且受停机状态影响</td><td>C</td></tr><tr><td>K0065_ESS14_UNIT1_INSULATION_ABNORMAL</td><td>新 Excel；2025-07-05/09-10</td><td>LHKCN；柜式</td><td>ESS14 / 动力单元1</td><td>2025-06-15~09-20；无数据</td><td>正母线对地绝缘过低</td><td>交流侧滤波板失效</td><td>Rack、动力单元、PCS 均无数据</td><td>无数据且 RCA 非直流 Rack 机制</td><td>X</td></tr><tr><td>K0056_ESS08_RACK208_INSULATION_ABNORMAL</td><td>新 Excel；2025-10</td><td>ZHCN；柜式</td><td>ESS08 / Rack208</td><td>2025-09-01~10-31；10-01~10-22</td><td>负极电缆绝缘低</td><td>待确认；计划更换电缆</td><td>目标及 peer 均为 20 MΩ；无告警；PCS 侧电压下降</td><td>无绝缘区分度，电压变化更像停机结果</td><td>D</td></tr><tr><td>K0271_ESS02_RACK304_INSULATION_ABNORMAL</td><td>新 Excel；2025-10-14</td><td>K0271；箱式</td><td>ESS02 / Rack304</td><td>2025-09-15~10-31；完整日期</td><td>Pack 对地绝缘低</td><td>待确认</td><td>目标 <code>rb_isoris</code>、Rack 电压及动力单元主字段全为空</td><td>目标不可观测</td><td>X</td></tr><tr><td>K0053_ESS05_RACK205_INSULATION_ABNORMAL</td><td>新 Excel；2025-10-22</td><td>HNWCCN；柜式</td><td>ESS05 / Rack205</td><td>2025-09-01~10-31；完整</td><td>主正动力电缆对地绝缘低</td><td>电缆波纹管破损并有铜锈</td><td>目标始终 50 MΩ；无告警；其他 Rack 反而有孤立低值</td><td>无目标异常，且 RCA 为电缆</td><td>D</td></tr><tr><td>K0339_ESS53_UNIT2_INSULATION_ABNORMAL</td><td>新 Excel；2026-01-11</td><td>K0339；箱式</td><td>ESS53 / 动力单元2</td><td>2025-12-15~2026-01-20；12-24~01-16</td><td>正母线对地绝缘过低</td><td>待确认</td><td>6 个目标 Rack 故障日均为 20 MΩ；与 peer 相近；无告警</td><td>未找到绝缘区分度</td><td>D</td></tr><tr><td>K0079_ESS15_UNIT2_INSULATION_ABNORMAL</td><td>新 Excel；2026-06-26</td><td>K0079；柜式</td><td>ESS15 / 动力单元2</td><td>2026-06-01~07-05；06-01~06-27</td><td>负母线对地绝缘过低</td><td>已确认直流侧，位置待排查</td><td>9 个目标 Rack 均为 20 MΩ；无告警；故障日前后接近停机</td><td>未找到可定位的先兆</td><td>D</td></tr><tr><td>K0079_ESS21_RACK108_INSULATION_ABNORMAL</td><td>新 Excel；2026-07-20</td><td>K0079；柜式</td><td>ESS21 / Rack108</td><td>2026-07-01~07-31；07-10~07-31</td><td>正负母线绝缘低</td><td>PCS 功率套件铜排连接力矩不足、拉弧</td><td>Rack 绝缘为 20 MΩ；动力单元电压在故障日下降；无绝缘告警</td><td>可反映功率单元停机，不属于 Rack 绝缘模型</td><td>X</td></tr><tr><td>K0259_RACK401_INSULATION_ABNORMAL_UNLOCATED</td><td>旧 Word；日期不明</td><td>K0259；箱式</td><td>Rack401；子系统不明</td><td>未查询</td><td>Pack 对地绝缘失效</td><td>隔膜破损导致物理自放电</td><td>无法生成唯一 <code>asset_storage_key</code></td><td>无法定位云端对象</td><td>X</td></tr><tr><td>FACTORY_YULIN_CELL13_INSULATION_ABNORMAL</td><td>旧 Word；2023-03-03</td><td>榆林工厂</td><td>Pack / Cell13</td><td>无云端窗口</td><td>Pack 绝缘不良</td><td>电芯底部涂胶不均、蓝膜破损</td><td>工厂实测正对地 292 kΩ、负对地 0</td><td>工厂案例，无在线数据</td><td>X</td></tr><tr><td>FACTORY_JIANGYIN_PACK5_INSULATION_ABNORMAL</td><td>旧 Word；2023-02-15</td><td>江阴工厂</td><td>Rack下线 / Pack5</td><td>无云端窗口</td><td>Pack 壳体带电压</td><td>PC 片背胶吸附酒精后形成导通</td><td>工厂实测正对地 30 MΩ、负对地 206 MΩ</td><td>工厂案例，无在线数据</td><td>X</td></tr><tr><td>FACTORY_YULIN_RCYL320081_INSULATION_ABNORMAL</td><td>旧 Word；2023-04~05</td><td>榆林工厂</td><td>Rack RCYL320081</td><td>无云端窗口</td><td>总正对地绝缘低</td><td>NTF</td><td>工厂实测 8.55 MΩ，拆解未找到根因</td><td>工厂案例，无在线数据</td><td>X</td></tr></tbody></table></div>
+<h2>4. 关键案例证据</h2>
+<h3>4.1 K0357：持续退化型，证据最强</h3>
+<ul>
+<li>Rack401 的全窗口 <code>rb_isoris</code> 统计为：最低 0.228 MΩ、p01 0.234 MΩ、p10 1.456 MΩ、p50 2.427 MΩ；同子系统其他 Rack 的 p01 均不低于 14.18 MΩ，目标与 peer 分离显著。</li>
+<li>低值候选点从 <strong>2026-03-06 08:42</strong> 开始，先后形成 4 段长持续区间；其中 2026-05-30 至 08-17 的低值几乎连续存在。该变化早于 08-15 现场确认约 5 个月，具备提前识别价值。</li>
+<li><code>rb_udisoflt</code> 首次于 <strong>2026-06-02 19:24</strong> 置位，8 月再次长时间置位。输出中的 485,474 条告警行实际只组成约 14 个连续告警区间，不能按行数理解为独立告警次数。</li>
+<li>2026-08-14 日最低值为 0.228 MΩ，08-15 至 08-17 的日中位数稳定在 0.234 MΩ，与现场实测低绝缘一致。</li>
+<li>动力单元层绝缘字段为空，PCS 母线电压及不平衡字段也为空；这两层目前只能用于运行状态辅助，不能否定 Rack 层强证据。</li>
+</ul>
+<h3>4.2 K0240：秒级瞬态，跨层同步</h3>
+<ul>
+<li><strong>2026-08-08 11:07:33~11:07:47</strong>，Rack205 的 <code>rb_isoris</code> 最低降至 0.361 MΩ，<code>rb_udisoflt</code> 连续置位 15 秒；同子系统其他 Rack 的 p01 均为 20 MΩ。</li>
+<li>对应动力单元的 <code>bb_rckisoflt</code> 在 <strong>11:07:32~11:07:45</strong> 连续置位 14 秒，比 Rack 层早 1 秒，形成可信的跨层同步证据。</li>
+<li>但原始案例记录的现场告警日期是 07-07、07-16 前后和 08-12，本次捕获时间为 08-08。建模前需确认：是现场记录日期偏差、云端时区偏差，还是一次未记录的中间事件。</li>
+<li>该案例适合验证“瞬时低值 + 双层告警融合”，不适合仅用日均值或日 p10；异常过短，日 p10/p50 仍为 20 MΩ。</li>
+</ul>
+<h3>4.3 K0075：存在孤立低值，但时间与状态不足以支持强结论</h3>
+<ul>
+<li>06-20 故障日，Rack104 的 <code>rb_isoris</code> 为 20 MΩ，绝缘告警均未置位。</li>
+<li>06-24 出现最低 8.795 MΩ 的孤立低值，同日 Rack/动力单元电流接近 0，动力单元电压较故障日下降约 50 V，可能受到停机、检修或测量状态影响。</li>
+<li>可作为弱阳性继续查原始秒级点，但目前不足以形成稳定规则。</li>
+</ul>
+<h3>4.4 其余有数据案例</h3>
+<ul>
+<li><strong>K0056 ESS08 / Rack208</strong>：目标及 peer 均固定在 20 MΩ，绝缘告警为 0；PCS 侧电压下降更像停机或断开后的结果。</li>
+<li><strong>K0271 / Rack304</strong>：虽然存在日期行和电流，但目标 <code>rb_isoris</code>、Rack 电压、绝缘状态以及对应动力单元主字段均为空，属于测点不可观测。</li>
+<li><strong>K0053 / Rack205</strong>：目标全程为 50 MΩ、无告警；同子系统其他 Rack 有孤立低值，目标本身没有分离。RCA 是动力电缆损坏，不宜作为 Rack 本体绝缘样本。</li>
+<li><strong>K0339 / 动力单元2</strong>：6 个目标 Rack 的最低值约 18.13~18.62 MΩ，peer 约 17.31~18.73 MΩ，目标不比 peer 更异常；故障日均为 20 MΩ且无告警。</li>
+<li><strong>K0079 ESS15 / 动力单元2</strong>：9 个目标 Rack 在故障日均为 20 MΩ且无告警；仅能看到接近停机和数据结束，无法定位异常 Rack。</li>
+<li><strong>K0079 ESS21 / Rack108</strong>：故障日 Rack 绝缘为 20 MΩ；动力单元电压明显下降，但 RCA 已确定为 PCS 功率套件铜排拉弧，属于不同机制。</li>
+<li><strong>K0259 ESS05</strong>：故障日可用 Rack 绝缘约 17.42~20 MΩ，无绝缘告警；另外两个动力单元的 Rack 主字段为空。RCA 为变压器母排 CT 采样线搭接，不能作为 Rack 绝缘阳性样本。</li>
+</ul>
+<h2>5. 数据质量与分析限制</h2>
+<ul>
+<li><strong>时间覆盖不完整</strong>：K0259 实际仅有 05-29~06-15；K0056 ESS08 仅有 10-01~10-22；K0339 仅有 12-24~01-16；K0079 ESS15 仅有 06-01~06-27；K0079 ESS21 仅有 07-10~07-31。</li>
+<li><strong>字段缺失明显</strong>：所有有数据案例的 <code>rb_udisown</code>、<code>rb_grdflt</code> 都为空；PCS 的直流母线电压、正负母线电压、不平衡量和大部分故障字段也都为空，仅 PCS 电流及 <code>pcs_isoflt=0</code> 基本可用。</li>
+<li><strong>量程上限需单独处理</strong>：多数站点的 <code>rb_isoris</code> 长期等于 20 MΩ，K0053 长期等于 50 MΩ。这更像不同设备或固件的显示上限，不能直接作为跨场站的连续数值比较。</li>
+<li><strong>0 值不能直接当故障</strong>：K0259 在 05-29 出现全子系统 Rack 同时为 0，随后恢复为正值，特征更像初始化或无效哨兵值。</li>
+<li><strong>运行状态是主要混杂因素</strong>：电压下降、电流接近 0、数据停止通常发生在停机或检修阶段；若没有目标与 peer 分离或绝缘故障位支撑，不能当作绝缘先兆。</li>
+<li><strong>告警行数不等于事件数</strong>：持续置位会生成大量秒级记录，后续必须先合并连续区间再统计事件。</li>
+</ul>
+<h2>6. 下一步计划</h2>
+<ol>
+<li><strong>先校正标签</strong>：补齐精确到秒的首次告警、复位、停机、检修、更换和恢复时间，重点核对 K0240 的 08-08 云端事件与 07-07/07-16/08-12 现场记录。</li>
+<li><strong>建立两套透明原型</strong>：</li>
+</ol>
+<ul>
+<li>持续退化：<code>目标 rb_isoris / 同子系统 peer 中位数</code>、变化点、低值持续时长、恢复滞回。</li>
+<li>瞬态告警：秒级 <code>rb_isoris</code> 低值与 <code>rb_udisoflt</code>、<code>bb_rckisoflt</code> 同步，按连续区间合并告警。</li>
+</ul>
+<ol>
+<li><strong>按机制拆样本</strong>：Rack/Pack 本体、电缆、变压器/交流侧、PCS 功率套件分别管理；不同机制不共用一个阳性标签。</li>
+<li><strong>修正数据语义</strong>：为每种设备确认 <code>rb_isoris</code> 的单位、20/50 MΩ 上限、0 值含义和固件差异；重新确认 PCS 表中实际可用的母线电压和不平衡字段。</li>
+<li><strong>补充对照样本</strong>：至少增加同场站正常 Rack、正常场站、检修停机和无故障低值样本，分别评估提前量、事件召回率和每站每日误报数。</li>
+<li><strong>模型准入条件</strong>：在新增阳性案例上复现 K0357 或 K0240 的模式，并确认维护前可提前识别、维护后恢复，才进入全量场站验证。</li>
+</ol>
+<h2>7. 建议保留的中间结果</h2>
+<ul>
+<li><code>rbms_daily_summary</code>：持续退化趋势与日级状态。</li>
+<li><code>rbms_peer_summary</code>：目标与同子系统 Rack 的相对位置。</li>
+<li><code>rbms_candidate_points</code>：低值候选，后续需按连续时间合并。</li>
+<li><code>rbms_alarm_events</code>、<code>bbms_alarm_events</code>：跨层告警同步。</li>
+<li>原始现场事件时间表：用于区分先兆、故障、停机和维修后的变化。</li>
+</ul></article></main></body></html>

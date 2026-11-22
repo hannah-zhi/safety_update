@@ -1,0 +1,676 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pack CBB 绝缘异常 EDA Notebook</title><style>
+:root{--bg:#06121a;--panel:#0b1d28;--panel2:#102632;--line:#1b4050;--text:#e8f7ff;--muted:#91aebb;--cyan:#24d8ff;--green:#45e6a5;--amber:#ffbf59;--violet:#a98dff}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 18% 0,rgba(36,216,255,.09),transparent 30%),linear-gradient(180deg,#07151e,#051018);color:var(--text);font:16px/1.72 "Inter","Segoe UI","Microsoft YaHei",sans-serif}
+a{color:var(--cyan)}.top{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px clamp(18px,4vw,58px);border-bottom:1px solid var(--line);background:rgba(6,18,26,.9);backdrop-filter:blur(16px)}
+.brand{color:var(--text);font-weight:850;text-decoration:none}.actions{display:flex;gap:10px;flex-wrap:wrap}.btn{display:inline-flex;align-items:center;min-height:38px;padding:7px 13px;border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.03);color:#cbe4ee;text-decoration:none;font-size:14px;font-weight:750}.btn.primary{border-color:rgba(69,230,165,.45);background:rgba(69,230,165,.09);color:#bfffe2}
+.hero{padding:60px clamp(20px,6vw,90px) 42px;border-bottom:1px solid var(--line)}.hero-inner,.content{width:min(1180px,100%);margin:auto}.eyebrow{margin:0 0 10px;color:var(--cyan);font-size:13px;font-weight:850;letter-spacing:.08em;text-transform:uppercase}.hero h1{margin:0;font-size:clamp(30px,4.4vw,54px);line-height:1.15}.hero p{max-width:820px;margin:16px 0 0;color:var(--muted)}.meta{display:flex;gap:9px;flex-wrap:wrap;margin-top:22px}.meta span{padding:5px 10px;border:1px solid var(--line);border-radius:999px;color:#bad0db;background:rgba(255,255,255,.025);font-size:13px}
+.content{padding:34px 18px 80px}.cell{margin:0 0 18px;border:1px solid var(--line);border-radius:14px;background:rgba(11,29,40,.86);box-shadow:0 18px 42px rgba(0,0,0,.16);overflow:hidden}.cell-head{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid var(--line);color:var(--muted);background:rgba(255,255,255,.025);font-size:12px}.cell-head b{color:var(--cyan);letter-spacing:.05em}.cell-body{padding:19px 22px}.markdown-cell{border-color:rgba(36,216,255,.18)}.code-cell{border-color:rgba(169,141,255,.22)}pre{margin:0;overflow:auto;color:#d9eaf2;font:13px/1.65 "SFMono-Regular",Consolas,monospace;tab-size:2}code{padding:.12em .34em;border:1px solid rgba(122,211,255,.12);border-radius:5px;color:#b7edff;background:rgba(36,216,255,.07);font:0.9em "SFMono-Regular",Consolas,monospace}pre code{padding:0;border:0;background:none;color:inherit}
+.markdown-body{padding:32px clamp(20px,4vw,48px);border:1px solid var(--line);border-radius:16px;background:rgba(11,29,40,.9);box-shadow:0 22px 52px rgba(0,0,0,.18)}h1,h2,h3,h4{color:#f1fbff;line-height:1.28}h1{font-size:32px}h2{margin-top:44px;padding-bottom:10px;border-bottom:1px solid var(--line);font-size:24px}h3{margin-top:32px;font-size:19px}p{color:#c8dce6}strong{color:#f4fbff}blockquote{margin:18px 0;padding:13px 16px;border-left:4px solid var(--cyan);border-radius:0 10px 10px 0;color:#b9d4df;background:rgba(36,216,255,.06)}li{margin:6px 0;color:#c8dce6}.table-wrap{width:100%;overflow:auto;margin:18px 0;border:1px solid var(--line);border-radius:12px}table{width:100%;min-width:760px;border-collapse:collapse;font-size:13px}th,td{padding:11px 12px;border-right:1px solid rgba(27,64,80,.7);border-bottom:1px solid rgba(27,64,80,.7);text-align:left;vertical-align:top}th{position:sticky;top:0;color:#baf3ff;background:#102b38}tr:nth-child(even) td{background:rgba(255,255,255,.018)}.code-block{margin:18px 0;border:1px solid var(--line);border-radius:10px;overflow:hidden}.code-block>span{display:block;padding:6px 11px;color:var(--muted);background:rgba(255,255,255,.035);font-size:12px}.code-block pre{padding:15px}
+@media(max-width:640px){.top{align-items:flex-start;flex-direction:column}.hero{padding-top:40px}.cell-body,.markdown-body{padding:17px}.actions{width:100%}.btn{flex:1;justify-content:center}}
+</style></head>
+<body><nav class="top"><a class="brand" href="../index.html#agent-development">安全预警模块进展</a><div class="actions"><a class="btn" href="../index.html#agent-development">返回第三部分</a><a class="btn primary" href="pack_insulation_abnormal_eda.ipynb" download>下载源文件</a></div></nav>
+<header class="hero"><div class="hero-inner"><p class="eyebrow">Notebook Preview</p><h1>Pack CBB 绝缘异常 EDA Notebook</h1><p>基于真实交付 Notebook 生成的只读预览；代码单元、案例说明与云端分析步骤按原顺序保留。</p><div class="meta"><span>17 个单元格</span><span>12 个代码单元</span><span>5 个说明单元</span><span>AWS Glue / PySpark</span></div></div></header>
+<main class="content"><section class="cell code-cell"><div class="cell-head"><b>Python / Glue</b><span>Cell 01</span></div><div class="cell-body"><pre><code>%number_of_workers 80
+</code></pre></div></section><section class="cell code-cell"><div class="cell-head"><b>Python / Glue</b><span>Cell 02</span></div><div class="cell-body"><pre><code>%stop_session
+</code></pre></div></section><section class="cell markdown-cell"><div class="cell-head"><b>Markdown</b><span>Cell 03</span></div><div class="cell-body"><h1>Pack 绝缘异常案例 EDA</h1>
+<p>目标：检查已知绝缘异常案例在云端是否存在可复现的绝缘电阻下降、 绝缘告警、正负母线不平衡或同场站 peer 差异，为后续模型逻辑提供证据。</p>
+<p>本 notebook 只查询到云端可定位的子系统/Rack，不把现场 Pack 编号当成云端定位条件。 阈值和候选点均为 EDA 规则，不是正式告警逻辑。</p></div></section><section class="cell markdown-cell"><div class="cell-head"><b>Markdown</b><span>Cell 04</span></div><div class="cell-body"><h2>案例覆盖与假设</h2>
+<div class="table-wrap"><table><thead><tr><th>case_id</th><th>云端目标</th><th>时间窗口</th><th>说明</th></tr></thead><tbody><tr><td>K0315_PACK_INSULATION_ABNORMAL</td><td>K0315.ESS43 / RBMS406</td><td>2026-04-01 ~ 2026-05-12</td><td>Box 架构；RBMS为主，BBMS + PCS为辅助；Pack2只作现场信息</td></tr><tr><td>K0056_PACK_INSULATION_ABNORMAL</td><td>ZHCN.ESS22 / RBMS204</td><td>2022-12-01 ~ 2023-04-18</td><td>故障日期不明确，扩大回看；返厂 NTF</td></tr><tr><td>K0043_PACK_INSULATION_ABNORMAL</td><td>WCCN.ESS22 / RBMS204</td><td>2023-01-01 ~ 2023-05-31</td><td>“22-2-4 Rack”按子系统22、Rack204解析</td></tr><tr><td>K0357_PACK_INSULATION_ABNORMAL</td><td>K0357.ESS16 / RBMS401</td><td>2026-07-15 ~ 2026-08-15</td><td>Box 架构；RBMS为主，BBMS + PCS为辅助；Pack2只作现场信息</td></tr></tbody></table></div>
+<p>统一策略：所有纳入案例均使用目标Rack的RBMS作为主分析；Box案例统一增加BBMS和PCS辅助分析； 同子系统其他Rack作为RBMS peer，Pack编号只作现场备注，不进入云端查询条件。</p>
+<p>暂不纳入：两条工厂案例；K0259“401簇”缺少子系统，无法可靠映射 <code>asset_storage_key</code>；其余信息不全的工厂/半成品案例。</p></div></section><section class="cell code-cell"><div class="cell-head"><b>Python / Glue</b><span>Cell 05</span></div><div class="cell-body"><pre><code>from pyspark.sql import functions as F
+
+import boto3
+import json
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+plt.rcParams[&quot;figure.figsize&quot;] = (15, 8)
+plt.rcParams[&quot;axes.grid&quot;] = True
+plt.rcParams[&quot;grid.alpha&quot;] = 0.25
+</code></pre></div></section><section class="cell code-cell"><div class="cell-head"><b>Python / Glue</b><span>Cell 06</span></div><div class="cell-body"><pre><code># site_code 和 device_type 已根据 site_configuration_modified.csv 解析。
+CONFIG = json.loads(r&#x27;&#x27;&#x27;{
+  &quot;s3_output_uri&quot;: &quot;s3://engineeringbigdata/PILOT/EnergyStorageOperationData/EnergyStorageAnalysisResult/hannah.zhi/cbb_models/pack_cbb/eda/insulation_abnormal&quot;,
+  &quot;s3_bucket&quot;: &quot;engineeringbigdata&quot;,
+  &quot;s3_prefix&quot;: &quot;PILOT/EnergyStorageOperationData/EnergyStorageAnalysisResult/hannah.zhi/cbb_models/pack_cbb/eda/insulation_abnormal&quot;,
+  &quot;database&quot;: &quot;pd_galileo_prod&quot;,
+  &quot;table_prefix&quot;: &quot;energystorageoperationdata_prod_galileo_energystorageoperationdata&quot;,
+  &quot;cases&quot;: [
+    {
+      &quot;case_id&quot;: &quot;K0315_PACK_INSULATION_ABNORMAL&quot;,
+      &quot;site_num&quot;: &quot;K-0315&quot;,
+      &quot;site_code&quot;: &quot;K0315&quot;,
+      &quot;device_type&quot;: &quot;box&quot;,
+      &quot;subsystem&quot;: 43,
+      &quot;rack&quot;: 406,
+      &quot;pack_note&quot;: &quot;2号Pack（仅保留现场定位信息）&quot;,
+      &quot;storage&quot;: &quot;K0315.ESS43&quot;,
+      &quot;component&quot;: &quot;RBMS406&quot;,
+      &quot;start_day&quot;: &quot;2026-04-01&quot;,
+      &quot;end_day&quot;: &quot;2026-05-12&quot;,
+      &quot;window_note&quot;: &quot;文档仅给出5/12且文件形成于2026年，暂按2026-05-12作为结束日，向前取约6周&quot;,
+      &quot;rca&quot;: &quot;Pack内部冷却液泄漏，水冷密封失效&quot;
+    },
+    {
+      &quot;case_id&quot;: &quot;K0056_PACK_INSULATION_ABNORMAL&quot;,
+      &quot;site_num&quot;: &quot;K-0056&quot;,
+      &quot;site_code&quot;: &quot;ZHCN&quot;,
+      &quot;device_type&quot;: &quot;cabinet&quot;,
+      &quot;subsystem&quot;: 22,
+      &quot;rack&quot;: 204,
+      &quot;pack_note&quot;: &quot;8号Pack（云端不按Pack查询）&quot;,
+      &quot;storage&quot;: &quot;ZHCN.ESS22&quot;,
+      &quot;component&quot;: &quot;RBMS204&quot;,
+      &quot;start_day&quot;: &quot;2022-12-01&quot;,
+      &quot;end_day&quot;: &quot;2023-04-18&quot;,
+      &quot;window_note&quot;: &quot;故障日期不明确，以2023-04-18返厂不复现记录为结束日，向前扩大窗口&quot;,
+      &quot;rca&quot;: &quot;NTF，返厂后故障不复现&quot;
+    },
+    {
+      &quot;case_id&quot;: &quot;K0043_PACK_INSULATION_ABNORMAL&quot;,
+      &quot;site_num&quot;: &quot;K-0043&quot;,
+      &quot;site_code&quot;: &quot;WCCN&quot;,
+      &quot;device_type&quot;: &quot;cabinet&quot;,
+      &quot;subsystem&quot;: 22,
+      &quot;rack&quot;: 204,
+      &quot;pack_note&quot;: &quot;1号Pack（云端不按Pack查询）&quot;,
+      &quot;storage&quot;: &quot;WCCN.ESS22&quot;,
+      &quot;component&quot;: &quot;RBMS204&quot;,
+      &quot;start_day&quot;: &quot;2023-01-01&quot;,
+      &quot;end_day&quot;: &quot;2023-05-31&quot;,
+      &quot;window_note&quot;: &quot;文档未给日期，结合相邻案例时间暂取2023年上半年；22-2-4 Rack按22号子系统、204 Rack解析&quot;,
+      &quot;rca&quot;: &quot;PC片背胶吸附酒精后形成对箱体导通&quot;
+    },
+    {
+      &quot;case_id&quot;: &quot;K0357_PACK_INSULATION_ABNORMAL&quot;,
+      &quot;site_num&quot;: &quot;K-0357&quot;,
+      &quot;site_code&quot;: &quot;K0357&quot;,
+      &quot;device_type&quot;: &quot;box&quot;,
+      &quot;subsystem&quot;: 16,
+      &quot;rack&quot;: 401,
+      &quot;pack_note&quot;: &quot;2号Pack（仅保留现场定位信息）&quot;,
+      &quot;storage&quot;: &quot;K0357.ESS16&quot;,
+      &quot;component&quot;: &quot;RBMS401&quot;,
+      &quot;start_day&quot;: &quot;2026-07-15&quot;,
+      &quot;end_day&quot;: &quot;2026-08-15&quot;,
+      &quot;window_note&quot;: &quot;2026-08-15发生故障，向前取一个月观察绝缘电阻变化&quot;,
+      &quot;rca&quot;: &quot;待补充&quot;
+    }
+  ]
+}&#x27;&#x27;&#x27;)
+
+S3_OUTPUT = CONFIG[&quot;s3_output_uri&quot;].rstrip(&quot;/&quot;)
+S3_BUCKET = CONFIG[&quot;s3_bucket&quot;]
+S3_PREFIX = CONFIG[&quot;s3_prefix&quot;]
+DATABASE = CONFIG[&quot;database&quot;]
+TABLE_PREFIX = CONFIG[&quot;table_prefix&quot;]
+CASES = CONFIG[&quot;cases&quot;]
+RBMS_CASES = CASES
+BOX_CASES = [c for c in CASES if c[&quot;device_type&quot;] == &quot;box&quot;]
+
+print(&quot;all cases:&quot;, len(CASES))
+print(&quot;RBMS cases:&quot;, len(RBMS_CASES))
+print(&quot;box cases:&quot;, len(BOX_CASES))
+print(&quot;S3 output:&quot;, S3_OUTPUT)
+</code></pre></div></section><section class="cell markdown-cell"><div class="cell-head"><b>Markdown</b><span>Cell 07</span></div><div class="cell-body"><h2>1. Rack级案例：RBMS 绝缘电阻、告警和运行状态</h2>
+<p>所有已纳入案例都具备子系统和Rack信息，因此统一使用RBMS作为主分析路径。 <code>rb_isoris</code> 是连续绝缘电阻（MΩ）；告警/故障字段用于确认云端是否记录到 现场现象；电流、SOC 和 Bat/PCS 电压用于判断异常是否依赖运行状态。</p></div></section><section class="cell code-cell"><div class="cell-head"><b>Python / Glue</b><span>Cell 08</span></div><div class="cell-body"><pre><code>rbms_table = f&quot;{DATABASE}.{TABLE_PREFIX}_rbms_1s&quot;
+
+
+def load_rbms_case(case):
+    &#x27;&#x27;&#x27;查询一个可定位到RBMS的目标Rack。&#x27;&#x27;&#x27;
+    sql = f&#x27;&#x27;&#x27;
+    SELECT
+        site_code,
+        asset_storage_key,
+        asset_component_key,
+        timestamp,
+        rb_a,
+        rb_soc,
+        rb_chast,
+        rb_isoris,
+        rb_isodctmod,
+        rb_udisown,
+        rb_udisoflt,
+        rb_evthwiso,
+        rb_grdflt,
+        rb_volbat,
+        rb_volpcs
+    FROM {rbms_table}
+    WHERE event_date &gt;= &#x27;{case[&quot;start_day&quot;]}&#x27;
+      AND event_date &lt;= &#x27;{case[&quot;end_day&quot;]}&#x27;
+      AND site_code = &#x27;{case[&quot;site_code&quot;]}&#x27;
+      AND asset_storage_key = &#x27;{case[&quot;storage&quot;]}&#x27;
+      AND asset_component_key = &#x27;{case[&quot;component&quot;]}&#x27;
+    &#x27;&#x27;&#x27;
+    return spark.sql(sql).cache()
+
+
+rbms_data = {}
+for case in RBMS_CASES:
+    case_id = case[&quot;case_id&quot;]
+    print(&quot;loading:&quot;, case_id)
+    rbms_data[case_id] = load_rbms_case(case)
+    print(&quot;row count:&quot;, rbms_data[case_id].count())
+</code></pre></div></section><section class="cell code-cell"><div class="cell-head"><b>Python / Glue</b><span>Cell 09</span></div><div class="cell-body"><pre><code># 基础统计、日汇总和直接告警点。
+for case in RBMS_CASES:
+    case_id = case[&quot;case_id&quot;]
+    df = rbms_data[case_id]
+    print(&quot;\n=====&quot;, case_id, &quot;=====&quot;)
+
+    df.select(
+        &quot;rb_isoris&quot;, &quot;rb_a&quot;, &quot;rb_soc&quot;, &quot;rb_volbat&quot;, &quot;rb_volpcs&quot;,
+        &quot;rb_udisown&quot;, &quot;rb_udisoflt&quot;, &quot;rb_evthwiso&quot;, &quot;rb_grdflt&quot;,
+    ).describe().show()
+
+    daily_summary = (
+        df
+        .groupBy(
+            &quot;asset_storage_key&quot;,
+            &quot;asset_component_key&quot;,
+            F.to_date(&quot;timestamp&quot;).alias(&quot;day&quot;),
+        )
+        .agg(
+            F.count(&quot;*&quot;).alias(&quot;row_count&quot;),
+            F.min(&quot;rb_isoris&quot;).alias(&quot;min_isoris_mohm&quot;),
+            F.expr(&quot;percentile_approx(rb_isoris, 0.1)&quot;).alias(&quot;isoris_p10_mohm&quot;),
+            F.expr(&quot;percentile_approx(rb_isoris, 0.5)&quot;).alias(&quot;isoris_p50_mohm&quot;),
+            F.avg(&quot;rb_a&quot;).alias(&quot;avg_current&quot;),
+            F.avg(&quot;rb_soc&quot;).alias(&quot;avg_soc&quot;),
+            F.avg(&quot;rb_volbat&quot;).alias(&quot;avg_bat_voltage&quot;),
+            F.avg(&quot;rb_volpcs&quot;).alias(&quot;avg_pcs_voltage&quot;),
+            F.max(&quot;rb_udisown&quot;).alias(&quot;iso_warning&quot;),
+            F.max(&quot;rb_udisoflt&quot;).alias(&quot;iso_fault&quot;),
+            F.max(&quot;rb_evthwiso&quot;).alias(&quot;iso_hardware_fault&quot;),
+            F.max(&quot;rb_grdflt&quot;).alias(&quot;ground_fault&quot;),
+        )
+        .orderBy(&quot;day&quot;)
+    )
+    daily_summary.show(200, False)
+    daily_summary.write.mode(&quot;append&quot;).parquet(
+        f&quot;{S3_OUTPUT}/tables/{case_id}/daily_summary&quot;
+    )
+
+    alarm_events = df.filter(
+        (F.coalesce(F.col(&quot;rb_udisown&quot;), F.lit(0)) &gt; 0)
+        | (F.coalesce(F.col(&quot;rb_udisoflt&quot;), F.lit(0)) &gt; 0)
+        | (F.coalesce(F.col(&quot;rb_evthwiso&quot;), F.lit(0)) &gt; 0)
+        | (F.coalesce(F.col(&quot;rb_grdflt&quot;), F.lit(0)) &gt; 0)
+    )
+    print(case_id, &quot;alarm rows:&quot;, alarm_events.count())
+    alarm_events.write.mode(&quot;append&quot;).parquet(
+        f&quot;{S3_OUTPUT}/tables/{case_id}/alarm_events&quot;
+    )
+</code></pre></div></section><section class="cell code-cell"><div class="cell-head"><b>Python / Glue</b><span>Cell 10</span></div><div class="cell-body"><pre><code># 每个RBMS案例输出一张2x2图；1秒数据先聚合到分钟。
+for case in RBMS_CASES:
+    case_id = case[&quot;case_id&quot;]
+    plot_df = (
+        rbms_data[case_id]
+        .groupBy(F.window(&quot;timestamp&quot;, &quot;1 minute&quot;).alias(&quot;minute&quot;))
+        .agg(
+            F.avg(&quot;rb_isoris&quot;).alias(&quot;insulation_resistance&quot;),
+            F.max(&quot;rb_udisown&quot;).alias(&quot;iso_warning&quot;),
+            F.max(&quot;rb_udisoflt&quot;).alias(&quot;iso_fault&quot;),
+            F.max(&quot;rb_evthwiso&quot;).alias(&quot;iso_hardware_fault&quot;),
+            F.max(&quot;rb_grdflt&quot;).alias(&quot;ground_fault&quot;),
+            F.avg(&quot;rb_volbat&quot;).alias(&quot;bat_voltage&quot;),
+            F.avg(&quot;rb_volpcs&quot;).alias(&quot;pcs_voltage&quot;),
+            F.avg(&quot;rb_a&quot;).alias(&quot;current&quot;),
+            F.avg(&quot;rb_soc&quot;).alias(&quot;soc&quot;),
+        )
+        .select(F.col(&quot;minute.start&quot;).alias(&quot;timestamp&quot;), &quot;*&quot;)
+        .drop(&quot;minute&quot;)
+        .orderBy(&quot;timestamp&quot;)
+        .toPandas()
+    )
+
+    fig, axes = plt.subplots(2, 2, figsize=(17, 10))
+
+    valid_iso = plot_df[plot_df[&quot;insulation_resistance&quot;] &gt; 0]
+    axes[0, 0].plot(
+        valid_iso[&quot;timestamp&quot;], valid_iso[&quot;insulation_resistance&quot;]
+    )
+    axes[0, 0].set_yscale(&quot;log&quot;)
+    axes[0, 0].set_title(&quot;Insulation resistance (MOhm, log scale)&quot;)
+
+    for field in [
+        &quot;iso_warning&quot;, &quot;iso_fault&quot;, &quot;iso_hardware_fault&quot;, &quot;ground_fault&quot;
+    ]:
+        axes[0, 1].step(plot_df[&quot;timestamp&quot;], plot_df[field], label=field)
+    axes[0, 1].legend()
+    axes[0, 1].set_title(&quot;Insulation / ground flags&quot;)
+
+    axes[1, 0].plot(
+        plot_df[&quot;timestamp&quot;], plot_df[&quot;bat_voltage&quot;], label=&quot;Bat voltage&quot;
+    )
+    axes[1, 0].plot(
+        plot_df[&quot;timestamp&quot;], plot_df[&quot;pcs_voltage&quot;], label=&quot;PCS voltage&quot;
+    )
+    axes[1, 0].legend()
+    axes[1, 0].set_title(&quot;Rack voltage&quot;)
+
+    scatter_df = plot_df.dropna(subset=[&quot;current&quot;, &quot;insulation_resistance&quot;])
+    scatter_df = scatter_df[scatter_df[&quot;insulation_resistance&quot;] &gt; 0]
+    axes[1, 1].scatter(
+        scatter_df[&quot;current&quot;],
+        scatter_df[&quot;insulation_resistance&quot;],
+        s=8,
+        alpha=0.3,
+    )
+    axes[1, 1].set_yscale(&quot;log&quot;)
+    axes[1, 1].set_xlabel(&quot;Rack current (A)&quot;)
+    axes[1, 1].set_ylabel(&quot;Insulation resistance (MOhm)&quot;)
+
+    fig.suptitle(case_id)
+    fig.tight_layout()
+
+    local_path = &quot;/tmp/{}_rbms_insulation_eda.jpg&quot;.format(case_id)
+    plt.savefig(local_path, dpi=300)
+
+    s3_bucket = S3_BUCKET
+    s3_key = &quot;{}/figures/{}_rbms_insulation_eda.jpg&quot;.format(
+        S3_PREFIX, case_id
+    )
+    s3 = boto3.client(&quot;s3&quot;)
+    try:
+        s3.upload_file(local_path, s3_bucket, s3_key)
+        print(&quot;文件成功上传到 S3：s3://{}/{}&quot;.format(s3_bucket, s3_key))
+    except Exception as exc:
+        print(&quot;文件上传失败：{}&quot;.format(exc))
+
+%matplot plt
+</code></pre></div></section><section class="cell code-cell"><div class="cell-head"><b>Python / Glue</b><span>Cell 11</span></div><div class="cell-body"><pre><code># 同子系统其他 Rack 做 peer 对比；p01仅作为低值候选点。
+for case in RBMS_CASES:
+    case_id = case[&quot;case_id&quot;]
+    peer_sql = f&#x27;&#x27;&#x27;
+    SELECT
+        asset_component_key,
+        timestamp,
+        rb_isoris,
+        rb_udisown,
+        rb_udisoflt,
+        rb_evthwiso,
+        rb_grdflt,
+        rb_volbat,
+        rb_volpcs,
+        rb_a,
+        rb_soc
+    FROM {rbms_table}
+    WHERE event_date &gt;= &#x27;{case[&quot;start_day&quot;]}&#x27;
+      AND event_date &lt;= &#x27;{case[&quot;end_day&quot;]}&#x27;
+      AND site_code = &#x27;{case[&quot;site_code&quot;]}&#x27;
+      AND asset_storage_key = &#x27;{case[&quot;storage&quot;]}&#x27;
+    &#x27;&#x27;&#x27;
+
+    peer_summary = (
+        spark.sql(peer_sql)
+        .filter(F.col(&quot;rb_isoris&quot;) &gt; 0)
+        .groupBy(&quot;asset_component_key&quot;)
+        .agg(
+            F.min(&quot;rb_isoris&quot;).alias(&quot;min_isoris_mohm&quot;),
+            F.expr(&quot;percentile_approx(rb_isoris, 0.01)&quot;).alias(&quot;isoris_p01_mohm&quot;),
+            F.expr(&quot;percentile_approx(rb_isoris, 0.1)&quot;).alias(&quot;isoris_p10_mohm&quot;),
+            F.expr(&quot;percentile_approx(rb_isoris, 0.5)&quot;).alias(&quot;isoris_p50_mohm&quot;),
+            F.max(&quot;rb_udisown&quot;).alias(&quot;iso_warning&quot;),
+            F.max(&quot;rb_udisoflt&quot;).alias(&quot;iso_fault&quot;),
+            F.max(&quot;rb_grdflt&quot;).alias(&quot;ground_fault&quot;),
+            F.count(&quot;*&quot;).alias(&quot;valid_row_count&quot;),
+        )
+        .orderBy(&quot;isoris_p01_mohm&quot;)
+    )
+    print(&quot;peer summary:&quot;, case_id)
+    peer_summary.show(200, False)
+    peer_summary.coalesce(1).write.mode(&quot;append&quot;).option(
+        &quot;header&quot;, True
+    ).csv(f&quot;{S3_OUTPUT}/tables/{case_id}/peer_summary&quot;)
+
+    target_valid = rbms_data[case_id].filter(F.col(&quot;rb_isoris&quot;) &gt; 0)
+    threshold = target_valid.agg(
+        F.expr(&quot;percentile_approx(rb_isoris, 0.01)&quot;).alias(&quot;isoris_p01&quot;)
+    ).first()[&quot;isoris_p01&quot;]
+
+    if threshold is None:
+        print(case_id, &quot;没有有效绝缘电阻数据，跳过低值候选点&quot;)
+        continue
+
+    candidates = rbms_data[case_id].filter(
+        ((F.col(&quot;rb_isoris&quot;) &gt; 0) &amp; (F.col(&quot;rb_isoris&quot;) &lt;= threshold))
+        | (F.coalesce(F.col(&quot;rb_udisown&quot;), F.lit(0)) &gt; 0)
+        | (F.coalesce(F.col(&quot;rb_udisoflt&quot;), F.lit(0)) &gt; 0)
+        | (F.coalesce(F.col(&quot;rb_grdflt&quot;), F.lit(0)) &gt; 0)
+    )
+    print(case_id, &quot;isoris p01:&quot;, threshold)
+    candidates.write.mode(&quot;append&quot;).parquet(
+        f&quot;{S3_OUTPUT}/tables/{case_id}/candidate_points&quot;
+    )
+</code></pre></div></section><section class="cell markdown-cell"><div class="cell-head"><b>Markdown</b><span>Cell 12</span></div><div class="cell-body"><h2>2. Box 案例：BBMS + PCS</h2>
+<p>K0315和K0357均为Box场站：RBMS负责Rack级主分析，BBMS用于观察子系统绝缘/接地标志， PCS用于观察绝缘故障和正负直流母线电压。BBMS/PCS只作辅助，不能替代RBMS的Rack级定位。</p></div></section><section class="cell code-cell"><div class="cell-head"><b>Python / Glue</b><span>Cell 13</span></div><div class="cell-body"><pre><code>bbms_table = f&quot;{DATABASE}.{TABLE_PREFIX}_bbms_1s&quot;
+pcs_table = f&quot;{DATABASE}.{TABLE_PREFIX}_pcs_1s&quot;
+
+
+box_bbms_data = {}
+box_pcs_data = {}
+
+for case in BOX_CASES:
+    case_id = case[&quot;case_id&quot;]
+    bbms_sql = f&#x27;&#x27;&#x27;
+    SELECT
+        site_code,
+        asset_storage_key,
+        asset_component_key,
+        timestamp,
+        bb_v,
+        bb_a,
+        bb_soc,
+        bb_chast,
+        bb_rckisonot,
+        bb_rckisoflt,
+        bb_isohwflt,
+        bb_fltgrd
+    FROM {bbms_table}
+    WHERE event_date &gt;= &#x27;{case[&quot;start_day&quot;]}&#x27;
+      AND event_date &lt;= &#x27;{case[&quot;end_day&quot;]}&#x27;
+      AND site_code = &#x27;{case[&quot;site_code&quot;]}&#x27;
+      AND asset_storage_key = &#x27;{case[&quot;storage&quot;]}&#x27;
+    &#x27;&#x27;&#x27;
+
+    pcs_sql = f&#x27;&#x27;&#x27;
+    SELECT
+        site_code,
+        asset_storage_key,
+        asset_component_key,
+        timestamp,
+        pcs_batsoc,
+        pcs_dcv,
+        pcs_dcvp,
+        pcs_dcvn,
+        pcs_isoflt,
+        pcs_mpnbusvolimblance,
+        pcs_mposbus2peov,
+        pcs_mnegbus2peov
+    FROM {pcs_table}
+    WHERE event_date &gt;= &#x27;{case[&quot;start_day&quot;]}&#x27;
+      AND event_date &lt;= &#x27;{case[&quot;end_day&quot;]}&#x27;
+      AND site_code = &#x27;{case[&quot;site_code&quot;]}&#x27;
+      AND asset_storage_key = &#x27;{case[&quot;storage&quot;]}&#x27;
+    &#x27;&#x27;&#x27;
+
+    box_bbms_data[case_id] = spark.sql(bbms_sql).cache()
+    box_pcs_data[case_id] = (
+        spark.sql(pcs_sql)
+        .withColumn(
+            &quot;bus_balance_diff&quot;,
+            F.abs(F.abs(F.col(&quot;pcs_dcvp&quot;)) - F.abs(F.col(&quot;pcs_dcvn&quot;))),
+        )
+        .cache()
+    )
+    print(case_id, &quot;BBMS rows:&quot;, box_bbms_data[case_id].count())
+    print(case_id, &quot;PCS rows:&quot;, box_pcs_data[case_id].count())
+</code></pre></div></section><section class="cell code-cell"><div class="cell-head"><b>Python / Glue</b><span>Cell 14</span></div><div class="cell-body"><pre><code># 保存日汇总和直接告警点。
+for case in BOX_CASES:
+    case_id = case[&quot;case_id&quot;]
+    bbms_df = box_bbms_data[case_id]
+    pcs_df = box_pcs_data[case_id]
+
+    print(&quot;\n=====&quot;, case_id, &quot;BBMS =====&quot;)
+    bbms_df.select(
+        &quot;bb_v&quot;, &quot;bb_a&quot;, &quot;bb_soc&quot;, &quot;bb_rckisonot&quot;,
+        &quot;bb_rckisoflt&quot;, &quot;bb_isohwflt&quot;, &quot;bb_fltgrd&quot;,
+    ).describe().show()
+
+    bbms_daily = (
+        bbms_df
+        .groupBy(
+            &quot;asset_storage_key&quot;, &quot;asset_component_key&quot;,
+            F.to_date(&quot;timestamp&quot;).alias(&quot;day&quot;),
+        )
+        .agg(
+            F.count(&quot;*&quot;).alias(&quot;row_count&quot;),
+            F.avg(&quot;bb_v&quot;).alias(&quot;avg_voltage&quot;),
+            F.avg(&quot;bb_a&quot;).alias(&quot;avg_current&quot;),
+            F.avg(&quot;bb_soc&quot;).alias(&quot;avg_soc&quot;),
+            F.max(&quot;bb_rckisonot&quot;).alias(&quot;iso_notice&quot;),
+            F.max(&quot;bb_rckisoflt&quot;).alias(&quot;iso_fault&quot;),
+            F.max(&quot;bb_isohwflt&quot;).alias(&quot;iso_hardware_fault&quot;),
+            F.max(&quot;bb_fltgrd&quot;).alias(&quot;ground_fault&quot;),
+        )
+        .orderBy(&quot;day&quot;)
+    )
+    bbms_daily.show(100, False)
+    bbms_daily.write.mode(&quot;append&quot;).parquet(
+        f&quot;{S3_OUTPUT}/tables/{case_id}/bbms_daily_summary&quot;
+    )
+
+    pcs_daily = (
+        pcs_df
+        .groupBy(
+            &quot;asset_storage_key&quot;, &quot;asset_component_key&quot;,
+            F.to_date(&quot;timestamp&quot;).alias(&quot;day&quot;),
+        )
+        .agg(
+            F.count(&quot;*&quot;).alias(&quot;row_count&quot;),
+            F.avg(&quot;pcs_dcv&quot;).alias(&quot;avg_dc_voltage&quot;),
+            F.avg(&quot;pcs_dcvp&quot;).alias(&quot;avg_positive_bus_voltage&quot;),
+            F.avg(&quot;pcs_dcvn&quot;).alias(&quot;avg_negative_bus_voltage&quot;),
+            F.expr(&quot;percentile_approx(bus_balance_diff, 0.9)&quot;).alias(&quot;balance_diff_p90&quot;),
+            F.max(&quot;bus_balance_diff&quot;).alias(&quot;max_balance_diff&quot;),
+            F.max(&quot;pcs_isoflt&quot;).alias(&quot;iso_fault&quot;),
+            F.max(&quot;pcs_mpnbusvolimblance&quot;).alias(&quot;pn_bus_imbalance&quot;),
+            F.max(&quot;pcs_mposbus2peov&quot;).alias(&quot;positive_bus_to_pe&quot;),
+            F.max(&quot;pcs_mnegbus2peov&quot;).alias(&quot;negative_bus_to_pe&quot;),
+        )
+        .orderBy(&quot;day&quot;)
+    )
+    pcs_daily.show(100, False)
+    pcs_daily.write.mode(&quot;append&quot;).parquet(
+        f&quot;{S3_OUTPUT}/tables/{case_id}/pcs_daily_summary&quot;
+    )
+
+    bbms_alarm_events = bbms_df.filter(
+        (F.coalesce(F.col(&quot;bb_rckisonot&quot;), F.lit(0)) &gt; 0)
+        | (F.coalesce(F.col(&quot;bb_rckisoflt&quot;), F.lit(0)) &gt; 0)
+        | (F.coalesce(F.col(&quot;bb_isohwflt&quot;), F.lit(0)) &gt; 0)
+        | (F.coalesce(F.col(&quot;bb_fltgrd&quot;), F.lit(0)) &gt; 0)
+    )
+    pcs_alarm_events = pcs_df.filter(
+        (F.coalesce(F.col(&quot;pcs_isoflt&quot;), F.lit(0)) &gt; 0)
+        | (F.coalesce(F.col(&quot;pcs_mpnbusvolimblance&quot;), F.lit(0)) &gt; 0)
+        | (F.coalesce(F.col(&quot;pcs_mposbus2peov&quot;), F.lit(0)) &gt; 0)
+        | (F.coalesce(F.col(&quot;pcs_mnegbus2peov&quot;), F.lit(0)) &gt; 0)
+    )
+    print(case_id, &quot;BBMS alarm rows:&quot;, bbms_alarm_events.count())
+    print(case_id, &quot;PCS alarm rows:&quot;, pcs_alarm_events.count())
+    bbms_alarm_events.write.mode(&quot;append&quot;).parquet(
+        f&quot;{S3_OUTPUT}/tables/{case_id}/bbms_alarm_events&quot;
+    )
+    pcs_alarm_events.write.mode(&quot;append&quot;).parquet(
+        f&quot;{S3_OUTPUT}/tables/{case_id}/pcs_alarm_events&quot;
+    )
+</code></pre></div></section><section class="cell code-cell"><div class="cell-head"><b>Python / Glue</b><span>Cell 15</span></div><div class="cell-body"><pre><code># 每个Box案例输出一张BBMS + PCS综合图；1秒数据先聚合到分钟。
+for case in BOX_CASES:
+    case_id = case[&quot;case_id&quot;]
+
+    bbms_plot = (
+        box_bbms_data[case_id]
+        .groupBy(F.window(&quot;timestamp&quot;, &quot;1 minute&quot;).alias(&quot;minute&quot;))
+        .agg(
+            F.avg(&quot;bb_v&quot;).alias(&quot;voltage&quot;),
+            F.avg(&quot;bb_a&quot;).alias(&quot;current&quot;),
+            F.max(&quot;bb_rckisonot&quot;).alias(&quot;iso_notice&quot;),
+            F.max(&quot;bb_rckisoflt&quot;).alias(&quot;iso_fault&quot;),
+            F.max(&quot;bb_isohwflt&quot;).alias(&quot;iso_hardware_fault&quot;),
+            F.max(&quot;bb_fltgrd&quot;).alias(&quot;ground_fault&quot;),
+        )
+        .select(F.col(&quot;minute.start&quot;).alias(&quot;timestamp&quot;), &quot;*&quot;)
+        .drop(&quot;minute&quot;)
+        .orderBy(&quot;timestamp&quot;)
+        .toPandas()
+    )
+
+    pcs_plot = (
+        box_pcs_data[case_id]
+        .groupBy(F.window(&quot;timestamp&quot;, &quot;1 minute&quot;).alias(&quot;minute&quot;))
+        .agg(
+            F.avg(&quot;pcs_dcvp&quot;).alias(&quot;positive_bus_voltage&quot;),
+            F.avg(&quot;pcs_dcvn&quot;).alias(&quot;negative_bus_voltage&quot;),
+            F.avg(&quot;bus_balance_diff&quot;).alias(&quot;bus_balance_diff&quot;),
+            F.max(&quot;pcs_isoflt&quot;).alias(&quot;iso_fault&quot;),
+            F.max(&quot;pcs_mpnbusvolimblance&quot;).alias(&quot;pn_bus_imbalance&quot;),
+            F.max(&quot;pcs_mposbus2peov&quot;).alias(&quot;positive_bus_to_pe&quot;),
+            F.max(&quot;pcs_mnegbus2peov&quot;).alias(&quot;negative_bus_to_pe&quot;),
+        )
+        .select(F.col(&quot;minute.start&quot;).alias(&quot;timestamp&quot;), &quot;*&quot;)
+        .drop(&quot;minute&quot;)
+        .orderBy(&quot;timestamp&quot;)
+        .toPandas()
+    )
+
+    fig, axes = plt.subplots(2, 2, figsize=(17, 10))
+
+    axes[0, 0].plot(
+        bbms_plot[&quot;timestamp&quot;], bbms_plot[&quot;voltage&quot;], label=&quot;BBMS voltage&quot;
+    )
+    axes[0, 0].plot(
+        bbms_plot[&quot;timestamp&quot;], bbms_plot[&quot;current&quot;], label=&quot;BBMS current&quot;
+    )
+    axes[0, 0].legend()
+    axes[0, 0].set_title(&quot;BBMS operating state&quot;)
+
+    for field in [
+        &quot;iso_notice&quot;, &quot;iso_fault&quot;, &quot;iso_hardware_fault&quot;, &quot;ground_fault&quot;
+    ]:
+        axes[0, 1].step(
+            bbms_plot[&quot;timestamp&quot;], bbms_plot[field], label=field
+        )
+    axes[0, 1].legend()
+    axes[0, 1].set_title(&quot;BBMS insulation / ground flags&quot;)
+
+    axes[1, 0].plot(
+        pcs_plot[&quot;timestamp&quot;],
+        pcs_plot[&quot;positive_bus_voltage&quot;],
+        label=&quot;positive bus&quot;,
+    )
+    axes[1, 0].plot(
+        pcs_plot[&quot;timestamp&quot;],
+        pcs_plot[&quot;negative_bus_voltage&quot;],
+        label=&quot;negative bus&quot;,
+    )
+    axes[1, 0].plot(
+        pcs_plot[&quot;timestamp&quot;],
+        pcs_plot[&quot;bus_balance_diff&quot;],
+        label=&quot;balance diff&quot;,
+    )
+    axes[1, 0].legend()
+    axes[1, 0].set_title(&quot;PCS DC bus voltage&quot;)
+
+    for field in [
+        &quot;iso_fault&quot;, &quot;pn_bus_imbalance&quot;,
+        &quot;positive_bus_to_pe&quot;, &quot;negative_bus_to_pe&quot;,
+    ]:
+        axes[1, 1].step(
+            pcs_plot[&quot;timestamp&quot;], pcs_plot[field], label=field
+        )
+    axes[1, 1].legend()
+    axes[1, 1].set_title(&quot;PCS insulation / bus flags&quot;)
+
+    fig.suptitle(case_id)
+    fig.tight_layout()
+
+    local_path = &quot;/tmp/{}_box_insulation_eda.jpg&quot;.format(case_id)
+    plt.savefig(local_path, dpi=300)
+
+    s3_bucket = S3_BUCKET
+    s3_key = &quot;{}/figures/{}_box_insulation_eda.jpg&quot;.format(
+        S3_PREFIX, case_id
+    )
+    s3 = boto3.client(&quot;s3&quot;)
+    try:
+        s3.upload_file(local_path, s3_bucket, s3_key)
+        print(&quot;文件成功上传到 S3：s3://{}/{}&quot;.format(s3_bucket, s3_key))
+    except Exception as exc:
+        print(&quot;文件上传失败：{}&quot;.format(exc))
+
+%matplot plt
+</code></pre></div></section><section class="cell code-cell"><div class="cell-head"><b>Python / Glue</b><span>Cell 16</span></div><div class="cell-body"><pre><code># 每个Box案例与同场站其他子系统做BBMS、PCS peer对比。
+for case in BOX_CASES:
+    case_id = case[&quot;case_id&quot;]
+
+    bbms_peer_sql = f&#x27;&#x27;&#x27;
+    SELECT
+        asset_storage_key,
+        asset_component_key,
+        bb_v,
+        bb_rckisonot,
+        bb_rckisoflt,
+        bb_isohwflt,
+        bb_fltgrd
+    FROM {bbms_table}
+    WHERE event_date &gt;= &#x27;{case[&quot;start_day&quot;]}&#x27;
+      AND event_date &lt;= &#x27;{case[&quot;end_day&quot;]}&#x27;
+      AND site_code = &#x27;{case[&quot;site_code&quot;]}&#x27;
+    &#x27;&#x27;&#x27;
+    bbms_peer_summary = (
+        spark.sql(bbms_peer_sql)
+        .groupBy(&quot;asset_storage_key&quot;, &quot;asset_component_key&quot;)
+        .agg(
+            F.avg(&quot;bb_v&quot;).alias(&quot;avg_voltage&quot;),
+            F.max(&quot;bb_rckisonot&quot;).alias(&quot;iso_notice&quot;),
+            F.max(&quot;bb_rckisoflt&quot;).alias(&quot;iso_fault&quot;),
+            F.max(&quot;bb_isohwflt&quot;).alias(&quot;iso_hardware_fault&quot;),
+            F.max(&quot;bb_fltgrd&quot;).alias(&quot;ground_fault&quot;),
+            F.count(&quot;*&quot;).alias(&quot;row_count&quot;),
+        )
+        .orderBy(&quot;asset_storage_key&quot;)
+    )
+    bbms_peer_summary.show(200, False)
+    bbms_peer_summary.coalesce(1).write.mode(&quot;append&quot;).option(
+        &quot;header&quot;, True
+    ).csv(f&quot;{S3_OUTPUT}/tables/{case_id}/bbms_peer_summary&quot;)
+
+    pcs_peer_sql = f&#x27;&#x27;&#x27;
+    SELECT
+        asset_storage_key,
+        asset_component_key,
+        pcs_dcvp,
+        pcs_dcvn,
+        pcs_isoflt,
+        pcs_mpnbusvolimblance,
+        pcs_mposbus2peov,
+        pcs_mnegbus2peov
+    FROM {pcs_table}
+    WHERE event_date &gt;= &#x27;{case[&quot;start_day&quot;]}&#x27;
+      AND event_date &lt;= &#x27;{case[&quot;end_day&quot;]}&#x27;
+      AND site_code = &#x27;{case[&quot;site_code&quot;]}&#x27;
+    &#x27;&#x27;&#x27;
+    pcs_peer_summary = (
+        spark.sql(pcs_peer_sql)
+        .withColumn(
+            &quot;bus_balance_diff&quot;,
+            F.abs(F.abs(F.col(&quot;pcs_dcvp&quot;)) - F.abs(F.col(&quot;pcs_dcvn&quot;))),
+        )
+        .groupBy(&quot;asset_storage_key&quot;, &quot;asset_component_key&quot;)
+        .agg(
+            F.expr(&quot;percentile_approx(bus_balance_diff, 0.5)&quot;).alias(&quot;balance_diff_p50&quot;),
+            F.expr(&quot;percentile_approx(bus_balance_diff, 0.9)&quot;).alias(&quot;balance_diff_p90&quot;),
+            F.max(&quot;bus_balance_diff&quot;).alias(&quot;max_balance_diff&quot;),
+            F.max(&quot;pcs_isoflt&quot;).alias(&quot;iso_fault&quot;),
+            F.max(&quot;pcs_mpnbusvolimblance&quot;).alias(&quot;pn_bus_imbalance&quot;),
+            F.max(&quot;pcs_mposbus2peov&quot;).alias(&quot;positive_bus_to_pe&quot;),
+            F.max(&quot;pcs_mnegbus2peov&quot;).alias(&quot;negative_bus_to_pe&quot;),
+            F.count(&quot;*&quot;).alias(&quot;row_count&quot;),
+        )
+        .orderBy(F.desc(&quot;balance_diff_p90&quot;))
+    )
+    pcs_peer_summary.show(200, False)
+    pcs_peer_summary.coalesce(1).write.mode(&quot;append&quot;).option(
+        &quot;header&quot;, True
+    ).csv(f&quot;{S3_OUTPUT}/tables/{case_id}/pcs_peer_summary&quot;)
+</code></pre></div></section><section class="cell markdown-cell"><div class="cell-head"><b>Markdown</b><span>Cell 17</span></div><div class="cell-body"><h2>3. 首轮结果判读重点</h2>
+<ul>
+<li>先确认案例时间窗内是否有数据，以及告警时间是否覆盖现场失效时间。</li>
+<li>K0056：若 RBMS 未出现低绝缘或 peer 差异，应如实保留负结论，与返厂 NTF 对照。</li>
+<li>K0043：关注目标 Rack 的绝缘电阻是否长期低于同子系统其他 Rack，以及是否随电压/电流状态变化。</li>
+<li>K0315：重点确认 RBMS406 的 <code>rb_isoris</code> 是否在5月12日前下降，并与43号子系统其他 Rack 对比；BBMS/PCS只作辅助证据。</li>
+<li>K0357：重点确认 RBMS401 的 <code>rb_isoris</code> 是否在8月15日前逐步下降或突然降至约0.271 MΩ，并与16号子系统其他 Rack 对比；BBMS/PCS只作辅助证据。</li>
+<li>若连续量与告警都无分离度，下一步优先补充现场准确发生时刻、PCS更细粒度对地电压字段或维修标签，不强行形成模型规则。</li>
+</ul></div></section></main></body></html>

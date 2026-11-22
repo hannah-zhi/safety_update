@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="安全预警模型状态概览：模型状态、阶段、运行方式与预警类型配置。">
-  <title>安全预警模型状态概览</title>
+  <meta name="description" content="安全预警模块进展：模型状态、预警类型与模型迭代需求看板。">
+  <title>安全预警模块进展</title>
   <style>
     :root {
       color-scheme: dark;
@@ -69,6 +69,18 @@
       outline-offset: 2px;
     }
 
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
     .page {
       width: min(1600px, calc(100% - 44px));
       margin: 0 auto;
@@ -82,6 +94,44 @@
       gap: 20px;
       margin-bottom: 28px;
     }
+
+    .section-nav {
+      position: sticky;
+      top: 10px;
+      z-index: 30;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: fit-content;
+      max-width: 100%;
+      margin: -10px 0 30px;
+      padding: 7px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(7, 22, 32, 0.9);
+      box-shadow: 0 14px 38px rgba(0, 0, 0, 0.28);
+      backdrop-filter: blur(18px);
+    }
+
+    .section-nav a {
+      padding: 9px 13px;
+      border: 1px solid transparent;
+      border-radius: 9px;
+      color: var(--muted);
+      font-size: 13px;
+      white-space: nowrap;
+      transition: 160ms ease;
+    }
+
+    .section-nav a:hover,
+    .section-nav a.active {
+      color: #eafaff;
+      border-color: rgba(34, 216, 255, 0.25);
+      background: var(--cyan-soft);
+    }
+
+    .content-section { scroll-margin-top: 84px; }
+    .content-section + .content-section { margin-top: 68px; padding-top: 10px; }
 
     .brand {
       display: inline-flex;
@@ -274,7 +324,7 @@
     .donut-section + .donut-section { border-left: 1px solid var(--line); }
     .donut-title { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
     .donut-title h2 { margin: 0; font-size: 17px; }
-    .donut-content { display: grid; grid-template-columns: 138px minmax(0, 1fr); align-items: center; gap: 15px; padding-top: 18px; }
+    .donut-content { display: grid; grid-template-columns: 138px minmax(0, 1fr); align-items: center; gap: 15px; padding-top: 21px; }
 
     .donut {
       position: relative;
@@ -535,8 +585,106 @@
     .menu-option input { accent-color: var(--cyan); }
     .menu-actions { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 7px; margin-top: 9px; padding-top: 9px; border-top: 1px solid var(--line); }
     .menu-action.primary { color: #00232c; border-color: transparent; background: var(--cyan); font-weight: 750; }
+
+    .plan-empty {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      padding: 16px 18px;
+      border: 1px dashed rgba(122, 211, 255, 0.24);
+      border-radius: 12px;
+      color: #6f8795;
+      background: rgba(255, 255, 255, 0.018);
+    }
+
+    .requirements-kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 22px;
+    }
+
+    .requirements-dashboard {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .requirements-dashboard .chart-card { min-height: 320px; }
+    .requirements-dashboard .bar-row { grid-template-columns: minmax(110px, 1.25fr) 1fr 30px; }
+    .requirements-dashboard .bar-row[data-filter] { cursor: pointer; }
+    .requirements-dashboard .bar-row[data-filter]:hover .bar-label { color: var(--cyan); }
+    .requirements-dashboard .bar-row.active .bar-label { color: var(--cyan); font-weight: 750; }
+    .requirements-dashboard .bar-row.active .bar-track { outline: 1px solid rgba(34, 216, 255, 0.38); }
+
+    .requirement-filters {
+      display: grid;
+      grid-template-columns: minmax(240px, 1.6fr) repeat(3, minmax(150px, 0.8fr)) auto;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .filter-control {
+      height: 40px;
+      padding: 0 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      color: #d8eaf3;
+      background: rgba(3, 13, 20, 0.7);
+    }
+
+    .filter-control::placeholder { color: #647d8b; }
+    select.filter-control { color-scheme: dark; cursor: pointer; }
+    .filter-reset {
+      padding: 0 14px;
+      border: 1px solid rgba(34, 216, 255, 0.24);
+      border-radius: 10px;
+      color: var(--cyan);
+      background: var(--cyan-soft);
+      cursor: pointer;
+    }
+
+    .filter-reset:hover { border-color: var(--line-strong); }
+    .requirement-type, .requirement-status {
+      display: inline-flex;
+      align-items: center;
+      min-height: 25px;
+      padding: 3px 8px;
+      border: 1px solid var(--tag-border, var(--line));
+      border-radius: 999px;
+      color: var(--tag-color, #b9d1dc);
+      background: var(--tag-bg, rgba(255,255,255,.03));
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .requirement-desc { color: #d6e7ef; }
+    .requirement-detail {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .detail-block {
+      min-height: 88px;
+      padding: 13px 14px;
+      border: 1px solid rgba(122, 211, 255, 0.14);
+      border-radius: 11px;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .detail-block.wide { grid-column: span 2; }
+    .detail-block label { display: block; margin-bottom: 7px; color: var(--cyan); font-size: 12px; font-weight: 750; }
+    .detail-block div { color: #c9dce6; font-size: 13px; line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .requirement-table td { vertical-align: top; }
+    .requirement-table .expand-cell { vertical-align: middle; }
+    .requirement-table .detail-row td { padding: 0; }
+    .requirement-table .warning-panel { padding-left: 62px; }
     @media (max-width: 1260px) {
       .dashboard { grid-template-columns: 1fr 1fr; }
+      .requirements-dashboard { grid-template-columns: 1fr 1fr; }
+      .requirement-filters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
 
     @media (max-width: 860px) {
@@ -550,6 +698,12 @@
       .warning-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .warning-panel { padding-left: 18px; }
       .table-title-actions { flex-wrap: wrap; }
+      .section-nav { overflow-x: auto; width: 100%; }
+      .requirements-kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .requirements-dashboard { grid-template-columns: 1fr; }
+      .requirement-detail { grid-template-columns: 1fr; }
+      .detail-block.wide { grid-column: auto; }
+      .requirement-table .warning-panel { padding-left: 18px; }
     }
 
     @media (max-width: 560px) {
@@ -561,6 +715,7 @@
       .scenario-kpi-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
       .donut-content { grid-template-columns: 1fr; }
       .legend { grid-template-columns: 1fr 1fr; }
+      .requirements-kpi-grid, .requirement-filters { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -583,7 +738,12 @@
       </div>
     </header>
 
-    <section aria-labelledby="page-title">
+    <nav class="section-nav" aria-label="页面章节导航">
+      <a href="#model-overview" data-section-link="model-overview" class="active">第一部分 · 模型状态</a>
+      <a href="#requirements-overview" data-section-link="requirements-overview">第二部分 · 迭代需求</a>
+    </nav>
+
+    <section class="content-section" id="model-overview" aria-labelledby="page-title">
       <div class="section-head">
         <div class="section-title-wrap">
           <h1 id="page-title">安全预警模型状态概览</h1>
@@ -647,7 +807,7 @@
             <div class="table-title-actions">
               <span class="result-count" id="resultCount">显示 19 / 19 个模型</span>
               <button class="text-btn" id="resetFilters" type="button" hidden>清除筛选</button>
-              <button class="text-btn" id="toggleAll" type="button">展开全部预警类型</button>
+              <button class="text-btn" id="toggleAll" type="button">展开全部详情</button>
             </div>
           </div>
         </div>
@@ -656,7 +816,7 @@
           <table aria-label="安全预警模型状态清单">
             <colgroup>
               <col style="width:5%"><col style="width:18%"><col style="width:11%"><col style="width:8%"><col style="width:14%">
-              <col style="width:8%"><col style="width:6%"><col style="width:7%"><col style="width:16%"><col style="width:7%">
+              <col style="width:8%"><col style="width:6%"><col style="width:7%"><col style="width:14%"><col style="width:9%">
             </colgroup>
             <thead>
               <tr>
@@ -679,11 +839,89 @@
       </article>
 
     </section>
+
+    <section class="content-section" id="requirements-overview" aria-labelledby="requirements-title">
+      <div class="section-head">
+        <div class="section-title-wrap">
+          <h1 id="requirements-title">模型需求迭代看板</h1>
+        </div>
+        <a class="source-link" href="https://envision-energy.feishu.cn/wiki/O8Hewpqq5i4z0Sk4HGJcUbQHn3g?sheet=sDcrlW" target="_blank" rel="noreferrer">
+          查看飞书需求表
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8M17 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+
+      <div class="requirements-kpi-grid" aria-label="模型需求关键指标">
+        <article class="glass kpi" style="--kpi-color:var(--cyan);--kpi-soft:var(--cyan-soft)">
+          <div class="kpi-label"><span>迭代需求</span><span class="kpi-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M6 4h12v16H6zM9 8h6M9 12h6M9 16h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span></div>
+          <div class="kpi-value" id="reqKpiTotal">46<small>条</small></div>
+        </article>
+        <article class="glass kpi" style="--kpi-color:var(--violet);--kpi-soft:var(--violet-soft)">
+          <div class="kpi-label"><span>涉及模型</span><span class="kpi-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M7 4v6m10-6v6M5 11h14v9H5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span></div>
+          <div class="kpi-value" id="reqKpiModels">7<small>个</small></div>
+        </article>
+        <article class="glass kpi" style="--kpi-color:var(--green);--kpi-soft:var(--green-soft)">
+          <div class="kpi-label"><span>已上线</span><span class="kpi-icon"><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+          <div class="kpi-value" id="reqKpiOnline">16<small>条</small></div>
+        </article>
+        <article class="glass kpi" style="--kpi-color:var(--amber);--kpi-soft:var(--amber-soft)">
+          <div class="kpi-label"><span>推进中</span><span class="kpi-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 5v7l4 2M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+          <div class="kpi-value" id="reqKpiActive">28<small>条</small></div>
+        </article>
+      </div>
+
+      <div class="requirements-dashboard" aria-label="模型需求统计图表">
+        <article class="glass chart-card">
+          <div class="card-head"><h2>需求状态分布</h2><span class="chart-total" id="reqStatusTotal">8 种状态</span></div>
+          <div class="bar-chart" id="reqStatusChart"></div>
+        </article>
+        <article class="glass chart-card">
+          <div class="card-head"><h2>需求类型分布</h2><span class="chart-total" id="reqTypeTotal">6 种类型</span></div>
+          <div class="bar-chart" id="reqTypeChart"></div>
+        </article>
+        <article class="glass chart-card">
+          <div class="card-head"><h2>模型需求分布</h2><span class="chart-total" id="reqModelTotal">7 个模型</span></div>
+          <div class="bar-chart" id="reqModelChart"></div>
+        </article>
+      </div>
+
+      <article class="glass table-card" aria-labelledby="requirements-table-heading">
+        <div class="table-toolbar">
+          <div class="table-title">
+            <h2 id="requirements-table-heading">模型迭代需求清单</h2>
+            <div class="table-title-actions">
+              <span class="result-count" id="reqResultCount">显示 46 / 46 条需求</span>
+              <button class="text-btn" id="reqToggleAll" type="button">展开全部需求详情</button>
+            </div>
+          </div>
+          <div class="requirement-filters" aria-label="需求筛选">
+            <input class="filter-control" id="reqSearch" type="search" placeholder="搜索模型、描述、进展或需求编号">
+            <select class="filter-control" id="reqModelFilter" aria-label="按模型筛选"><option value="">全部模型</option></select>
+            <select class="filter-control" id="reqTypeFilter" aria-label="按需求类型筛选"><option value="">全部需求类型</option></select>
+            <select class="filter-control" id="reqStatusFilter" aria-label="按当前状态筛选"><option value="">全部状态</option></select>
+            <button class="filter-reset" id="reqReset" type="button">重置</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="requirement-table" aria-label="模型迭代需求清单">
+            <colgroup>
+              <col style="width:5%"><col style="width:9%"><col style="width:21%"><col style="width:11%">
+              <col style="width:10%"><col style="width:35%"><col style="width:9%">
+            </colgroup>
+            <thead><tr><th><span class="sr-only">展开</span></th><th>提出日期</th><th>模型名称</th><th>需求类型</th><th>当前状态</th><th>需求描述</th><th>模型 Owner</th></tr></thead>
+            <tbody id="requirementBody"></tbody>
+          </table>
+          <div class="empty-state" id="requirementEmpty" hidden><strong>没有匹配的迭代需求</strong><span>请调整筛选条件。</span></div>
+        </div>
+      </article>
+    </section>
   </main>
 
   <div class="column-menu" id="columnMenu" hidden></div>
 
   <script>
+    const requirements = [{"id":"REQ-2026-001","date":"2026-11-10","model":"Rack内电压一致性异常监测模型","owner":"胡志硕","type":"功能新增","status":"待评审","description":"中间数据曾中断，随后自行恢复；初步判断为通信中断。","expected":"中间数据曾中断，随后自行恢复；初步判断为通信中断。","progress":"","requesterId":"1858895568133258","contactOwnerId":"1858897536558232","attachment":"K0240_K0240.ESS05_RBMS109_电芯电压传感器脉冲异常_wl1_CelSocV_plot_2026-11-02.jpg"},{"id":"REQ-2026-002","date":"2026-11-10","model":"舱内簇间一致性模型","owner":"黄胜旭","type":"功能新增","status":"待评审","description":"脱簇告警新增最低电芯电压的额外判定","expected":"脱簇告警新增最低电芯电压的额外判定","progress":"","requesterId":"1858895568133258","contactOwnerId":"1858895967481065","attachment":""},{"id":"REQ-2026-003","date":"2026-11-10","model":"舱内簇间一致性模型","owner":"黄胜旭","type":"降低误报","status":"待评审","description":"ZHCN；ZHCN.ESS16；RBMS209\nZHCN；ZHCN.ESS17；RBMS209\nZHCN；ZHCN.ESS18；RBMS209\nZHCN；ZHCN.ESS21；RBMS209\nZHCN；ZHCN.ESS22；RBMS209\nZHCN；ZHCN.ESS23；RBMS209\nZHCN；ZHCN.ESS24；RBMS209\nZHCN；ZHCN.ESS25；RBMS209\nZHCN；ZHCN.ESS26；RBMS209\nZHCN；ZHCN.ESS27；RBMS209\nZHCN；ZHCN.ESS28；RBMS209；\n以上核实中核郯城项目以上子系统为9+8配置，需要分析告警原因","expected":"以上核实中核郯城项目以上子系统为9+8配置，需要分析告警原因；减少误报警","progress":"","requesterId":"1858895568133258","contactOwnerId":"1858895967481065","attachment":""},{"id":"REQ-2026-004","date":"2026-11-03","model":"Pack内电芯采样温度异常监测模型","owner":"黄胜旭","type":"降低误报","status":"待评审","description":"K0237.ESS02.RBMS101.Pack6.Cell17,21在2026/10/26的预警出现心跳信号异常，需要修复此缺陷","expected":"此异常是数据重复堆叠导致，非真实电芯故障，需要过滤掉","progress":"","requesterId":"1858896319592491","contactOwnerId":"1858895967481065","attachment":""},{"id":"REQ-2026-005","date":"2026-11-03","model":"主控配电柜空调运行异常监测模型","owner":"陈敏辉","type":"功能新增","status":"分析中","description":"此前出现现场空调结冰但未触发告警的情况，新增多条件识别逻辑，覆盖该类异常场景。","expected":"此前出现现场空调结冰但未触发告警的情况，新增多条件识别逻辑，覆盖该类异常场景。","progress":"目前K0062 因为温感数值异常 导致制冷/制热状态卡死，已经制作筛查，疑似是由于hvac控制板控制异常导致","requesterId":"1858897090564250","contactOwnerId":"1858897378811928","attachment":""},{"id":"REQ-2026-006","date":"2026-11-04","model":"主控配电柜UPS异常监测模型","owner":"陈敏辉","type":"功能新增","status":"待评审","description":"当前依靠电池欠压测点对电池性能预警不够完善，仅能作为电池浮充寿命到期的参考依据，无法知晓电池的实际续航表现。特提出新需求：\n1.自动抽样数据获取：结合场站的机会性维护，识别单次UPS市电断开情况下（Cx.upssupply=1），到UPS电池欠压（Cx.upsbattery=1）间隔的时间，作为判断UPS电池续航能力的依据。\n2.铅酸电池寿命曲线拟合，代入UPS铅酸电池衰减公式，通过前期的自动抽样数据，针对项目场站的并网时间，区域的环境温度表现，项目存储时间差异，绘制不同的寿命曲线","expected":"完成差异化UPS电池寿命曲线绘制，为电池寿命评估提供依据","progress":"","requesterId":"1858897090564250","contactOwnerId":"1858897378811928","attachment":""},{"id":"REQ-2026-007","date":"2026-11-04","model":"主控配电柜空调运行异常监测模型","owner":"陈敏辉","type":"功能新增","status":"待评审","description":"当前空调自身温度采样异常导致空调进行异常的制冷或加热，对设备稳定运行产生不利影响，且当前local逻辑仅针对阈值范围进行判断，在实测采样在阈值范围内出现不刷新的情况，无法识别。\nAC.temvalue为空调实测温度值，\n空调制冷逻辑：AC.temvalue＞AC.CoolTemp（37℃），\n停止制冷逻辑：AC.temvalue＜（AC.CoolTemp-AC.CoolSen）32℃\n空调加热逻辑：AC.temvalue＜AC.HeatTem\n停止加热逻辑：AC.temvalue＞（AC.HeatTem+AC.HeatSens）\n风险：\n1.AC.temvalue在达到制冷或加热温度或处于运行区间后，值保持不变，可能持续制冷或加热","expected":"通过模型预警，能够识别场站空调处于异常加热或异常制冷的情况，前置问题处理，防止产品持续异常运行出现不可逆的失效","progress":"","requesterId":"1858897090564250","contactOwnerId":"1858897378811928","attachment":""},{"id":"REQ-2026-008","date":"2026-11-03","model":"舱内簇间一致性模型","owner":"黄胜旭","type":"降低误报","status":"待验证","description":"脱簇误报问题优化：误报由单帧异常SOC数据触发","expected":"在模型中增加持续时长判定逻辑，要求异常状态需要持续才触发告警，过滤单帧异常。","progress":"2026/6/2报出电压偏低，在2026/6/5左右脱簇，此时最低电压3V，SOC在1%左右不变，随后低压电芯电压一直逐渐降低，6/19换包，电压最低3.25V，但是一直未连接进行充放电，SOC一直未矫正","requesterId":"1858895568133258","contactOwnerId":"1858895967481065","attachment":""},{"id":"REQ-2026-009","date":"2026-10-20","model":"Rack内电压一致性异常监测模型","owner":"胡志硕","type":"其他优化","status":"已上线","description":"K0248；K0248.ESS04；RBMS104；河北省；2026/10/12；电芯仅电压偏高\nK0315；K0315.ESS39；RBMS206；内蒙古自治区；2026/10/12；电芯SOC偏低\nK0339；K0339.ESS08；RBMS404；内蒙古自治区；2026/10/12；电芯仅电压偏高","expected":"同一rack内会有多种预警内容，部分告警图片和告警内容不匹配，需要告警融合","progress":"已为告警监测添加互斥逻辑，只有电芯电压处于0.1<=x<=5间的电芯才会进入一致性异常判定，超出该区间直接判定为传感器异常。同时以后对于一个电池簇，如果同时出现一致性异常和传感器异常告警项，代表簇内同时出现两种异常的电芯，是真实地。此外，对于极差类异常判定，如果电池簇内任意电芯<0.1或\n>5，则不会进入极差异常判定模块。","requesterId":"1858895568133258","contactOwnerId":"1858897536558232","attachment":"企业微信截图_17924812246424.png"},{"id":"REQ-2026-010","date":"2026-10-20","model":"Pack内电芯采样温度异常监测模型","owner":"黄胜旭","type":"降低误报","status":"待评审","description":"整簇数据跳变到持续-40，疑似通讯问题","expected":"短期可通过阈值单独筛选出来，便于分类排查；长期这类由于通讯问题导致的整簇数据异常需过滤","progress":"","requesterId":"1858896319592491","contactOwnerId":"1858895967481065","attachment":"捕获1.PNG、捕获2.PNG"},{"id":"REQ-2026-011","date":"2026-10-20","model":"Rack内电压一致性异常监测模型","owner":"胡志硕","type":"降低误报","status":"已上线","description":"K0336；K0336.ESS03；RBMS207\nK0336；K0336.ESS03；RBMS211\nK0336；K0336.ESS03；RBMS209\n以上3EA在W42告警（推送时间2026/10/12）报出静置亏电告警，目前核实告警图片发现最低电芯电压有3.25v，rack_soc_min有25%，目前看下来未到静置亏电需要处理的步骤，需模型负责人核实是否为误报警。","expected":"目前看下来未到静置亏电需要处理的步骤，需模型负责人核实是否为误报警。","progress":"已添加限制条件，某天低电压或低SOC状态至少存在>=300s才能够被判定为静置亏电","requesterId":"1858895568133258","contactOwnerId":"1858897536558232","attachment":""},{"id":"REQ-2026-012","date":"2026-09-22","model":"Rack内电压一致性异常监测模型","owner":"胡志硕","type":"其他优化","status":"待评审","description":"背景: K0258-ESS05-RBMS104存在异常，但未触发电压模型告警；\n问题: 数据回溯后发现K0258自2026-08-25后的SOX中间表数据出现缺失，该场站于2026-09-11回传了09-09前的数据，且存在正常充放电，电压中间表和充放电中间表正常更新。","expected":"SOX中间表数据缺失导致，已转交特征工程owner刘玥进一步分析排查。","progress":"","requesterId":"1858895568133258","contactOwnerId":"1858897536558232、1858896285996201","attachment":""},{"id":"REQ-2026-013","date":"2026-09-15","model":"直流环控高温风险监测模型","owner":"杨威","type":"其他优化","status":"已上线","description":"K-0357巴彦淖尔河套项目及K-0320锡林郭勒蒙新项目，9月8日推送告警“制冷效率不佳,出水口温度长时间超过45度”\n实际排查发现是LocalAPP死机","expected":"在 Local 侧添加对应质检预警机制","progress":"原因：fums内存泄漏导致调度程序和lems的app运行异常，甚至设备死机\n措施：关闭fums，重启local，将内存泄漏加入到Lems软件测试必备环节；\n更新人：刘周峰","requesterId":"1858896543390857","contactOwnerId":"1858896117647514、1867785747535000","attachment":""},{"id":"REQ-2026-014","date":"2026-09-15","model":"直流环控高温风险监测模型","owner":"杨威","type":"降低误报","status":"待评审","description":"K-0080鄂尔多斯零碳产业园新型电力系统改造项目9月8日推送告警“待机时段出现异常,疑似PTC粘连”\n实际35KV下电，设备未投入，非真实数据","expected":"过滤掉此类误报警","progress":"","requesterId":"1858896543390857","contactOwnerId":"1858897332849795","attachment":""},{"id":"REQ-2026-015","date":"2026-09-15","model":"直流环控高温风险监测模型","owner":"杨威","type":"缺陷修复","status":"待评审","description":"K-0056中核山东100MW/200MWh储能系统项目，9月8日推送告警“其他长时间原因过温, 出水口温度长时间超过45度”\n实际在待机状态下，出水温度测点受环温影响，实际未高温，需优化模型","expected":"优化模型，减少误报警","progress":"","requesterId":"1858896543390857","contactOwnerId":"1858897332849795、1858896543390857","attachment":""},{"id":"REQ-2026-016","date":"2026-09-17","model":"Rack内电压一致性异常监测模型","owner":"胡志硕","type":"降低误报","status":"已上线","description":"W38周预警，K0249；K0249.ESS07；RBMS112；新疆维吾尔自治区；2026/9/14；电芯内阻偏大；1；['79']；2026-08-25 00:59:56；2026-09-09 15:43:10；0；-1；0.073；-0.055 ，\n告警等级为1，但是推送的字段显示：soc偏差＜5，ΔV＜200mv，图片也未见异常","expected":"因为目前根据数据和图看应该推送等级3，但是实际报出等级1，需要判断问题原因","progress":"内阻偏大异常对电芯的应该应该表现为放电末端电压偏低，其放电末端静态SOC偏高并非由内阻偏大引起，因此不应作为内阻异常等级的判定依据，已更新算法，此类异常后续将推送warning_level=3，将于本周告警推送中立即生效。","requesterId":"1858895568133258","contactOwnerId":"1858897536558232","attachment":""},{"id":"REQ-2026-017","date":"2026-09-17","model":"Rack内电压一致性异常监测模型","owner":"胡志硕","type":"降低误报","status":"已上线","description":"SBCN；SBCN.ESS03；RBMS209；甘肃省；2026/9/14；静置亏电；1;\n中节能马鬃山是1套9+9，2套9+8配置，ESS03是9+8配置","expected":"中节能马鬃山是1套9+9，2套9+8配置，ESS03是9+8配置，应该不能判断为静置亏电","progress":"2026-09-20，已在静置亏电中排查此类虚假电池簇","requesterId":"1858895568133258","contactOwnerId":"1858897536558232","attachment":""},{"id":"REQ-2026-018","date":"2026-09-17","model":"Pack内电芯采样温度异常监测模型","owner":"黄胜旭","type":"功能新增","status":"待评审","description":"K-0081直流环控高温风险监测模型推送出08.01某一时刻（＜60s）电芯最高温达90℃，杨博回溯数据发现08.01当天后续有持续接近1h的电芯最高温达90℃；拉通胜旭后确认28号-201簇有接近1h的电芯最高温达90℃（热力图中的0℃和90℃非真实温度，但过滤难度较大），但电芯温度采样异常监测模型及超感知未推送相应告警，确认还是中间表的问题：这个是8/1出现的异常，8/18数据回传落到中间表，然后温度模型的计算周期是每周一，然后17号计算的时候数据没回来，24号计算的时候算前21天只算到8/3，就没算到8/1号的异常。","expected":"想开发中间表遗漏问题检测功能，避免漏报警","progress":"","requesterId":"1858896418006103","contactOwnerId":"1858895967481065、1858894951487588、1858896285996201","attachment":"K-0081-1.png、K-0081-2.png、K-0081-3.png、K0081_K0081.ESS28_RBMS201_2026-08-01_temperature.png"},{"id":"REQ-2026-019","date":"2026-09-17","model":"Pack内电芯采样温度异常监测模型","owner":"黄胜旭","type":"降低误报","status":"待验证","description":"W38告警数据监测异常的有23条，主要是K0357的88号以及K0419的6号，麻烦优化过滤掉","expected":"优化过滤，提高准确率","progress":"数据情况超过算法边界，已完成修正","requesterId":"1858896319592491","contactOwnerId":"1858895967481065","attachment":""},{"id":"REQ-2026-020","date":"2026-09-17","model":"Pack内电芯采样温度异常监测模型","owner":"黄胜旭","type":"降低误报","status":"待评审","description":"W38告警出现2条低温告警，显示同簇内2个测点均有异常，但是28号这个标黄色测点，看起来趋势是正常，该问题历史上也报出来几次，需要分析原因，如确认无异常需要过滤到28号点位告警","expected":"减少误报警，仅告警异常点位","progress":"","requesterId":"1858896319592491","contactOwnerId":"1858895967481065","attachment":"11.png、22.png"},{"id":"REQ-2026-021","date":"2026-09-15","model":"Pack内电芯采样温度异常监测模型","owner":"黄胜旭","type":"功能新增","status":"待验证","description":"增加新的告警类型：簇内单个电池包整体温度偏高\n异常现象：簇内单个电池包整体温度偏高异常，簇内其它电池包温度正常，且环控系统运行正常（该电池包的温度随充放电变化滞后于簇内其它电池包）\n该类故障疑似水冷液堵塞导致单个电池包温度降不下来，影响范围仅限于簇内单个电池包","expected":"单独分类告警推送且非环控问题，属pack/电芯 CBB","progress":"功能初步开发完成，使用pack平均温度与rack中位数温度差进行筛选，待上线验证","requesterId":"1858896319592491","contactOwnerId":"1858895967481065","attachment":""},{"id":"REQ-2026-022","date":"2026-09-15","model":"Rack内电压一致性异常监测模型","owner":"胡志硕","type":"降低误报","status":"已上线","description":"K0212；K0212.ESS19；Pack；RBMS101；2026/9/7；过充过放\nK0212；K0212.ESS25；Pack；RBMS101；2026/9/7；过充过放\nK0212；K0212.ESS28；Pack；RBMS101；2026/9/7；过充过放\nK0212；K0212.ESS30；Pack；RBMS101；2026/9/7；过充过放\nK0315；K0315.ESS39；Pack；RBMS206；2026/9/7；过充过放；\nSGCN；SGCN.ESS28；Pack；RBMS204；2026/9/7；过充过放 （此告警看数据图应为相邻电芯402、403跳变）\n根据图片应该判断为电芯采样异常/电芯跳变，详情见图片和风险运营管理在线文档","expected":"推A告B，请志硕排查是否误报警和后续优化","progress":"采样跳变逻辑已置于更高优先级","requesterId":"1858895568133258","contactOwnerId":"1858897536558232","attachment":"1.png"},{"id":"REQ-2026-023","date":"2026-09-08","model":"直流环控高温风险监测模型","owner":"杨威","type":"其他优化","status":"待评审","description":"K-0056中核山东100MW/200MWh储能系统项目出现未匹配现有失效模式的高温风险，现象疑似 PTC 粘连但与历史案例特征不符，需进一步对接现场核查具体根因。","expected":"核查具体根因,完善现有失效模式","progress":"","requesterId":"1858896543390857","contactOwnerId":"1858897332849795、1858896543390857","attachment":""},{"id":"REQ-2026-024","date":"2026-09-08","model":"Pack内电芯采样温度异常监测模型","owner":"黄胜旭","type":"其他优化","status":"待验证","description":"K-0079通威唐山项目，直流环控高温预警推送异常：分析判断出于08.18，8号-106簇-单个测点稳定高温，但电芯温度采样异常模型未推送异常，需跟踪未推送原因","expected":"及时推送风险，避免漏报","progress":"伽利略从ETL中取消息进行中间表的更新，但更新K0079时消息中断导致中间表数据未更新，温度模型从中间表中未取到数据从而计算失败。","requesterId":"1858896418006103","contactOwnerId":"1858895967481065","attachment":"企业微信截图_1788767984672.png"},{"id":"REQ-2026-025","date":"2026-09-08","model":"Rack内电压一致性异常监测模型","owner":"胡志硕","type":"阈值优化","status":"已上线","description":"SBCN-中节能马鬃山项目-过充过放阈值调整：\n背景-因电量考核、且和BMS-LMT-小祥通过参数巡检功能核实后确认充电截止电压参数放开到3.7v","expected":"针对SBCN：3.65＜x＜3.7---告警等级为3；3.7＜x--告警等级为1","progress":"2026-09-14已更新算法，将在下周告警推送时生效","requesterId":"1858895568133258","contactOwnerId":"1858897536558232","attachment":"SBCN过充过放.png"},{"id":"REQ-2026-026","date":"2026-09-08","model":"Rack内电压一致性异常监测模型","owner":"胡志硕","type":"阈值优化","status":"已上线","description":"K0315和K0404都为阿拉善项目，都为北方项目，目前根据W37周预计0908：发现K0315的电压偏低是300mv的阈值，但是K0404是200mv阈值，","expected":"需要修改K0404的阈值配置为北方项目参数。","progress":"2026-09-14已将\"K404\"添加至北方大储名单。将于下周推送生效","requesterId":"1858895568133258","contactOwnerId":"1858897536558232","attachment":"屏幕截图 2026-09-08 182950.png、K0404.png、K0315.png"},{"id":"REQ-2026-027","date":"2026-09-03","model":"直流环控高温风险监测模型","owner":"杨威","type":"降低误报","status":"待验证","description":"K0357.ESS19 Bank03 电芯最低温瞬时变化为200℃，需优化预警逻辑","expected":"过滤掉误报警","progress":"箱式产品电芯超过110度暂认为是非法数据, 将会先进行过滤剔除在诊断逻辑之外, 本周验证已剔除K0315,K0281的两个案例,但 对于K0081存在持续1小时的90度异常温度场景暂时无法过滤","requesterId":"1858896418006103","contactOwnerId":"1858897332849795","attachment":"K0357.ESS19 Bank03 电芯最低温瞬时变化为200℃.png"},{"id":"REQ-2026-028","date":"2026-09-02","model":"Rack内电压一致性异常监测模型","owner":"胡志硕","type":"其他优化","status":"持续跟进","description":"K0240；K0240.ESS69；RBMS208；['410']\nK0281；K0281.ESS11；RBMS104；['325']\nK0281；K0281.ESS12；RBMS108；['145']\nK0281；K0281.ESS37；RBMS206；['152'] ，4EA告警报出告警内容为过充过放，需要排查为什么告警不是静置亏电？","expected":"看图片都是静置片段，是否优先判断为静置亏电？","progress":"2026-09-03，场景特殊，继续观察，暂不处理","requesterId":"1858895568133258","contactOwnerId":"1858897536558232","attachment":""},{"id":"REQ-2026-029","date":"2026-09-01","model":"Rack内电压一致性异常监测模型","owner":"胡志硕","type":"降低误报","status":"已上线","description":"K0240.ESS17.RBMS105：电芯电压跳变65535和0，17-105-1#pack的J4和J5电压跳变，核实动力人员8.14确实在补电；需要看下这条为什么检测为静置显著自放电而非传感器-0异常或65535异常，详情见附件图片","expected":"预警内容目前是静置显著自放电，需要改成传感器异常等告警内容","progress":"K0240；K0240.ESS17；RBMS105；江苏省；2026-08-24；电芯电压传感器65535异常；1\nK0240；K0240.ESS17；RBMS105；江苏省；2026-08-24；静置显著自放电；1\n2026-08-25该电池簇推出了两条相关告警：静置显著自放电和65535异常。已进一步收紧静置显著自放电的判定逻辑，以排除传感器异常导致的压差显著增大，将于下周推送生效。","requesterId":"1858895568133258","contactOwnerId":"1858897536558232","attachment":"屏幕截图 2026-09-02 110405.png"},{"id":"REQ-2026-030","date":"2026-08-21","model":"Rack内电压一致性异常监测模型","owner":"胡志硕","type":"降低误报","status":"已上线","description":"由Local重启通讯中断导致的电芯电压传感器跳变为0，该类异常直接诊断为\"Local重启-电芯电压传感器0异常\"，流转给BMS LMT进行处理","expected":"新增异常类\"Local重启-电芯电压传感器0异常\"","progress":"2026-09-01已开发完成并在部分数据上完成测试，于下周推送告警生效","requesterId":"1858895568133258","contactOwnerId":"1858897536558232","attachment":""},{"id":"REQ-2026-031","date":"2026-08-28","model":"舱内簇间一致性模型","owner":"黄胜旭","type":"降低误报","status":"已上线","description":"部分通讯中断类问题会被告警为环控异常","expected":"将这类问题排除在环控外","progress":"","requesterId":"1858896543390857、1858897536558232","contactOwnerId":"1858897536558232","attachment":""},{"id":"REQ-2026-032","date":"2026-08-18","model":"电芯温度云端屏蔽监控模型","owner":"待确认","type":"功能新增","status":"开发中","description":"将云端屏蔽测点与电芯温度异常模型中这些测点的预警结果进行校核，分析云端正确屏蔽测点的温度异常告警结果是否有变化，确认异常已知且风险可控；并输出云端错误屏蔽测点的温度结果。","expected":"输出云端正确屏蔽测点的温度异常情况，如低温跳变，NTC故障导致的稳定高温或低温，以及在电芯温度预警模型中的告警分类是否有变化","progress":"试运行中","requesterId":"1858896319592491","contactOwnerId":"1858897378811928、1858895967481065","attachment":""},{"id":"REQ-2026-033","date":"2026-08-18","model":"Rack内电压一致性异常监测模型","owner":"胡志硕","type":"降低误报","status":"已上线","description":"预警失效模式为电芯过充过放，需要新增告警失效模式为：电芯传感器异常-相邻电芯电压跳变。","expected":"","progress":"2026-09-01 已开发完成并在部分数据上测试完成，于下周推送告警中生效，测试结果已上传附件","requesterId":"1858895568133258","contactOwnerId":"1858897536558232","attachment":"{918CD4FA-9B16-422C-A8D7-17E0D576D756}.png"},{"id":"REQ-2026-034","date":"2026-08-18","model":"Rack内电压一致性异常监测模型","owner":"胡志硕","type":"其他优化","status":"已上线","description":"海外场站K0280和K0305数据没有及时回传；\n海外场站SGCN由于ETL问题，导致云端数据出了问题，自2026.08.04后数据不可用","expected":"数据及时回传且可以使用","progress":"因LCRS及数据子系统编号格式由ESSXX改为ESSXXX，外蒙古项目上云程序未同步更新相关信息导致数据抓取失败，目前已重新修改上云程序数据抓取文件路径K0280上云程序已于8月恢复；机端FT39版本中不再计算id_digest导致数据上云后无法清洗影响消费，已于09-11完成全场FT40版本更新以灭火该问题，09-11至今K0280数据状态已恢复健康","requesterId":"1858897536558232","contactOwnerId":"1858895064944745、1858895295687739","attachment":"K0280进展.png"},{"id":"REQ-2026-035","date":"2026-08-18","model":"Rack内电压一致性异常监测模型","owner":"胡志硕","type":"降低误报","status":"开发中","description":"08.11，K0280场站有一条\"SOC偏低\"类告警被推送为\"仅电压偏低告警”","expected":"告警类型推送准确","progress":"已提交SOX中间表更新需求，待执行","requesterId":"1858895568133258","contactOwnerId":"1858897536558232","attachment":""},{"id":"REQ-2026-036","date":"2026-08-18","model":"主控配电柜UPS异常监测模型","owner":"陈敏辉","type":"降低误报","status":"已拒绝","description":"现场检修断电阶段触发“直流主控配电柜内空调长时间高低电压告警”告警，需新增过滤逻辑","expected":"剔除现场检修断电阶段的误告警","progress":"需求驳回，都是真实告警，经过数据探索，讨论下来保留并持续告警","requesterId":"1858897090564250","contactOwnerId":"1858897378811928","attachment":""},{"id":"REQ-2026-037","date":"2026-08-11","model":"直流环控高温风险监测模型","owner":"杨威","type":"降低误报","status":"已上线","description":"W32“K-0056中核山东项目”直流环控高温风险监测模型推送的数据总计40条为6月数据，经确认为现场未及时回传。需与现场宣贯及时回传数据。","expected":"","progress":"原因：\n1、该项目磁盘空间受限，导致现场笔记本执行数据回传速度缓慢\n2、该项目已出保，现场人员无法填写数据回传工时，后续该场站无现场人员常驻现场，难以推动现场人员进行数据回传工作\n措施：\n1、2台回传笔记本已升级剪切程序，数据拷贝回传速率已明显提升\n2、已拉通现场沟通客户协助执行数据拷贝回传动作，避免数据回传断连","requesterId":"1858896543390857","contactOwnerId":"1858895295687739、1858895064944745","attachment":""},{"id":"REQ-2026-038","date":"2026-08-11","model":"主控配电柜UPS异常监测模型","owner":"陈敏辉","type":"降低误报","status":"已上线","description":"W32主控配电柜UPS异常监测模型涉及K-0363谷山梁项目的预警回传的是6月数据，需优化","expected":"","progress":"","requesterId":"1858897090564250","contactOwnerId":"1858897378811928","attachment":""},{"id":"REQ-2026-039","date":"2026-08-13","model":"Rack内电压一致性异常监测模型","owner":"胡志硕","type":"其他优化","status":"已上线","description":"极差类异常的异常电芯编号判定优化，聚焦电压/soc最高和最低异常电芯","expected":"极差类异常的异常电芯编号判定优化，聚焦电压/soc最高和最低异常电芯","progress":"已完成算法探索和初版开发，计划本周上线；\n关键变更：，在探索过程中发现无法聚焦电压/soc最高和最低异常电芯，改为了在告警图中维护表格来展示具体的电芯编号","requesterId":"1858895568133258","contactOwnerId":"1858897536558232","attachment":"K0240_K0240.ESS41_RBMS102_簇SOC极差偏大_wl2_CelSocV_plot_2026-08-11 (5).jpg"},{"id":"REQ-2026-040","date":"2026-08-07","model":"Pack内电芯采样温度异常监测模型","owner":"黄胜旭","type":"降低误报","status":"待验证","description":"NTC稳定高温异常的偶见出现在其它类型告警中，需优化","expected":"","progress":"原先方案使用rb_hb和process_id的方式进行数据不刷新排查，发现还是存在异常场景不能完全覆盖；目前最新方案删除数据恢复更新后前10分钟异常波动数据，经验证可以覆盖目前所有场景，功能已完成","requesterId":"1858896319592491","contactOwnerId":"1858895967481065、1858894951487588","attachment":""},{"id":"REQ-2026-041","date":"2026-08-07","model":"Pack内电芯采样温度异常监测模型","owner":"黄胜旭","type":"降低误报","status":"待验证","description":"部分主正测点随电流升高告警也被划到了其它类型温度偏高里面","expected":"","progress":"使用考虑电流对温度影响的滞后性，使用新的特征作为特征划分依据，功能已完成待上线验证","requesterId":"1858896319592491","contactOwnerId":"1858895967481065、1858894951487588","attachment":""},{"id":"REQ-2026-042","date":"2026-08-07","model":"Pack内电芯采样温度异常监测模型","owner":"黄胜旭","type":"降低误报","status":"待验证","description":"V3.0版的告警出现未见异常K0331，疑似数据刷新时间不统一导致，这类告警需消除","expected":"此类刷新时间不一致导致的误报过滤掉","progress":"误报警原因为温度点位配置错误，256温度测点配置成224温度点位，导致异常的温度测点位置分布错误，从256温度测点的热力图看，属于常规的主正主负温度异常问题","requesterId":"1858896319592491","contactOwnerId":"1858895967481065、1858894951487588","attachment":""},{"id":"REQ-2026-043","date":"2026-08-07","model":"Pack内电芯采样温度异常监测模型","owner":"黄胜旭","type":"降低误报","status":"待验证","description":"主负主正测点随电流升高告警，需要细化阈值，用于区分电缆导致的异常（温差通常在6°C-7°C之间）和螺栓松动的区分（温差≥9°C）","expected":"L05：主负主正测点随电流升高告警\n1、温差：6°C-9°C：电缆导致的异常\n2、温差≥9°C，其它异常如疑似螺栓松动\nL08：主负主正测点随电流升高告警\n1、温差：6°C-9°C：电缆导致的异常（待数据回溯查看告警数量后，确认阈值）\n2、温差≥9°C，其它异常如疑似螺栓松动\nW35-20260828——L08 0.5C 315的电芯调整阈值为7°C\n结合这两周的L08 32号温升异常的告警结果，当前筛选出了温差较大的位置联系现场排查，跟胜旭讨论之后，L08 0.5C 315的温度告警阈值调整为7°C，优化告警量的同时，我们继续观察，看排查后的位置是否再次出现告警","progress":"根据不同的机型（L05、L08 0.5C），区分电缆导致的异常（温差通常在6°C-7°C之间）和螺栓松动的异常（温差≥9°C），目前功能已经开发完成，预计下周上线。","requesterId":"1858896319592491","contactOwnerId":"1858895967481065、1858894951487588","attachment":""},{"id":"REQ-2026-044","date":"2026-07-14","model":"Rack内电压一致性异常监测模型","owner":"胡志硕","type":"降低漏报","status":"优化中","description":"K0271天祝武威项目近期现场反馈15#子系统-408簇-164#点位低温跳变，在做330升压站测试过程中故障停机，现场临时屏蔽，同步已检查线束外观无异常，测量相应的ntc阻值无异常；主从站配置 twinskid C、D舱无数据","expected":"协能一拖四场站云端可回传数据","progress":"","requesterId":"1858895568133258、1858896319592491","contactOwnerId":"1858895064944745、1858895295687739","attachment":""},{"id":"REQ-2026-045","date":"2026-06-29","model":"主控配电柜UPS异常监测模型","owner":"陈敏辉","type":"降低误报","status":"待验证","description":"1.历史吊装时间数据记录（计算首次投运至今总天数t）\n2.等效环境温度Temp：取Cx.tempaverage，日均值\n3.欠压信号标记：Cx.UPSbattery\n4.市电条件过滤：Cx.upssupply，在市电模式下UPS电池欠压的持续10min\n4.上下电误报警过滤：在市电激活后，延时30min，记录电池欠压信号","expected":"1.UPS电池备件可预测，在提升问题响应效率的同时，降低备件库存呆滞成本和电池存放难得问题\n2.提前预知UPS电池寿命，对黑启动项目的风险评估\n3.沉淀数据，在样本数据收集后，构建UPS电池寿命模型，适配储能的智能化运维需求","progress":"验证发现 目前逻辑会造成漏报，需要讨论，探索数据，尝试修复","requesterId":"1858897090564250","contactOwnerId":"1858897378811928","attachment":""},{"id":"REQ-2026-046","date":"2026-07-07","model":"直流环控高温风险监测模型","owner":"杨威","type":"功能新增","status":"待验证","description":"针对直流水机出水温度高温的模型，耦合水机故障（码）、水机运行状态判断水机异常状况","expected":"水机故障检修Agent\n1.快速筛查定位水机出水高温原因\n2.锁定故障部件根因\n3.针对性检修","progress":"已根据CBB提供逻辑与故障码映射信息输出一版结果, 排查结果如下\n1.新故障逻辑准确度未达预期, 还需要进一步迭代更新,\n2.故障码存在不同供应商的信息差异, 目前只针对英维克的结果给出相应故障, 还需 LMT 提供其他供应商的故障码,以及设备的供应商映射关系才能开展下一步","requesterId":"1858896543390857","contactOwnerId":"1858897332849795","attachment":""}];
+
     const warningMap = {
       "Safety_Pack_CellTemperatureAnomaly": [
         "铜排螺栓松动/绝缘子故障/总正总负处电芯异常", "busbar焊接不良/电芯内阻异常", "NTC采样失效/BMU故障/采样线束故障（温度偏高）",
@@ -785,7 +1023,7 @@
         selected.size === 0 || columns[key].values(model).some((value) => selected.has(value))
       ));
       if (!state.sortKey) return filtered.sort((a, b) => (a.mode === "离线") - (b.mode === "离线") || a.id - b.id);
-      return filtered.sort((a, b) => String(columns[state.sortKey].sort(a)).localeCompare(
+      return filtered.sort((a, b) => (a.mode === "离线") - (b.mode === "离线") || String(columns[state.sortKey].sort(a)).localeCompare(
         String(columns[state.sortKey].sort(b)), "zh-CN", { numeric: true }
       ) * state.sortDir || a.id - b.id);
     }
@@ -838,27 +1076,34 @@
 
     function renderTable(rows) {
       els.body.innerHTML = rows.map((model) => {
-        const expandable = model.warnings.length > 0;
+        const expandable = model.warnings.length > 0 || model.mode === "离线";
         const open = state.expanded.has(model.id);
         const expandControl = expandable
-          ? `<button class="expand-btn" type="button" data-expand="${model.id}" aria-expanded="${open}" aria-label="${open ? "收起" : "展开"}${model.name}的预警类型"><svg viewBox="0 0 24 24" fill="none"><path d="m9 6 6 6-6 6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></button>`
+          ? `<button class="expand-btn" type="button" data-expand="${model.id}" aria-expanded="${open}" aria-label="${open ? "收起" : "展开"}${model.name}的详情"><svg viewBox="0 0 24 24" fill="none"><path d="m9 6 6 6-6 6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></button>`
           : `<span class="expand-placeholder">—</span>`;
-        const detail = open ? `
-          <tr class="detail-row">
-            <td colspan="10">
-              <div class="warning-panel">
+        const detailContent = model.warnings.length ? `
                 <div class="warning-head">
                   <h3>${model.name} · 预警类型</h3>
                   <span class="warning-badge">${model.warnings.length} 条</span>
                 </div>
-                <div class="warning-grid">${model.warnings.map((warning, index) => `<div class="warning-item"><span class="warning-index">${String(index + 1).padStart(2, "0")}</span><span>${warning}</span></div>`).join("")}</div>
+                <div class="warning-grid">${model.warnings.map((warning, index) => `<div class="warning-item"><span class="warning-index">${String(index + 1).padStart(2, "0")}</span><span>${warning}</span></div>`).join("")}</div>` : `
+                <div class="warning-head">
+                  <h3>${model.name} · 下一步计划</h3>
+                  <span class="warning-badge">暂未填写</span>
+                </div>
+                <div class="plan-empty">—</div>`;
+        const detail = open ? `
+          <tr class="detail-row">
+            <td colspan="10">
+              <div class="warning-panel">
+                ${detailContent}
               </div>
             </td>
           </tr>` : "";
         return `
           <tr class="model-row ${open ? "open" : ""}">
             <td class="expand-cell">${expandControl}</td>
-            <td class="model-name"><strong>${model.name}</strong><span class="english-name">${model.english}</span>${expandable ? `<span class="content-count">${model.warnings.length} 条预警类型</span>` : ""}</td>
+            <td class="model-name"><strong>${model.name}</strong><span class="english-name">${model.english}</span>${model.warnings.length ? `<span class="content-count">${model.warnings.length} 条预警类型</span>` : model.mode === "离线" ? `<span class="content-count">下一步计划</span>` : ""}</td>
             <td class="module-cell">${categoryPill(model.module)}</td>
             <td>${categoryPill(model.cbb)}</td>
             <td>${renderScenarioPills(model.scenarios)}</td>
@@ -951,9 +1196,9 @@
 
     function renderSummary(rows) {
       els.result.textContent = `显示 ${rows.length} / ${models.length} 个模型`;
-      const expandableIds = rows.filter((m) => m.warnings.length).map((m) => m.id);
+      const expandableIds = rows.filter((m) => m.warnings.length || m.mode === "离线").map((m) => m.id);
       const allExpanded = expandableIds.length > 0 && expandableIds.every((id) => state.expanded.has(id));
-      els.toggleAll.textContent = allExpanded ? "收起全部预警类型" : "展开全部预警类型";
+      els.toggleAll.textContent = allExpanded ? "收起全部详情" : "展开全部详情";
       els.reset.hidden = !state.sortKey && Object.values(state.filters).every((set) => set.size === 0);
     }
 
@@ -1039,13 +1284,162 @@
     });
 
     els.toggleAll.addEventListener("click", () => {
-      const rows = getFilteredModels().filter((model) => model.warnings.length);
+      const rows = getFilteredModels().filter((model) => model.warnings.length || model.mode === "离线");
       const allExpanded = rows.length && rows.every((model) => state.expanded.has(model.id));
       rows.forEach((model) => allExpanded ? state.expanded.delete(model.id) : state.expanded.add(model.id));
       renderAll();
     });
 
+    const requirementState = { expanded: new Set() };
+    const requirementEls = {
+      body: document.getElementById("requirementBody"),
+      empty: document.getElementById("requirementEmpty"),
+      result: document.getElementById("reqResultCount"),
+      search: document.getElementById("reqSearch"),
+      model: document.getElementById("reqModelFilter"),
+      type: document.getElementById("reqTypeFilter"),
+      status: document.getElementById("reqStatusFilter"),
+      reset: document.getElementById("reqReset"),
+      toggleAll: document.getElementById("reqToggleAll")
+    };
+
+    const requirementColors = ["#22d8ff", "#42f2a1", "#62b8ff", "#ffbd59", "#b899ff", "#ff7487", "#48ded9", "#9ab0bf"];
+    const requirementTagColors = {
+      "已上线": ["#8ff4bf", "rgba(66,242,161,.09)", "rgba(66,242,161,.25)"],
+      "待评审": ["#ffd07a", "rgba(255,189,89,.09)", "rgba(255,189,89,.25)"],
+      "待验证": ["#7bc8ff", "rgba(98,184,255,.09)", "rgba(98,184,255,.25)"],
+      "开发中": ["#57e5f5", "rgba(34,216,255,.09)", "rgba(34,216,255,.25)"],
+      "分析中": ["#c9adff", "rgba(184,153,255,.1)", "rgba(184,153,255,.26)"],
+      "持续跟进": ["#92bfff", "rgba(98,184,255,.08)", "rgba(98,184,255,.22)"],
+      "优化中": ["#ffcb6b", "rgba(255,189,89,.08)", "rgba(255,189,89,.22)"],
+      "已拒绝": ["#ff91a1", "rgba(255,116,135,.08)", "rgba(255,116,135,.22)"],
+      "降低误报": ["#57e5f5", "rgba(34,216,255,.08)", "rgba(34,216,255,.22)"],
+      "功能新增": ["#72f0b6", "rgba(66,242,161,.08)", "rgba(66,242,161,.22)"],
+      "其他优化": ["#c9adff", "rgba(184,153,255,.09)", "rgba(184,153,255,.24)"],
+      "阈值优化": ["#ffcb6b", "rgba(255,189,89,.08)", "rgba(255,189,89,.22)"],
+      "缺陷修复": ["#ff91a1", "rgba(255,116,135,.08)", "rgba(255,116,135,.22)"],
+      "降低漏报": ["#92bfff", "rgba(98,184,255,.08)", "rgba(98,184,255,.22)"]
+    };
+
+    function escapeHtml(value) {
+      return String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
+    }
+
+    function fillRequirementSelect(select, values) {
+      select.insertAdjacentHTML("beforeend", unique(values).map((value) => `<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`).join(""));
+    }
+
+    function getFilteredRequirements() {
+      const query = requirementEls.search.value.trim().toLowerCase();
+      return requirements.filter((item) => {
+        const haystack = [item.id, item.model, item.owner, item.type, item.status, item.description, item.expected, item.progress].join(" ").toLowerCase();
+        return (!query || haystack.includes(query)) &&
+          (!requirementEls.model.value || item.model === requirementEls.model.value) &&
+          (!requirementEls.type.value || item.type === requirementEls.type.value) &&
+          (!requirementEls.status.value || item.status === requirementEls.status.value);
+      }).sort((a, b) => b.date.localeCompare(a.date) || a.id.localeCompare(b.id));
+    }
+
+    function requirementTag(value, kind) {
+      const [color, background, border] = requirementTagColors[value] || ["#b9d1dc", "rgba(255,255,255,.035)", "rgba(122,211,255,.16)"];
+      return `<span class="${kind}" style="--tag-color:${color};--tag-bg:${background};--tag-border:${border}">${escapeHtml(value)}</span>`;
+    }
+
+    function renderRequirementBars(rows, key, targetId, totalId, unitLabel) {
+      const counts = Object.entries(rows.reduce((acc, item) => ((acc[item[key]] = (acc[item[key]] || 0) + 1), acc), {}))
+        .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "zh-CN", { numeric: true }));
+      const max = Math.max(1, ...counts.map(([, value]) => value));
+      const active = requirementEls[key === "model" ? "model" : key].value;
+      document.getElementById(totalId).textContent = `${counts.length} ${unitLabel}`;
+      document.getElementById(targetId).innerHTML = counts.length ? counts.map(([label, value], index) => `
+        <div class="bar-row ${active === label ? "active" : ""}" data-filter-key="${key}" data-filter-value="${escapeHtml(label)}" title="${escapeHtml(label)}：${value} 条">
+          <span class="bar-label">${escapeHtml(label)}</span><span class="bar-track"><i class="bar-fill" style="--bar-width:${value / max * 100}%;--bar-color:${requirementColors[index % requirementColors.length]}"></i></span><span class="bar-value">${value}</span>
+        </div>`).join("") : `<div class="empty-state">暂无数据</div>`;
+    }
+
+    function renderRequirementKpis(rows) {
+      document.getElementById("reqKpiTotal").innerHTML = `${rows.length}<small>条</small>`;
+      document.getElementById("reqKpiModels").innerHTML = `${new Set(rows.map((item) => item.model)).size}<small>个</small>`;
+      document.getElementById("reqKpiOnline").innerHTML = `${rows.filter((item) => item.status === "已上线").length}<small>条</small>`;
+      document.getElementById("reqKpiActive").innerHTML = `${rows.filter((item) => !["已上线", "已拒绝"].includes(item.status)).length}<small>条</small>`;
+    }
+
+    function requirementValue(value) { return value ? escapeHtml(value) : "—"; }
+
+    function renderRequirementTable(rows) {
+      requirementEls.body.innerHTML = rows.map((item) => {
+        const open = requirementState.expanded.has(item.id);
+        const detail = open ? `
+          <tr class="detail-row"><td colspan="7"><div class="warning-panel"><div class="requirement-detail">
+            <div class="detail-block wide"><label>预期效果</label><div>${requirementValue(item.expected)}</div></div>
+            <div class="detail-block"><label>提出人（员工 ID）</label><div>${requirementValue(item.requesterId)}</div></div>
+            <div class="detail-block wide"><label>当前进展</label><div>${requirementValue(item.progress)}</div></div>
+            <div class="detail-block"><label>对接 Owner（员工 ID）</label><div>${requirementValue(item.contactOwnerId)}</div></div>
+            <div class="detail-block wide"><label>附件</label><div>${requirementValue(item.attachment)}</div></div>
+            <div class="detail-block"><label>需求编号</label><div>${escapeHtml(item.id)}</div></div>
+          </div></div></td></tr>` : "";
+        return `<tr class="model-row ${open ? "open" : ""}">
+          <td class="expand-cell"><button class="expand-btn" type="button" data-requirement-expand="${escapeHtml(item.id)}" aria-expanded="${open}" aria-label="${open ? "收起" : "展开"}${escapeHtml(item.id)}需求详情"><svg viewBox="0 0 24 24" fill="none"><path d="m9 6 6 6-6 6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></button></td>
+          <td>${escapeHtml(item.date)}</td><td class="model-name"><strong>${escapeHtml(item.model)}</strong><span class="english-name">${escapeHtml(item.id)}</span></td>
+          <td>${requirementTag(item.type, "requirement-type")}</td><td>${requirementTag(item.status, "requirement-status")}</td>
+          <td class="requirement-desc">${escapeHtml(item.description)}</td><td>${escapeHtml(item.owner)}</td>
+        </tr>${detail}`;
+      }).join("");
+      requirementEls.empty.hidden = rows.length > 0;
+      requirementEls.body.querySelectorAll("[data-requirement-expand]").forEach((button) => button.addEventListener("click", () => {
+        const id = button.dataset.requirementExpand;
+        requirementState.expanded.has(id) ? requirementState.expanded.delete(id) : requirementState.expanded.add(id);
+        renderRequirements();
+      }));
+    }
+
+    function renderRequirements() {
+      const rows = getFilteredRequirements();
+      renderRequirementKpis(rows);
+      renderRequirementBars(rows, "status", "reqStatusChart", "reqStatusTotal", "种状态");
+      renderRequirementBars(rows, "type", "reqTypeChart", "reqTypeTotal", "种类型");
+      renderRequirementBars(rows, "model", "reqModelChart", "reqModelTotal", "个模型");
+      renderRequirementTable(rows);
+      requirementEls.result.textContent = `显示 ${rows.length} / ${requirements.length} 条需求`;
+      const allExpanded = rows.length > 0 && rows.every((item) => requirementState.expanded.has(item.id));
+      requirementEls.toggleAll.textContent = allExpanded ? "收起全部需求详情" : "展开全部需求详情";
+    }
+
+    fillRequirementSelect(requirementEls.model, requirements.map((item) => item.model));
+    fillRequirementSelect(requirementEls.type, requirements.map((item) => item.type));
+    fillRequirementSelect(requirementEls.status, requirements.map((item) => item.status));
+    [requirementEls.search, requirementEls.model, requirementEls.type, requirementEls.status].forEach((control) => control.addEventListener(control.tagName === "INPUT" ? "input" : "change", renderRequirements));
+    requirementEls.reset.addEventListener("click", () => {
+      requirementEls.search.value = "";
+      requirementEls.model.value = "";
+      requirementEls.type.value = "";
+      requirementEls.status.value = "";
+      renderRequirements();
+    });
+    requirementEls.toggleAll.addEventListener("click", () => {
+      const rows = getFilteredRequirements();
+      const allExpanded = rows.length > 0 && rows.every((item) => requirementState.expanded.has(item.id));
+      rows.forEach((item) => allExpanded ? requirementState.expanded.delete(item.id) : requirementState.expanded.add(item.id));
+      renderRequirements();
+    });
+    document.querySelector(".requirements-dashboard").addEventListener("click", (event) => {
+      const row = event.target.closest("[data-filter-key]");
+      if (!row) return;
+      const select = requirementEls[row.dataset.filterKey];
+      select.value = select.value === row.dataset.filterValue ? "" : row.dataset.filterValue;
+      renderRequirements();
+    });
+
+    const sectionLinks = [...document.querySelectorAll("[data-section-link]")];
+    const sectionObserver = new IntersectionObserver((entries) => {
+      const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (!visible) return;
+      sectionLinks.forEach((link) => link.classList.toggle("active", link.dataset.sectionLink === visible.target.id));
+    }, { rootMargin: "-20% 0px -65%", threshold: [0, 0.1, 0.5] });
+    document.querySelectorAll(".content-section").forEach((section) => sectionObserver.observe(section));
+
     renderAll();
+    renderRequirements();
   </script>
 </body>
 </html>

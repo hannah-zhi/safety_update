@@ -1150,7 +1150,7 @@
             </div>
             <div class="chat-row agent"><span class="chat-avatar">AI</span><div class="chat-message"><span class="chat-role">Coding Agent</span><p>我会按顺序使用三个能力：先用 build-cbb-eda-notebook 约束 notebook 的云端格式和简洁度，再用文档能力提取“绝缘异常case”的案例与时间线，最后读取字段表和场站配置确定可查询字段、表名及真实 site_code。附件中的可运行漏液 notebook 会作为代码风格和 Glue/S3 写法的最高优先级参考。</p></div></div>
             <div class="chat-row agent"><span class="chat-avatar">AI</span><div class="chat-message"><span class="chat-role">Coding Agent</span><p>案例文档初步识别出 5 条项目案例、2 条工厂案例。工厂案例会按 skill 规则排除；项目案例中 K0315、K0056 的子系统/rack 清晰，K0043 的“22-2-4 Rack”和 K0259 的“401簇”需要结合场站架构判断能否可靠转换为云端资产键，不能直接猜。</p></div></div>
-            <div class="chat-row user"><div class="chat-message"><span class="chat-role">用户</span><p>“22-2-4 Rack”应该指的是22号子系统，204Rack；401簇这个，确实不知道是哪个子系统，先忽略</p></div><span class="chat-avatar">你</span></div>
+            <div class="chat-row user"><div class="chat-message"><span class="chat-role">用户</span><p>“22-2-4 Rack”应该指的是22号子系统，204Rack；401簇这个case不确定是哪个子系统，先忽略</p></div><span class="chat-avatar">你</span></div>
             <div class="chat-row agent"><span class="chat-avatar">AI</span><div class="chat-message"><span class="chat-role">Coding Agent</span><p>明白，K0043 将按 WCCN.ESS22 / RBMS204 纳入，不再视为歧义案例，可直接与同一子系统其他 RBMS 做绝缘电阻和告警的 peer 对比。K0259 的“401簇”缺少子系统信息，先从 notebook 查询案例中排除，并在案例覆盖说明中标记为“无法映射到云端 asset_storage_key”。当前纳入 K0315、K0056、K0043 三例。</p></div></div>
             <div class="chat-row agent"><span class="chat-avatar">AI</span><div class="chat-message"><span class="chat-role">Coding Agent</span><p>案例和字段映射已经收敛：柜式两例用 RBMS 的连续绝缘电阻、告警及电压字段；箱式 K0315 在子系统层用 BBMS + PCS 观察绝缘告警与正/负母线电压。Pack 编号只保留在案例说明中，不作为云端查询条件。接下来我生成 notebook，并检查代码语法、S3 路径和绘图 cell 尾行。</p></div></div>
             <div class="chat-row agent"><span class="chat-avatar">AI</span><div class="chat-message"><span class="chat-role">Coding Agent</span><p>这次调用暴露出 skill 中一处需要同步优化的地方：它把“box → TMS”写成了固定规则，这只适合漏液，不适合绝缘异常。我会按 skill-creator 的规范把设备类型与数据表选择解耦，让字段和表由失效机理决定；本次 notebook 则采用 RBMS、BBMS、PCS。</p></div></div>
@@ -1194,7 +1194,7 @@ notebook 会输出：
 
           <div class="chat-stack" aria-label="analyze-cbb-eda-outputs 真实对话">
             <div class="chat-row user"><div class="chat-message"><span class="chat-role">用户</span><p>/analyze-cbb-eda-outputs
-notebook运行之后的结果都存在以下路径了（包括图片和表格），请进行分析：.../pack_cbb\insulation\online_outputs\2026-09-02</p></div><span class="chat-avatar">你</span></div>
+notebook运行之后的结果都存在以下路径了（包括图片和表格），请进行分析：.../pack_cbb/insulation/online_outputs/2026-09-02</p></div><span class="chat-avatar">你</span></div>
             <div class="chat-row agent"><span class="chat-avatar">AI</span><div class="chat-message"><span class="chat-role">Coding Agent</span><p>我会按你指定的 analyze-cbb-eda-outputs skill 执行：先盘点所有案例的图片、表格和数据完整性，再对齐案例时间、目标 Rack/动力单元与同子系统 peer，最后给出逐案例证据等级、可建模性判断和下一步计划，并生成结构化 Markdown 总结。</p></div></div>
             <div class="chat-row agent"><span class="chat-avatar">AI</span><div class="chat-message"><span class="chat-role">Coding Agent</span><p>Skill 要求把负结果和缺失输出也保留下来，并按 A/B/C/D/X 分级。我现在开始做全量文件清单与格式路由；如果部分案例只有空目录或缺少关键表，也会作为明确的数据状态写入总结，不会静默忽略。</p></div></div>
             <div class="chat-row agent"><span class="chat-avatar">AI</span><div class="chat-message"><span class="chat-role">Coding Agent</span><p>文件清单显示共有 522 个文件、约 41 MB：14 个案例都有表目录，但只有 10 个案例生成了图片，说明至少 4 个案例可能是空数据或不足以绘图。Parquet 是主要证据来源；当前本地分析运行时缺少 Parquet 读取库，我将补充本地只用于分析的依赖，然后统计每张表的实际行数、时间范围和关键值。</p></div></div>

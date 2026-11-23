@@ -601,15 +601,17 @@
     .menu-action:hover { border-color: rgba(34,216,255,.4); background: var(--cyan-soft); }
     .menu-action.primary:hover { color: #00232c; border-color: transparent; background: var(--cyan); filter: brightness(1.08); }
 
-    .plan-empty {
+    .plan-content {
       min-height: 72px;
       display: flex;
       align-items: center;
       padding: 16px 18px;
-      border: 1px dashed rgba(122, 211, 255, 0.24);
+      border: 1px solid rgba(184, 153, 255, 0.24);
       border-radius: 12px;
-      color: #6f8795;
-      background: rgba(255, 255, 255, 0.018);
+      color: #d7e6ee;
+      background: rgba(184, 153, 255, 0.055);
+      font-size: 14px;
+      line-height: 1.7;
     }
 
     .requirements-kpi-grid {
@@ -1221,7 +1223,7 @@ K0075：C 级弱证据
                 <div class="chat-artifacts">
                   <strong>交付物</strong>
                   <a class="artifact-link" href="artifacts/pack_insulation_abnormal_eda_summary.html" target="_blank" rel="noopener"><span>pack_insulation_abnormal_eda_summary.md</span><span class="artifact-action">预览</span></a>
-                  <a class="artifact-link" href="artifacts/pack_insulation_abnormal_eda_report_2026-09-20.html" target="_blank" rel="noopener"><span>pack_insulation_abnormal_eda_report_2026-09-20.html</span><span class="artifact-action">打开完整报告</span></a>
+                  <a class="artifact-link" href="artifacts/pack_insulation_abnormal_eda_report.html" target="_blank" rel="noopener"><span>pack_insulation_abnormal_eda_report.html</span><span class="artifact-action">打开完整报告</span></a>
                 </div>
               </div>
             </div>
@@ -1286,18 +1288,18 @@ K0075：C 级弱证据
       { id: 2, module: "电池系统", cbb: "电芯", name: "Pack内电芯采样温度异常监测模型", english: "Safety_Pack_CellTemperatureAnomaly", scenarios: ["云端", "站端", "Argus"], mode: "在线", version: "V2.0.0", stages: ["上线运营中", "模型迭代中"], responsibles: ["模型owner", "CBB LMT"], owner: "黄胜旭", accuracy: "97.9%" },
       { id: 3, module: "电池系统", cbb: "Pack", name: "Rack内电压一致性异常监测模型", english: "Safety_Rack_CellVoltageConsistencyAnomaly", scenarios: ["云端", "站端", "Argus"], mode: "在线", version: "V3.0.0", stages: ["上线运营中", "模型迭代中"], responsibles: ["CBB LMT"], owner: "胡志硕", accuracy: "99.0%" },
       { id: 4, module: "电池系统", cbb: "Pack", name: "Pack绝缘异常监测模型", english: "TBD", scenarios: ["云端"], mode: "在线", version: "V1.0.0", stages: ["模型开发中", "待CBB确认反馈"], responsibles: ["模型owner", "CBB LMT"], owner: "支菡倩", accuracy: "" },
-      { id: 5, module: "电池系统", cbb: "电芯", name: "电芯电压分布统计模型", english: "TBD", scenarios: ["云端"], mode: "离线", version: "V1.0.0", stages: ["模型迭代中"], responsibles: ["模型owner"], owner: "黄胜旭", accuracy: "" },
-      { id: 6, module: "电池系统", cbb: "电芯", name: "内阻离群趋势性模型", english: "TBD", scenarios: ["云端"], mode: "离线", version: "V1.0.0", stages: ["模型迭代中"], responsibles: ["模型owner"], owner: "孟祺", accuracy: "" },
-      { id: 7, module: "电池系统", cbb: "电芯", name: "dQ/dV离群趋势性模型", english: "TBD", scenarios: ["云端"], mode: "离线", version: "V1.0.0", stages: ["模型迭代中"], responsibles: ["模型owner"], owner: "支菡倩", accuracy: "" },
-      { id: 8, module: "系统控制与涉网服务", cbb: "BMS", name: "BMS采样不刷新监测模型", english: "TBD", scenarios: ["云端"], mode: "离线", version: "V1.0.0", stages: ["模型迭代中", "待CBB确认反馈"], responsibles: ["模型owner", "CBB LMT"], owner: "支菡倩", accuracy: "" },
-      { id: 9, module: "系统控制与涉网服务", cbb: "BMS", name: "BMS均衡区温度保护模型", english: "TBD", scenarios: ["云端"], mode: "离线", version: "V1.0.0", stages: ["模型迭代中"], responsibles: ["模型owner"], owner: "陈敏辉", accuracy: "" },
+      { id: 5, module: "电池系统", cbb: "电芯", name: "电芯电压分布统计模型", english: "TBD", scenarios: ["云端"], mode: "离线", version: "V1.0.0", stages: ["模型迭代中"], responsibles: ["模型owner"], owner: "黄胜旭", accuracy: "", nextPlan: "该模型属于热失控预警模型。现阶段仅用于识别潜在风险电芯是否存在异常特征，尚未形成明确的预警逻辑。后续将结合电芯电压分布、内阻离群趋势和 dQ/dV 离群趋势三个模型的结果，探索耦合判断方案并完善预警逻辑。" },
+      { id: 6, module: "电池系统", cbb: "电芯", name: "内阻离群趋势性模型", english: "TBD", scenarios: ["云端"], mode: "离线", version: "V1.0.0", stages: ["模型迭代中"], responsibles: ["模型owner"], owner: "孟祺", accuracy: "", nextPlan: "该模型属于热失控预警模型。现阶段仅用于识别潜在风险电芯是否存在异常特征，尚未形成明确的预警逻辑。后续将结合电芯电压分布、内阻离群趋势和 dQ/dV 离群趋势三个模型的结果，探索耦合判断方案并完善预警逻辑。" },
+      { id: 7, module: "电池系统", cbb: "电芯", name: "dQ/dV离群趋势性模型", english: "TBD", scenarios: ["云端"], mode: "离线", version: "V1.0.0", stages: ["模型迭代中"], responsibles: ["模型owner"], owner: "支菡倩", accuracy: "", nextPlan: "该模型属于热失控预警模型。现阶段仅用于识别潜在风险电芯是否存在异常特征，尚未形成明确的预警逻辑。后续将结合电芯电压分布、内阻离群趋势和 dQ/dV 离群趋势三个模型的结果，探索耦合判断方案并完善预警逻辑。" },
+      { id: 8, module: "系统控制与涉网服务", cbb: "BMS", name: "BMS采样不刷新监测模型", english: "TBD", scenarios: ["云端"], mode: "离线", version: "V1.0.0", stages: ["模型迭代中", "待CBB确认反馈"], responsibles: ["模型owner", "CBB LMT"], owner: "支菡倩", accuracy: "", nextPlan: "该模型原有逻辑较复杂、普适性较低，仅适用于协能 BMS 特定版本的单体采样不刷新问题，且计算成本较高。后续将收集当前仍存在的 BMS 数据不刷新且具有过充风险的案例，完成数据探索后对原有模型进行迭代优化。" },
+      { id: 9, module: "系统控制与涉网服务", cbb: "BMS", name: "BMS均衡区温度保护模型", english: "TBD", scenarios: ["云端"], mode: "离线", version: "V1.0.0", stages: ["模型迭代中"], responsibles: ["模型owner"], owner: "陈敏辉", accuracy: "", nextPlan: "准备转为云端在线模型，预警结果推送至 Astra。" },
       { id: 10, module: "系统控制与涉网服务", cbb: "BMS", name: "舱内簇间一致性模型", english: "Safety_Bank_RackConsistencyAnomaly", scenarios: ["云端"], mode: "在线", version: "V1.0.0", stages: ["上线运营中", "模型迭代中"], responsibles: ["模型owner", "CBB LMT"], owner: "黄胜旭", accuracy: "96.9%" },
       { id: 11, module: "环控与热管理", cbb: "直流环控", name: "直流环控高温风险监测模型", english: "Safety_DCEnvironmental_HighTempAnomaly", scenarios: ["云端", "Argus"], mode: "在线", version: "V1.0.0", stages: ["上线运营中", "模型迭代中"], responsibles: ["模型owner", "CBB LMT"], owner: "杨威", accuracy: "95.4%" },
       { id: 12, module: "环控与热管理", cbb: "直流环控", name: "直流环控低压风险监测模型", english: "Safety_DCEnvironmental_LowPressAnomaly", scenarios: ["云端", "Argus"], mode: "在线", version: "V1.0.0", stages: ["上线运营中"], responsibles: ["CBB LMT"], owner: "杨威", accuracy: "99.6%" },
       { id: 13, module: "环控与热管理", cbb: "PCS", name: "PCS温度异常监测模型", english: "Safety_PCS_PCSTemperatureAnomaly", scenarios: ["云端"], mode: "在线", version: "V1.0.0", stages: ["上线运营中", "模型迭代中"], responsibles: ["模型owner", "CBB LMT"], owner: "沈洋", accuracy: "88.3%" },
       { id: 14, module: "电气总成", cbb: "主控配电柜", name: "主控配电柜空调运行异常监测模型", english: "Safety_DCPowerDistribution_CabinetACAnomaly", scenarios: ["云端", "Argus"], mode: "在线", version: "V1.0.0", stages: ["上线运营中", "模型迭代中"], responsibles: ["模型owner", "CBB LMT"], owner: "陈敏辉", accuracy: "100.0%" },
       { id: 15, module: "电气总成", cbb: "主控配电柜", name: "主控配电柜UPS异常监测模型", english: "Safety_DCPowerDistribution_UPSAnomaly", scenarios: ["云端"], mode: "在线", version: "V1.0.0", stages: ["上线运营中", "模型迭代中"], responsibles: ["模型owner", "CBB LMT"], owner: "陈敏辉", accuracy: "98.4%" },
-      { id: 16, module: "电气总成", cbb: "主控配电柜", name: "主控配电柜UPS寿命预测模型", english: "TBD", scenarios: ["云端"], mode: "离线", version: "V1.0.0", stages: ["模型迭代中", "待CBB确认反馈"], responsibles: ["模型owner", "CBB LMT"], owner: "陈敏辉", accuracy: "" },
+      { id: 16, module: "电气总成", cbb: "主控配电柜", name: "主控配电柜UPS寿命预测模型", english: "TBD", scenarios: ["云端"], mode: "离线", version: "V1.0.0", stages: ["模型迭代中", "待CBB确认反馈"], responsibles: ["模型owner", "CBB LMT"], owner: "陈敏辉", accuracy: "", nextPlan: "当前模型所需测点存在数据异常，导致计算结果不可用。后续将继续与 CBB 沟通逻辑细节并迭代模型，待计算结果可靠后上线运行。" },
       { id: 17, module: "电气总成", cbb: "变压器", name: "变压器温度大模型", english: "Safety_Transformer_TemperatureAnomaly", scenarios: ["云端", "Argus"], mode: "在线", version: "V1.0.1", stages: ["上线运营中"], responsibles: ["CBB LMT"], owner: "沈洋", accuracy: "100.0%" },
       { id: 18, module: "系统集成", cbb: "直流结构总成", name: "电池柜内高湿度风险监测模型", english: "Safety_DCStructure_HighHumidityAnomaly", scenarios: ["云端"], mode: "在线", version: "V1.0.0", stages: ["已下线"], responsibles: ["模型owner"], owner: "黄胜旭", accuracy: "" },
       { id: 19, module: "系统集成", cbb: "直流结构总成", name: "电池柜体密封失效监测模型", english: "Safety_DCStructure_HumidityDiffAnomaly", scenarios: ["云端"], mode: "在线", version: "V1.0.0", stages: ["已下线"], responsibles: ["模型owner"], owner: "黄胜旭", accuracy: "" }
@@ -1404,9 +1406,9 @@ K0075：C 级弱证据
                 <div class="warning-grid">${model.warnings.map((warning, index) => `<div class="warning-item"><span class="warning-index">${String(index + 1).padStart(2, "0")}</span><span>${warning}</span></div>`).join("")}</div>` : `
                 <div class="warning-head">
                   <h3>${model.name} · 下一步计划</h3>
-                  <span class="warning-badge next-plan">暂未填写</span>
+                  <span class="warning-badge next-plan">${model.nextPlan ? "计划已补充" : "暂未填写"}</span>
                 </div>
-                <div class="plan-empty">—</div>`;
+                <div class="plan-content">${model.nextPlan ? escapeHtml(model.nextPlan) : "—"}</div>`;
         const detail = open ? `
           <tr class="detail-row">
             <td colspan="10">

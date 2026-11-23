@@ -482,6 +482,12 @@
       font-size: 12px;
     }
 
+    .content-count.next-plan {
+      color: #d7c5ff;
+      border-color: rgba(184, 153, 255, 0.32);
+      background: rgba(184, 153, 255, 0.11);
+    }
+
     .pills { display: flex; flex-wrap: wrap; gap: 5px; max-width: 250px; }
     .pill {
       display: inline-flex;
@@ -528,6 +534,7 @@
     .warning-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 13px; }
     .warning-head h3 { margin: 0; color: #e6faff; font-size: 15px; }
     .warning-badge { padding: 6px 9px; border-radius: 999px; color: #aeefff; background: var(--cyan-soft); font-size: 12px; white-space: nowrap; }
+    .warning-badge.next-plan { color: #d7c5ff; background: rgba(184, 153, 255, 0.13); }
     .warning-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px; }
     .warning-item {
       display: grid;
@@ -912,24 +919,16 @@
     <header class="topbar">
       <a class="brand" href="#top" aria-label="返回顶部">
         <span class="brand-mark" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none"><path d="M5 13.5 10.2 3l1.3 7.1H19L13.8 21l-1.3-7.5H5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 3 19 6v5c0 4.6-2.8 8-7 10-4.2-2-7-5.4-7-10V6l7-3Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m8.5 12 2.2 2.2 4.8-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </span>
         安全预警模块进展
       </a>
-      <div class="top-meta">
-        <span class="live-dot" aria-hidden="true"></span>
-        <span>数据快照：2026-11-19</span>
-        <a class="source-link" href="https://envision-energy.feishu.cn/wiki/O8Hewpqq5i4z0Sk4HGJcUbQHn3g?sheet=95ba18" target="_blank" rel="noreferrer">
-          查看飞书源表
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8M17 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
-      </div>
     </header>
 
     <nav class="section-nav" aria-label="页面章节导航">
-      <a href="#model-overview" data-section-link="model-overview" class="active">第一部分 · 模型状态</a>
-      <a href="#requirements-overview" data-section-link="requirements-overview">第二部分 · 迭代需求</a>
-      <a href="#agent-development" data-section-link="agent-development">第三部分 · Agent 开发流程</a>
+      <a href="#model-overview" data-section-link="model-overview" class="active">Part 1 · 模型状态</a>
+      <a href="#requirements-overview" data-section-link="requirements-overview">Part 2 · 迭代需求</a>
+      <a href="#agent-development" data-section-link="agent-development">Part 3 · 开发流程</a>
     </nav>
 
     <section class="content-section" id="model-overview" aria-labelledby="page-title">
@@ -1034,10 +1033,6 @@
         <div class="section-title-wrap">
           <h1 id="requirements-title">模型需求迭代看板</h1>
         </div>
-        <a class="source-link" href="https://envision-energy.feishu.cn/wiki/O8Hewpqq5i4z0Sk4HGJcUbQHn3g?sheet=sDcrlW" target="_blank" rel="noreferrer">
-          查看飞书需求表
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8M17 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
       </div>
 
       <div class="requirements-kpi-grid" aria-label="模型需求关键指标">
@@ -1116,10 +1111,6 @@
 
       <article class="glass agent-flow-card" aria-label="Coding Agent 驱动的储能安全模型闭环流程">
         <div class="agent-flow-stage">
-          <div class="agent-source-switch" aria-label="需求来源">
-            <button class="agent-source-btn battery active" type="button" data-agent-source="battery"><small>A</small><strong>机理驱动（主导）</strong></button>
-            <button class="agent-source-btn cbb" type="button" data-agent-source="cbb"><small>B</small><strong>需求驱动（补充）</strong></button>
-          </div>
           <div class="agent-flow-chart-wrap">
             <svg class="agent-flow-chart" id="agentFlowChart" viewBox="0 0 1500 700" role="img" aria-label="带分支和回环的算法开发流程图"></svg>
             <div class="agent-popover-layer" id="agentPopoverLayer" aria-live="polite"></div>
@@ -1128,8 +1119,7 @@
       </article>
 
       <div class="skill-showcase-title">
-        <h2>两个 Skill 的真实使用实例</h2>
-        <span>来自任务「构建CBB失效案例EDA脚本」的真实消息与交付物</span>
+        <h2>数据探索skill的使用实例</h2>
       </div>
 
       <div class="conversation-list">
@@ -1414,7 +1404,7 @@ K0075：C 级弱证据
                 <div class="warning-grid">${model.warnings.map((warning, index) => `<div class="warning-item"><span class="warning-index">${String(index + 1).padStart(2, "0")}</span><span>${warning}</span></div>`).join("")}</div>` : `
                 <div class="warning-head">
                   <h3>${model.name} · 下一步计划</h3>
-                  <span class="warning-badge">暂未填写</span>
+                  <span class="warning-badge next-plan">暂未填写</span>
                 </div>
                 <div class="plan-empty">—</div>`;
         const detail = open ? `
@@ -1428,7 +1418,7 @@ K0075：C 级弱证据
         return `
           <tr class="model-row ${open ? "open" : ""}">
             <td class="expand-cell">${expandControl}</td>
-            <td class="model-name"><strong>${model.name}</strong><span class="english-name">${model.english}</span>${model.warnings.length ? `<span class="content-count">${model.warnings.length} 条预警类型</span>` : model.mode === "离线" ? `<span class="content-count">下一步计划</span>` : ""}</td>
+            <td class="model-name"><strong>${model.name}</strong><span class="english-name">${model.english}</span>${model.warnings.length ? `<span class="content-count">${model.warnings.length} 条预警类型</span>` : model.mode === "离线" ? `<span class="content-count next-plan">下一步计划</span>` : ""}</td>
             <td class="module-cell">${categoryPill(model.module)}</td>
             <td>${categoryPill(model.cbb)}</td>
             <td>${renderScenarioPills(model.scenarios)}</td>

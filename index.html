@@ -1128,7 +1128,7 @@
         <article class="glass conversation-card" style="--case-color:var(--cyan)">
           <div class="conversation-head">
             <div>
-              <h3>从失效案例生成 EDA Notebook</h3>
+              <h3>从失效案例生成数据探索脚本</h3>
               <p>把案例材料、字段表和云端约束转成可运行的 Glue/PySpark 分析脚本。</p>
             </div>
             <span class="skill-name">build-cbb-eda-notebook</span>
@@ -1178,7 +1178,7 @@ notebook 会输出：
         <article class="glass conversation-card" style="--case-color:var(--violet)">
           <div class="conversation-head">
             <div>
-              <h3>从云端输出形成证据结论</h3>
+              <h3>从云端输出形成数据探索结论</h3>
               <p>读取 Notebook 运行后的图片、Parquet 与案例材料，完成证据分级和下一步决策。</p>
             </div>
             <span class="skill-name">analyze-cbb-eda-outputs</span>
@@ -1406,7 +1406,6 @@ K0075：C 级弱证据
                 <div class="warning-grid">${model.warnings.map((warning, index) => `<div class="warning-item"><span class="warning-index">${String(index + 1).padStart(2, "0")}</span><span>${warning}</span></div>`).join("")}</div>` : `
                 <div class="warning-head">
                   <h3>${model.name} · 下一步计划</h3>
-                  <span class="warning-badge next-plan">${model.nextPlan ? "计划已补充" : "暂未填写"}</span>
                 </div>
                 <div class="plan-content">${model.nextPlan ? escapeHtml(model.nextPlan) : "—"}</div>`;
         const detail = open ? `

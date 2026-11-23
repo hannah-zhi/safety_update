@@ -13,7 +13,7 @@ const agentFlowSteps = [
 
 const agentSkillCatalog = {
   requirement: "需求解析 Skill",
-  data: "数据提取 Skill",
+  data: "数据探索skill",
   model: "模型设计 Skill",
   test: "模型测试 Skill",
   ops: "运营监测 Skill"
